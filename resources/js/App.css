@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Kdam+Thmor+Pro&display=swap');
+@import url('../css/Colors.css');
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  scrollbar-width: auto;
+  scrollbar-color: #102370;
+  font-family: 'Inter';
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #ffffff00;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #242d4200;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #464d61;
+  background-clip: padding-box;
+  border: 2px solid #242d4200;
+  border-radius: 30px;
+}
+
+::selection {
+  background-color: rgba(86, 150, 233, 0.38);
+  color: var(--white);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--light-grey);
+}
+
+/* HEARTBEAT ANIMATION */
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.05);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  75% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 12s infinite;
+}
+
+.parallax {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/*Dotted Background*/
+.dotted_bg{
+  background-image: radial-gradient(#ffffff33 1px, #ffffff00 1px);
+  background-size: 20px 20px;
+  border-radius: 32px;
+  height: 100vh;
+}
+
+#buttons-container {
+  display: flex;
+  justify-content: center;
+}
