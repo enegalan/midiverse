@@ -35,6 +35,7 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('name');
+            $table->timestamps();
         });
 
         Schema::create('users_roles', function (Blueprint $table) {
