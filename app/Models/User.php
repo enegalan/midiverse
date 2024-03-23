@@ -11,9 +11,10 @@ use App\Models\Profile;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class   User extends Authenticatable implements MustVerifyEmail
-{
+class User extends Authenticatable implements MustVerifyEmail {
     use HasApiTokens, HasFactory, Notifiable, softDeletes;
+
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +26,6 @@ class   User extends Authenticatable implements MustVerifyEmail
         'email',
         'lastname',
         'birthdate',
-        'picture',
         'password',
         'avatar'
     ];
@@ -53,33 +53,40 @@ class   User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Role::class, 'users_roles', 'user_id', 'role_id');
     }
 
-    public function carts(){
-        return $this->hasMany(Cart::class);
-    }
-
-    public function hasRole($role)
-    {
+    public function hasRole($role) {
         return $this->roles()->where('name', $role)->exists();
     }
 
-    public function adminAccess()
-    {
+    public function adminAccess() {
         return $this->hasRole('admin');
     }
 
-    public function vipAccess()
-    {
-        return $this->hasRole('vip');
+    public function proAccess() {
+        return $this->hasRole('pro');
     }
 
-    public function providerAccess()
-    {
-        return $this->hasRole('provider');
+    public function followers() {
+        return $this->belongsToMany(User::class, 'user_followers', 'user_id', 'follower_id');
     }
 
-    public function profile()
-    {
-        return $this->hasOne(Profile::class);
+    public function groups() {
+        return $this->belongsToMany(Group::class, 'group_members');
+    }
+
+    public function concerts() {
+        return $this->hasMany(Concert::class);
+    }
+
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
+
+    public function postBookmarks() {
+        return $this->belongsToMany(Post::class, 'user_post_bookmarks');
+    }
+
+    public function concertBookmarks() {
+        return $this->belongsToMany(Concert::class, 'user_concert_bookmarks');
     }
 
     /**
@@ -87,11 +94,7 @@ class   User extends Authenticatable implements MustVerifyEmail
      *
      * @return string
      */
-    public function getEmailForVerification()
-    {
+    public function getEmailForVerification() {
         return $this->email;
-    }
-    public function getProducts(){
-        return $this->hasMany(Product::class);
     }
 }
