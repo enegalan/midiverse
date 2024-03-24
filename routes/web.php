@@ -17,8 +17,14 @@ use Inertia\Inertia;
 |
  */
 
+// Redirection for /
+// TODO: Redirect to auth it's not logged
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    return redirect('/home');
 })->name('index');
+
+Route::get('/home', function () {
+    return Inertia::render('Index');
+})->name('home');
 
 require __DIR__ . '/auth.php';

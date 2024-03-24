@@ -1,3 +1,12 @@
 :root {
-
+    --dark: #0d162c;
+    --dark-gray: #1c1c1c;
+    --main-blue: #0a4de8;
+    --blue: #2563eb;
+    --light-blue: #a2c0f8;
+    --white: #FFFFFF;
+    --light-grey: #ebebeb;
+    --hover-blue: #96d5ff9c;
+    --red: #eb2564;
+    --hover-red: #ff96c29c;
 }
