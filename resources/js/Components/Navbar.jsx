@@ -1,7 +1,6 @@
 import logoWhite from "../../../public/logoWhite.svg";
 import logoBlack from "../../../public/logoBlack.svg";
 import Dropdown from "@/Components/Dropdown";
-import { useLocation } from 'react-router-dom';
 
 /* Icons */
 import { GoHome } from "react-icons/go";
@@ -81,7 +80,7 @@ const Navbar = ({
         },
         {
             title: 'Explore',
-            href: '/',
+            href: '/explore',
             id: 'explore',
             ref: 'explore',
             icon: <GoSearch className={`text-[${iconWidth}]`} />,

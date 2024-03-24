@@ -7,8 +7,8 @@ import { IoShare } from 'react-icons/io5';
 import { IoShareOutline } from 'react-icons/io5';
 
 export default function Post({ post = {} }) {
-    const blueHovereableStyle = 'relative hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]';
-    const redHovereableStyle = 'relative hover:cursor-pointer rounded-full hover:bg-[var(--hover-red)] hover:text-[var(--red)]';
+    const blueHovereableStyle = 'relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]';
+    const redHovereableStyle = 'relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-red)] hover:text-[var(--red)]';
     return (
         <article className='border-t flex p-3 gap-2 justify-start' key={post.id}>
             <div>
@@ -17,10 +17,10 @@ export default function Post({ post = {} }) {
             <div className='flex flex-col'>
                 <div className='flex gap-1 items-center'>
                     <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] font-bold hover:underline hover:cursor-pointer'>{post.user.name + ' ' + post.user.lastname}</span>
-                    <span className='text-s text-gray-400'><label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + post.user.username}</label><label className='hover:cursor-pointer'> · </label><label className='hover:cursor-pointer'>{post.date}</label></span>
+                    <span className='text-sm text-gray-400'><label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + post.user.username}</label><label className='hover:cursor-pointer'> · </label><label className='hover:cursor-pointer'>{post.date}</label></span>
                 </div>
                 <div className='flex flex-col justify-center'>
-                    <span style={{ overflowWrap: 'anywhere' }}>{post.content}</span>
+                    <span className='text-sm' style={{ overflowWrap: 'anywhere' }}>{post.content}</span>
                     <div className='flex flex-wrap gap-6 xl:gap-24 mt-5 justify-center'>
                         <div className={`flex items-center gap-1 xl:gap-2 px-3 ${blueHovereableStyle}`}>
                             <FaRegComment className='text-md' />

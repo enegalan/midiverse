@@ -5,7 +5,9 @@ export default function MainLayout({ user = null, children }) {
         <div className="flex">
             <Navbar user={user} />
             <div className="flex flex-col">
-                {children}
+                <main className="border-l flex min-h-[100vh]">
+                    {children}
+                </main>
             </div>
         </div>
     );

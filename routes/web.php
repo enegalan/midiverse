@@ -27,4 +27,8 @@ Route::get('/home', function () {
     return Inertia::render('Index');
 })->name('home');
 
+Route::get('/explore', function () {
+    return Inertia::render('Explore');
+})->name('home');
+
 require __DIR__ . '/auth.php';

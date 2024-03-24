@@ -210,4 +210,12 @@ BackButton.propTypes = {
     href: PropTypes.string,
 };
 
-export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton };
+const FollowButton = ({ userId = null }) => {
+    return (
+        <Link className='bg-black text-white font-bold py-2 px-4 text-sm rounded-full transition hover:bg-[var(--hover-black)]' href={''}>
+            Follow
+        </Link>
+    )
+}
+
+export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton };
