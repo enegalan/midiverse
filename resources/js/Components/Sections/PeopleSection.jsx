@@ -1,5 +1,5 @@
 import { Link } from "@inertiajs/react";
-import PeopleCard from "@/Components/PeopleCard";
+import PeopleCard from "@/Components/Cards/PeopleCard";
 
 export default function PeopleSection({ users = [], viewAll = false }) {
     const maxPeople = 3;
@@ -7,7 +7,7 @@ export default function PeopleSection({ users = [], viewAll = false }) {
     return (
         <>
             {users.map((user) => (
-                <PeopleCard user={user} />
+                <PeopleCard key={user.id} user={user} />
             ))}
             {viewAll ? (
                 <div className="mt-6 pl-4 pb-4">

@@ -15,7 +15,7 @@ export default function Index() {
     return (
         <>
             <MainLayout headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
-                <section className="pb-16 border-r relative">
+                <section className="pb-16 border-r relative max-w-[800px] flex-1">
                     <div className="w-full h-full">
                         <ForYouAndFollowingNavbar getHomeSectionStatus={getHomeSectionStatus} />
                         {/* Concerts sliders */}

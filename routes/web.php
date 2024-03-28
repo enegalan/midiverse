@@ -29,6 +29,10 @@ Route::get('/home', function () {
 
 Route::get('/explore', function () {
     return Inertia::render('Explore');
-})->name('home');
+})->name('explore');
+
+Route::get('/concerts', function () {
+    return Inertia::render('Concerts');
+})->name('concerts');
 
 require __DIR__ . '/auth.php';

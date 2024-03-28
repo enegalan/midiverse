@@ -1,16 +1,12 @@
 import { useState } from 'react';
-import PeopleCard from '@/Components/Cards/PeopleCard';
 
 import MainLayout from '@/Layouts/mainLayout';
 import { SearchInput } from '@/Components/Inputs';
-import PostCard from '@/Components/Cards/PostCard';
 import ConcertCard from '@/Components/Cards/ConcertCard';
-import GroupCard from '@/Components/Cards/GroupCard';
-import PeopleSection from '@/Components/Sections/PeopleSection';
-import ExploreNavbar from '@/Components/Navbars/ExploreNavbar';
+import ConcertsNavbar from '@/Components/Navbars/ConcertsNavbar';
 
-export default function Explore({ users = [], posts = [], concerts = [], groups = [] }) {
-    const [exploreSection, setExploreSection] = useState(localStorage.getItem('explore_default_section') ? localStorage.getItem('explore_default_section') : 'top')
+export default function Concerts({ users = [], concerts = [] }) {
+    const [concertsSection, setConcertsSection] = useState(localStorage.getItem('concerts_default_section') ? localStorage.getItem('concerts_default_section') : 'new')
     users = [
         {
             id: 1,
@@ -54,38 +50,6 @@ export default function Explore({ users = [], posts = [], concerts = [], groups 
         },
     ];
 
-    posts = [
-        {
-            id: 1,
-            user: {
-                name: 'Eneko',
-                lastname: 'Galan',
-                username: 'egalan',
-                avatar: 'https://pbs.twimg.com/profile_images/1727305364549279744/CAUlxYmC_x96.jpg',
-            },
-            date: 'Mar 22',
-            content: 'Test following content of a post. ASDASDASDASDASDASDSADASCXZXCZXCXZCXCZASFGDSKFOASKDASODKASODK',
-            comments: [],
-            likes: [],
-            href: '',
-        },
-        {
-            id: 2,
-            user: {
-                name: 'Eneko',
-                lastname: 'Galan',
-                username: 'egalan',
-                avatar: 'https://pbs.twimg.com/profile_images/1727305364549279744/CAUlxYmC_x96.jpg',
-            },
-            date: 'Mar 22',
-            content: 'Test content of a post. ASDASDASDASDASDASDSADASCXZXCZXCXZCXCZASFGDSKFOASKDASODKASODK',
-            comments: [],
-            likes: [],
-            href: '',
-        },
-        // Additional posts if needed
-    ];
-
     concerts = [
         {
             id: 1,
@@ -120,91 +84,60 @@ export default function Explore({ users = [], posts = [], concerts = [], groups 
                 name: 'Developer2',
                 logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/2048px-LEGO_logo.svg.png',
             },
+        }, {
+            id: 3,
+            thumbnail: 'https://e7.pngegg.com/pngimages/313/180/png-clipart-rock-concert-music-festival-rock-music-others-stage-performance-thumbnail.png',
+            title: 'Concert Three',
+            live: false,
+            planificated_at: '05/01 11:00',
+            user: {
+                name: 'Eneko',
+                lastname: 'Galan',
+                username: 'egalan',
+                avatar: 'https://pbs.twimg.com/profile_images/1727305364549279744/CAUlxYmC_x96.jpg',
+            },
+            group: {
+                name: 'Developer2',
+                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/2048px-LEGO_logo.svg.png',
+            },
         },
     ];
-    groups = [
-        {
-            name: 'Developer1',
-            logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-            description: 'This is a default description for a default group.'
-        },
-        {
-            name: 'Developer2',
-            logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-            description: 'This is a default description for a default group.'
-        },
-        {
-            name: 'Developer3',
-            logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-            description: 'This is a default description for a default group.'
-        },
-        {
-            name: 'Developer4',
-            logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-            description: 'This is a default description for a default group.'
-        },
-    ];
-    const getExploreSection = (section) => {
-        setExploreSection(section);
-    };
+    const getConcertsSection = (section) => {
+        setConcertsSection(section);
+    }
     return (
         <>
             <MainLayout headerClassName='backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50' defaultBackgroundColor='transparent' defaultTextColor='var(--main-blue)' dynamicBackground={false}>
                 <section className='pb-16 border-r relative max-w-[800px] flex-1'>
+                    <div className='px-3 py-3'>
+                        <SearchInput placeholder='Search' />
+                    </div>
+                    <ConcertsNavbar getConcertsSection={getConcertsSection} />
                     <div className='w-full h-full'>
-                        <div className='px-3 py-3'>
-                            <SearchInput placeholder='Search' />
-                        </div>
-                        {/* Explore navbar */}
-                        <ExploreNavbar getExploreSection={getExploreSection} />
-                        {/* Top */}
-                        <section className={`${exploreSection === 'top' ? 'block' : 'hidden'}`} id='top'>
-                            <section className='w-full'>
-                                <h1 className='font-bold text-xl pl-3 py-2'>People</h1>
-                                <PeopleSection users={users} viewAll={true} />
-                            </section>
-                            <section className='w-full'>
-                                {posts.map((post) => (
-                                    <PostCard key={post.id} post={post} />
-                                ))}
-                            </section>
-                            {
-                                // TODO: GroupSection
-                            }
-                            <section className='w-full'>
-
-                            </section>
-                            {
-                                // TODO: ConcertSection
-                            }
-                            <section className='w-full'>
-                                
-                            </section>
-                        </section>
-
-                        <section className={`${exploreSection === 'concerts' ? 'block' : 'hidden'}`} id='concerts'>
+                        {/* New */}
+                        <section className={`${concertsSection === 'new' ? 'block' : 'hidden'}`} id='new'>
                             {concerts.map((concert) => (
                                 <ConcertCard key={concert.id} concert={concert} user={concert.user} />
                             ))}
                         </section>
-
-                        <section className={`${exploreSection === 'people' ? 'block' : 'hidden'}`} id='people'>
-                            {users.map((user) => (
-                                <PeopleCard key={user.id} user={user} />
-                            ))}
+                        {/* Live */}
+                        <section className={`${concertsSection === 'live' ? 'block' : 'hidden'}`} id='live'>
+                            {concerts.map((concert) => { if (concert.live) return (
+                                <ConcertCard key={concert.id} concert={concert} user={concert.user} />
+                            )})}
                         </section>
-
-                        <section className={`${exploreSection === 'groups' ? 'block' : 'hidden'}`} id='groups'>
-                            {groups.map((group) => (
-                                <GroupCard group={group} />
-                            ))}
+                        {/* Upcoming */}
+                        <section className={`${concertsSection === 'upcoming' ? 'block' : 'hidden'}`} id='upcoming'>
+                            {concerts.map((concert) => { if (!concert.live) return (
+                                <ConcertCard key={concert.id} concert={concert} user={concert.user} />
+                            )})}
                         </section>
                     </div>
                 </section>
                 <section className='lg:min-w-[350px] px-6 py-12 '>
                     <div className='w-[260px] hidden lg:block'>
                         <div className='fixed'>
-
+                            <SearchInput placeholder="Search" />
                         </div>
                     </div>
                 </section>

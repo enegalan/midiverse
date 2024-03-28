@@ -55,7 +55,7 @@ return new class extends Migration
             $table->id()->autoIncrement();
             $table->string('name')->nullable(false);
             $table->string('description')->nullable(true);
-            $table->string('avatar')->nullable(true);
+            $table->string('logo')->nullable(true);
             $table->boolean('visibility')->default(0);
             $table->timestamps();
         });

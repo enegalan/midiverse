@@ -210,7 +210,7 @@ BackButton.propTypes = {
     href: PropTypes.string,
 };
 
-const FollowButton = ({ userId = null }) => {
+const FollowButton = ({ id = null, action = null }) => {
     return (
         <Link className='bg-black text-white font-bold py-2 px-4 text-sm rounded-full transition hover:bg-[var(--hover-black)]' href={''}>
             Follow

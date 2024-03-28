@@ -6,7 +6,7 @@ import { FaRegBookmark } from 'react-icons/fa';
 import { IoShare } from 'react-icons/io5';
 import { IoShareOutline } from 'react-icons/io5';
 
-export default function Post({ post = {} }) {
+export default function PostCard({ post = {} }) {
     const blueHovereableStyle = 'relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]';
     const redHovereableStyle = 'relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-red)] hover:text-[var(--red)]';
     return (
@@ -14,7 +14,7 @@ export default function Post({ post = {} }) {
             <div>
                 <img className='w-10 min-w-10 rounded-full' src={post.user.avatar} alt={`${post.user.username} avatar`} />
             </div>
-            <div className='flex flex-col'>
+            <div className='flex flex-col w-full'>
                 <div className='flex gap-1 items-center'>
                     <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] font-bold hover:underline hover:cursor-pointer'>{post.user.name + ' ' + post.user.lastname}</span>
                     <span className='text-sm text-gray-400'><label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + post.user.username}</label><label className='hover:cursor-pointer'> · </label><label className='hover:cursor-pointer'>{post.date}</label></span>

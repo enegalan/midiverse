@@ -88,7 +88,7 @@ const Navbar = ({
         },
         {
             title: 'Concerts',
-            href: '/',
+            href: '/concerts',
             id: 'concerts',
             ref: 'concerts',
             icon: <IoMusicalNotesOutline className={`text-[${iconWidth}]`} />,

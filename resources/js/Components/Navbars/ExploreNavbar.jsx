@@ -22,7 +22,6 @@ export default function ExploreNavbar({ getExploreSection = () => {} }) {
         getExploreSection(sectionRef);
         setDefaultExploreSection(sectionRef);
     };
-    console.log(defaultExploreSection)
     return (
         <>
             <nav className='sticky flex items-center top-0 z-50 w-full backdrop-blur-md border-b border-gray-200/50'>

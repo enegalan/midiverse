@@ -1,4 +1,4 @@
-import Post from '@/Components/Post';
+import Post from '@/Components/Cards/PostCard';
 
 export default function RecentPosts({ posts = []}) {
     posts = [
