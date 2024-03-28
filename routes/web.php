@@ -35,4 +35,8 @@ Route::get('/concerts', function () {
     return Inertia::render('Concerts');
 })->name('concerts');
 
+Route::get('/playground', function () {
+    return Inertia::render('Playground');
+})->name('playground');
+
 require __DIR__ . '/auth.php';

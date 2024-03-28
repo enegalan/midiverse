@@ -223,10 +223,12 @@ const Navbar = ({
                     <div className="xl:pl-[1.35rem] pl-[0.3rem] flex flex-col flex-1 gap-5 items-start">
                         {/* Logo */}
                         <Link
-                            href="/"
+                            onClick={onLinkClick}
+                            href='/home'
+                            data-ref='home'
                             className="text-4xl mb-4 font-bold justify-start flex gap-8 self-start"
                         >
-                            <img className="w-10" src={logoBlack} alt="Logo" />
+                            <img className="w-10 pointer-events-none" src={logoBlack} alt="Logo" />
                         </Link>
                     </div>
                     <div className="flex-1 justify-center flex">
@@ -248,11 +250,13 @@ const Navbar = ({
                                 </li>
                             ))}
                             <Link
-                                href={''}
-                                className="my-3 text-center rounded-full xl:px-16 self-center block xl:p-4 p-4 text-lg bg-[var(--blue)] text-white transition hover:bg-[var(--main-blue)]"
+                                onClick={onLinkClick}
+                                data-ref='playground'
+                                href={route('playground')}
+                                className={`my-3 text-center rounded-full xl:px-16 self-center block xl:p-4 p-4 text-lg border-2 border-[var(--blue)] transition hover:bg-[var(--main-blue)] hover:text-white ${webRef === 'playground' ? 'bg-[var(--blue)] text-white' : 'bg-transparent text-[var(--blue)]'}`}
                             >
                                 <TbPencilPlus className="text-2xl block xl:hidden" />
-                                <span className="hidden xl:block font-bold">Post midi</span>
+                                <span className="hidden xl:block font-bold">Playground</span>
                             </Link>
                         </ul>
                     </div>
