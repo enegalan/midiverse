@@ -249,7 +249,7 @@ const Navbar = ({
                                     </Link>
                                 </li>
                             ))}
-                            <Link
+                            <a
                                 onClick={onLinkClick}
                                 data-ref='playground'
                                 href={route('playground')}
@@ -257,7 +257,7 @@ const Navbar = ({
                             >
                                 <TbPencilPlus className="text-2xl block xl:hidden" />
                                 <span className="hidden xl:block font-bold">Playground</span>
-                            </Link>
+                            </a>
                         </ul>
                     </div>
                     <div className="hidden flex-1 lg:flex justify-end items-center xl:gap-4 gap-2">
