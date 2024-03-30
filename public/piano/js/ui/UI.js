@@ -211,16 +211,16 @@ export class UI {
 	}
 
 	getMainNavbarContent() {
-		let fileGrp = DomHelper.createButtonGroup(true)
-		DomHelper.appendChildren(fileGrp, [
-			this.getLoadSongButton2(),
+		let navbarGrp = DomHelper.createButtonGroup(true)
+		DomHelper.appendChildren(navbarGrp, [
+			this.getMainNavbar(),
 		])
-		return fileGrp
+		return navbarGrp
 	}
 
-	getLoadSongButton2() {
-		if (!this.loadSongButton2) {
-			this.loadSongButton2 = DomHelper.createDiv({
+	getMainNavbar() {
+		if (!this.mainNavbar) {
+			this.mainNavbar = DomHelper.createDiv({
 				"minWidth": "118px",
 				"width": "100%",
 				"height": "100%",
@@ -237,7 +237,7 @@ export class UI {
 			});
 			let logoContainer = DomHelper.createDivWithClass("flex items-center flex-wrap w-full");
 			let logoLink = DomHelper.createElementWithClass("text-4xl font-bold justify-center flex gap-8 w-full self-center","a", "", {'href': '/home', 'data-ref': 'home'});
-			let logoImage = DomHelper.createElementWithClass("w-12 pointer-events-none", "img", "", {'alt' : 'Logo', 'src' : "http://0.0.0.0:5174/public/logoBlack.svg"});
+			let logoImage = DomHelper.createElementWithClass("w-12 pointer-events-none select-none", "img", "", {'alt' : 'Logo', 'src' : "http://0.0.0.0:5174/public/logoBlack.svg"});
 			logoLink.appendChild(logoImage);
 			logoContainer.appendChild(logoLink);
 
@@ -259,10 +259,10 @@ export class UI {
 			];
 
 			navItems.forEach(item => {
-				let li = DomHelper.createElement("li", {}, { "className": "xl:px-1 transition rounded-full self-center hover:bg-gray-300 w-full" });
-				let link = DomHelper.createElement("a",{}, {'href' : item.href, 'className': "p-3 xl:p-3 text-lg flex items-center xl:items-center gap-3"});
+				let li = DomHelper.createElement("li", {}, { className: "xl:px-1 transition rounded-full self-center hover:bg-gray-300 w-full select-none" });
+				let link = DomHelper.createElement("a",{}, {href : item.href, className: "p-3 xl:p-3 text-lg flex items-center xl:items-center gap-3"});
 				let iconSpan = DomHelper.getGlyphicon(item.icon);
-				let textSpan = DomHelper.createElement("span", {"className" : "hidden xl:block"} );
+				let textSpan = DomHelper.createElement("span", {}, {className : "hidden xl:block"} );
 				textSpan.innerText = item.text;
 				link.appendChild(iconSpan);
 				link.appendChild(textSpan);
@@ -273,10 +273,10 @@ export class UI {
 			
 			navItemsContainer.appendChild(ul);
 
-			this.loadSongButton2.appendChild(logoContainer);
-			this.loadSongButton2.appendChild(navItemsContainer);
+			this.mainNavbar.appendChild(logoContainer);
+			this.mainNavbar.appendChild(navItemsContainer);
 		}
-		return this.loadSongButton2
+		return this.mainNavbar
 	}
 
 	getNavBar() {
