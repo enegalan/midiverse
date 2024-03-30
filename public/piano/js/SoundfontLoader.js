@@ -7,7 +7,7 @@ export class SoundfontLoader {
 	 * @param {String} instrument
 	 */
 	static async loadInstrument(instrument, soundfontName) {
-		let baseUrl = "https://gleitz.github.io/midi-js-soundfonts/"
+		let baseUrl = "https://raw.githubusercontent.com/Bewelge/midi-js-soundfonts/gh-pages/"
 		if (instrument == "percussion") {
 			soundfontName = "FluidR3_GM"
 			baseUrl = ""
