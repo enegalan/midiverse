@@ -1,25 +1,67 @@
-import { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import MainLayout from '@/Layouts/mainLayout';
-import { SearchInput } from '@/Components/Inputs';
-import ConcertCard from '@/Components/Cards/ConcertCard';
-import ConcertsNavbar from '@/Components/Navbars/ConcertsNavbar';
 
 export default function Playground() {
+    useEffect(() => {
+        // Dynamically add CSS files to the document head
+        const addCssFile = (href) => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = href;
+            document.head.appendChild(link);
+        };
+
+        // Dynamically add JavaScript files to the document head
+        const addJsFile = (src, type = '') => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            script.type = type;
+            document.head.appendChild(script);
+        };
+
+        // Add CSS files
+        addCssFile('/piano/css/bootstrap.min.css');
+        addCssFile('/piano/css/Interface.css');
+        addCssFile('/piano/css/Inputs.css');
+        addCssFile('/piano/css/Settings.css');
+        addCssFile('/piano/css/nano.min.css');
+        addCssFile('/piano/css/bootstrap-theme.min.css');
+
+        // Add JavaScript files
+        addJsFile('/piano/lib/Pickr/pickr.es5.min.js');
+        addJsFile('/piano/lib/Base64.js');
+        addJsFile('/piano/lib/Base64binary.js');
+        addJsFile('/piano/js/main.js', 'module');
+        addJsFile('/piano/lib/Count.js');
+
+        // Clean up function to remove dynamically added elements
+        return () => {
+            document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+                if (link.href.includes('/piano/css/') || link.href.includes('/piano/css/')) {
+                    link.remove();
+                }
+            });
+            document.querySelectorAll('script').forEach(script => {
+                if (script.src.includes('/piano/')) {
+                    script.remove();
+                }
+            });
+        };
+    }, []); // Empty dependency array to run the effect only once
+
     return (
-        <>
-            <MainLayout headerClassName='backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50' defaultBackgroundColor='transparent' defaultTextColor='var(--main-blue)' dynamicBackground={false}>
-                <section className='pb-16 border-r relative max-w-[800px] flex-1'>
-                    
+        <main className='w-full h-screen flex flex-col'>
+            <nav>
+                // TODO: PlaygroundPrimaryNavbar
+            </nav>
+            <section className='pb-16 relative flex-1'>
+                <section id='piano-viewer'>
+                    <div id='midiverse-piano'></div>
+                    <div style={{ height: 'inherit', pointerEvents: 'none' }} id='midiverse-piano-menus'></div>
                 </section>
-                <section className='lg:min-w-[350px] px-6 py-12 '>
-                    <div className='w-[260px] hidden lg:block'>
-                        <div className='fixed'>
-                            <SearchInput placeholder="Search" />
-                        </div>
-                    </div>
-                </section>
-            </MainLayout>
-        </>
+            </section>
+        </main>
     );
 }

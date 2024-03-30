@@ -1,0 +1,1880 @@
+[
+	{
+		"artist": "Isaac Albéniz",
+		"piece": "Opus 165 'España'",
+		"pieces": [
+			{
+				"fileName": "alb_esp1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Prélude Andantino",
+				"difficulty": 9
+			},
+			{
+				"fileName": "alb_esp2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Tango Andantino",
+				"difficulty": 7
+			},
+			{
+				"fileName": "alb_esp3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Malagueña Allegretto",
+				"difficulty": 8
+			},
+			{
+				"fileName": "alb_esp4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Serenata Allegretto",
+				"difficulty": 9
+			},
+			{
+				"fileName": "alb_esp5.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Capricho Catalan Allegretto",
+				"difficulty": 9
+			},
+			{
+				"fileName": "alb_esp6.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Zortzico",
+				"difficulty": 9
+			}
+		]
+	},
+
+	{
+		"artist": "Isaac Albéniz",
+		"piece": "Suite española",
+		"pieces": [
+			{
+				"fileName": "alb_se1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Granada Allegretto",
+				"difficulty": 4
+			},
+			{
+				"fileName": "alb_se2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Cataluña (Curranda) Allegro",
+				"difficulty": 5
+			},
+			{
+				"fileName": "alb_se3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Sevilla Allegretto",
+				"difficulty": 6
+			},
+			{
+				"fileName": "alb_se4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Cádiz (Saeta) Allegretto, ma non troppo",
+				"difficulty": 5
+			},
+			{
+				"fileName": "alb_se5.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Asturias (Leyenda) Allegro",
+				"difficulty": 6
+			},
+			{
+				"fileName": "alb_se6.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Aragon (Fantasia) Allegro",
+				"difficulty": 7
+			},
+			{
+				"fileName": "alb_se7.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Castilla (Seguidillas) Allegro",
+				"difficulty": 7
+			},
+			{
+				"fileName": "alb_se8.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"name": "Cuba (Notturno)",
+				"difficulty": 6
+			}
+		]
+	},
+
+	{
+		"artist": "Wolfang A. Mozart",
+		"piece": "Sonata No. 8 (KV 311)",
+		"pieces": [
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "1st Mvmt.",
+				"fileName": "mz_311_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 3
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "2nd Mvmt.",
+				"fileName": "mz_311_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 2.5
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "3rd Mvmt.",
+				"fileName": "mz_311_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 3
+			}
+		]
+	},
+
+	{
+		"artist": "Wolfang A. Mozart",
+		"piece": "Sonata No. 10 (KV 330)",
+		"pieces": [
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "1st Mvmt.",
+				"fileName": "mz_330_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "2nd Mvmt.",
+				"fileName": "mz_330_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "3rd Mvmt.",
+				"fileName": "mz_330_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	},
+
+	{
+		"artist": "Wolfang A. Mozart",
+		"piece": "Sonata No. 11 (KV 331) 'Alla Turca'",
+		"pieces": [
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "1st Mvmt. 'Alla Turca'",
+				"fileName": "mz_331_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "2nd Mvmt.",
+				"fileName": "mz_331_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "3rd Mvmt. (Turkish march)",
+				"fileName": "mz_331_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			}
+		]
+	},
+
+	{
+		"artist": "Wolfang A. Mozart",
+		"piece": "Sonata No. 12 (KV 332)",
+		"pieces": [
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "1st Mvmt.",
+				"fileName": "mz_332_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "2nd Mvmt.",
+				"fileName": "mz_332_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "3rd Mvmt.",
+				"fileName": "mz_332_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	},
+
+	{
+		"artist": "Wolfang A. Mozart",
+		"piece": "Sonata No. 13 (KV 333)",
+		"pieces": [
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "1st Mvmt.",
+				"fileName": "mz_333_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "2nd Mvmt.",
+				"fileName": "mz_333_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "3rd Mvmt.",
+				"fileName": "mz_333_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			}
+		]
+	},
+
+	{
+		"artist": "Wolfang A. Mozart",
+		"piece": "Sonata No. 16 (KV 545) 'Sonata facile'",
+		"pieces": [
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "1st Mvmt.",
+				"fileName": "mz_545_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "2nd Mvmt.",
+				"fileName": "mz_545_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "3rd Mvmt.",
+				"fileName": "mz_545_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			}
+		]
+	},
+
+	{
+		"artist": "Wolfang A. Mozart",
+		"piece": "Sonata No. 17 (KV 570)",
+		"pieces": [
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "1st Mvmt.",
+				"fileName": "mz_570_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "2nd Mvmt.",
+				"fileName": "mz_570_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"artist": "Wolfang A. Mozart",
+				"name": "3rd Mvmt.",
+				"fileName": "mz_570_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	},
+
+	{
+		"artist": "Franz Liszt",
+		"name": "Reminiscences de Don Juan",
+		"fileName": "liz_donjuan.mid",
+		"copyright": "Bernd Krueger - piano-midi.de",
+		"difficulty": 10
+	},
+	{
+		"artist": "Franz Liszt",
+		"name": "Love dreams No. 3",
+		"fileName": "liz_liebestraum.mid",
+		"copyright": "Bernd Krueger - piano-midi.de",
+		"difficulty": 10
+	},
+
+	{
+		"artist": "Franz Liszt",
+		"piece": "Grandes Etudes de Paganini",
+		"pieces": [
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 1",
+				"fileName": "liz_et1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 2",
+				"fileName": "liz_et2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 3, 'La Campanella'",
+				"fileName": "liz_et3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 10
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 4",
+				"fileName": "liz_et4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8.5
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 5",
+				"fileName": "liz_et5.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 6",
+				"fileName": "liz_et6.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 10
+			}
+		]
+	},
+
+	{
+		"artist": "Franz Liszt",
+		"piece": "Études d'exécution transcendante",
+		"pieces": [
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 4, 'Mazeppa'",
+				"fileName": "liz_et_trans4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 5, 'Feux Follets'",
+				"fileName": "liz_et_trans5.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 8, 'Wild Hunt'",
+				"fileName": "liz_et_trans8.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Franz Liszt",
+		"piece": "Hungarian Rhapsodies",
+		"pieces": [
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 2",
+				"fileName": "liz_rhap02.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 9, 'Carnival in Pest'",
+				"fileName": "liz_rhap09.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 10",
+				"fileName": "liz_rhap10.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 12",
+				"fileName": "liz_rhap12.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Franz Liszt",
+				"name": "No. 15, 'Rákóczy March'",
+				"fileName": "liz_rhap15.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+
+	{
+		"artist": "Johann S. Bach",
+		"piece": "Prelude and Fugue",
+		"pieces": [
+			{
+				"artist": "Johann S. Bach",
+				"name": "BWV 846",
+				"fileName": "bach_846.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"artist": "Johann S. Bach",
+				"name": "BWV 847",
+				"fileName": "bach_847.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"artist": "Johann S. Bach",
+				"name": "BWV 850",
+				"fileName": "bach_850.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			}
+		]
+	},
+
+	{
+		"artist": "Ludwig v. Beethoven",
+		"piece": "Sonata No. 5",
+		"pieces": [
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "1st Mvmt.",
+				"fileName": "beethoven_opus10_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "2nd Mvmt.",
+				"fileName": "beethoven_opus10_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "3rd Mvmt.",
+				"fileName": "beethoven_opus10_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	},
+
+	{
+		"artist": "Ludwig v. Beethoven",
+		"piece": "Sonata No. 8 'Pathetique'",
+		"pieces": [
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "1st Mvmt.",
+				"fileName": "pathetique_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "2nd Mvmt.",
+				"fileName": "pathetique_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "3rd Mvmt.",
+				"fileName": "pathetique_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+
+	{
+		"artist": "Ludwig v. Beethoven",
+		"piece": "Sonata No. 11",
+		"pieces": [
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "1st Mvmt.",
+				"fileName": "beethoven_opus22_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "2nd Mvmt.",
+				"fileName": "beethoven_opus22_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "3rd Mvmt.",
+				"fileName": "beethoven_opus22_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "4th Mvmt.",
+				"fileName": "beethoven_opus22_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	},
+
+	{
+		"artist": "Ludwig v. Beethoven",
+		"piece": "Sonata No. 14 'Moonlight'",
+		"pieces": [
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "1st Mvmt.",
+				"fileName": "mond_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "2nd Mvmt.",
+				"fileName": "mond_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "3rd Mvmt.",
+				"fileName": "mond_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+
+	{
+		"artist": "Ludwig v. Beethoven",
+		"piece": "Sonata No. 21 'Waldstein'",
+		"pieces": [
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "1st Mvmt.",
+				"fileName": "waldstein_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "2nd Mvmt.",
+				"fileName": "waldstein_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "3rd Mvmt.",
+				"fileName": "waldstein_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+
+	{
+		"artist": "Ludwig v. Beethoven",
+		"piece": "Sonata No. 23 'Appassionata'",
+		"pieces": [
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "1st Mvmt.",
+				"fileName": "appass_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "2nd Mvmt.",
+				"fileName": "appass_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "3rd Mvmt.",
+				"fileName": "appass_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+
+	{
+		"artist": "Ludwig v. Beethoven",
+		"piece": "Sonata No. 26 'Les Adieux'",
+		"pieces": [
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "1st Mvmt.",
+				"fileName": "beethoven_les_adieux_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "2nd Mvmt.",
+				"fileName": "beethoven_les_adieux_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "3rd Mvmt.",
+				"fileName": "beethoven_les_adieux_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+
+	{
+		"artist": "Ludwig v. Beethoven",
+		"piece": "Für Elise",
+		"pieces": [
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "Für Elise",
+				"fileName": "elise.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			}
+		]
+	},
+
+	{
+		"artist": "Ludwig v. Beethoven",
+		"piece": "Sonata No. 27",
+		"pieces": [
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "1st Mvmt.",
+				"fileName": "beethoven_opus90_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "2nd Mvmt.",
+				"fileName": "beethoven_opus90_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	},
+
+	{
+		"artist": "Ludwig v. Beethoven",
+		"piece": "Sonata No. 29, 'Hammerklavier'",
+		"pieces": [
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "1st Mvmt.",
+				"fileName": "beethoven_hammerklavier_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "2nd Mvmt.",
+				"fileName": "beethoven_hammerklavier_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "3rd Mvmt.",
+				"fileName": "beethoven_hammerklavier_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"artist": "Ludwig v. Beethoven",
+				"name": "4th Mvmt.",
+				"fileName": "beethoven_hammerklavier_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Pjotr I. Tschaikowski",
+		"piece": "The Seasons",
+		"pieces": [
+			{
+				"name": "January - At the Fireside",
+				"fileName": "ty_januar.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "February - Carnival",
+				"fileName": "ty_februar.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "March - Song of the Lark",
+				"fileName": "ty_maerz.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "April - Snowdrop",
+				"fileName": "ty_april.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "May - Starlight Nights",
+				"fileName": "ty_mai.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "June - Barcarolle",
+				"fileName": "ty_juni.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "July - Song of the Reaper",
+				"fileName": "ty_juli.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"name": "August - Harvest",
+				"fileName": "ty_august.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "September - The Hunt",
+				"fileName": "ty_september.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "October - Autumn Song",
+				"fileName": "ty_oktober.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"name": "November - Troika Ride",
+				"fileName": "ty_november.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "December - Christmas",
+				"fileName": "ty_dezember.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			}
+		]
+	},
+
+	{
+		"artist": "Joseph Haydn",
+		"piece": "Piano Sonata in C major, Hoboken XVI:7",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "haydn_7_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "haydn_7_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "haydn_7_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			}
+		]
+	},
+	{
+		"artist": "Joseph Haydn",
+		"piece": "Piano Sonata in G major, Hoboken XVI:8",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "haydn_8_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 3
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "haydn_8_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 3
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "haydn_8_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 3
+			},
+			{
+				"name": "4. Movement",
+				"fileName": "haydn_8_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 3
+			}
+		]
+	},
+	{
+		"artist": "Joseph Haydn",
+		"piece": "Piano Sonata in F major, Hoboken XVI:9",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "haydn_9_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "haydn_9_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "haydn_9_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			}
+		]
+	},
+	{
+		"artist": "Joseph Haydn",
+		"piece": "Piano Sonata in D major, Hoboken XVI:33",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "haydn_33_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "haydn_33_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "haydn_33_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			}
+		]
+	},
+	{
+		"artist": "Joseph Haydn",
+		"piece": "Piano Sonata in C major, Hoboken XVI:35",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "haydn_35_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "haydn_35_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "haydn_35_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			}
+		]
+	},
+	{
+		"artist": "Joseph Haydn",
+		"piece": "Piano Sonata in G major, Hoboken XVI:40",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "hay_40_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "hay_40_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	},
+	{
+		"artist": "Joseph Haydn",
+		"piece": "Piano Sonata in Ab major, Hoboken XVI:43",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "haydn_43_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "haydn_43_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "haydn_43_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	},
+
+	{
+		"artist": "Robert Schumann",
+		"piece": "Abegg Variations, Opus 1",
+		"pieces": [
+			{
+				"name": "Thema, Var.I, Var.II, Var.III, Finale alla Fantasia",
+				"fileName": "schum_abegg.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Robert Schumann",
+		"piece": "Scenes from Childhood, Opus 15",
+		"pieces": [
+			{
+				"name": "A Tale of Distant Lands",
+				"fileName": "scn15_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "Curious Story",
+				"fileName": "scn15_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "Blindman's Buff",
+				"fileName": "scn15_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "Pleading Child",
+				"fileName": "scn15_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "Perfect Happiness",
+				"fileName": "scn15_5.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "Great Adventure",
+				"fileName": "scn15_6.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "Reverie",
+				"fileName": "scn15_7.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "By the Fire-side",
+				"fileName": "scn15_8.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "On the Rocking Horse",
+				"fileName": "scn15_9.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "Almost Too Serious",
+				"fileName": "scn15_10.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "Hobgoblin",
+				"fileName": "scn15_11.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "In Slumberland",
+				"fileName": "scn15_12.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "The Poet speaks",
+				"fileName": "scn15_13.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Robert Schumann",
+		"piece": "Kreisleriana, Opus 16",
+		"pieces": [
+			{
+				"name": "No.1",
+				"fileName": "scn16_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No.2",
+				"fileName": "scn16_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No.3",
+				"fileName": "scn16_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No.4",
+				"fileName": "scn16_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No.5",
+				"fileName": "scn16_5.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No.6",
+				"fileName": "scn16_6.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No.7",
+				"fileName": "scn16_7.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No.8",
+				"fileName": "scn16_8.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Robert Schumann",
+		"piece": "Album for the young, Opus 68",
+		"pieces": [
+			{
+				"name": "The happy Farmer",
+				"fileName": "scn68_10.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 3
+			},
+
+			{
+				"name": "Knecht Ruprecht",
+				"fileName": "scn68_12.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			}
+		]
+	},
+	{
+		"artist": "Claude Debussy",
+		"piece": "Suite bergamasque",
+		"pieces": [
+			{
+				"name": "Prélude",
+				"fileName": "deb_prel.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "Menuet",
+				"fileName": "deb_menu.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "Clair de Lune",
+				"fileName": "deb_clai.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "Passepied",
+				"fileName": "deb_pass.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			}
+		]
+	},
+	{
+		"artist": "Claude Debussy",
+		"piece": "Children's Corner",
+		"pieces": [
+			{
+				"name": "I. Doctor Gradus ad Parnassum",
+				"fileName": "debussy_cc_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "Jimbo's Lullaby",
+				"fileName": "debussy_cc_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "Serenade of the Doll",
+				"fileName": "debussy_cc_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "The snow is dancing",
+				"fileName": "debussy_cc_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "The little Shepherd",
+				"fileName": "debussy_cc_5.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "Golli's cake walk",
+				"fileName": "debussy_cc_6.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			}
+		]
+	},
+	{
+		"artist": "Franz Schubert",
+		"piece": "Piano Sonata in D major, D 850, Opus 53",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "schubert_D850_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "schubert_D850_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "schubert_D850_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "4. Movement",
+				"fileName": "schubert_D850_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Franz Schubert",
+		"piece": "Fantasia C major (Wanderer), D 760, Opus 15",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "schub_d760_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "schub_d760_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "schub_d760_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "4. Movement",
+				"fileName": "schub_d760_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Franz Schubert",
+		"piece": "6 Moments musicaux, D 780, Opus 94",
+		"pieces": [
+			{
+				"name": "No. 1",
+				"fileName": "schumm-1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"name": "No. 2",
+				"fileName": "schumm-2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			},
+			{
+				"name": "No. 3",
+				"fileName": "schumm-3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			},
+			{
+				"name": "No. 4",
+				"fileName": "schumm-4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			},
+			{
+				"name": "No. 5",
+				"fileName": "schumm-5.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"name": "No. 6",
+				"fileName": "schumm-6.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			}
+		]
+	},
+	{
+		"artist": "Franz Schubert",
+		"piece": "Piano Sonata in A minor, D 784, Opus 143",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "schu_143_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "schu_143_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "schu_143_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Franz Schubert",
+		"piece": "4 Impromptus, D 899, Opus 90",
+		"pieces": [
+			{
+				"name": "No. 1",
+				"fileName": "schuim-1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 2",
+				"fileName": "schuim-2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "No. 3",
+				"fileName": "schuim-3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 4",
+				"fileName": "schuim-4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			}
+		]
+	},
+	{
+		"artist": "Franz Schubert",
+		"piece": "4 Impromptus, D 935, Opus posth. 142",
+		"pieces": [
+			{
+				"name": "No. 1",
+				"fileName": "schubert_D935_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 2",
+				"fileName": "schubert_D935_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "No. 3",
+				"fileName": "schubert_D935_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 4",
+				"fileName": "schubert_D935_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Franz Schubert",
+		"piece": "Piano Sonata in Bb major, D 960",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "schub_d960_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "schub_d960_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "schub_d960_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "4. Movement",
+				"fileName": "schub_d960_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "5 Mazurkas, Opus 7",
+		"pieces": [
+			{
+				"name": "No. 1",
+				"fileName": "chpn_op7_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"name": "No. 2",
+				"fileName": "chpn_op7_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "Etudes, Opus 10",
+		"pieces": [
+			{
+				"name": "No. 1",
+				"fileName": "chpn_op10_e01.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 5 - Black Key",
+				"fileName": "chpn_op10_e05.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 12 - Revolutionary",
+				"fileName": "chpn_op10_e12.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "Grande Valse Brillante, Opus 18",
+		"pieces": [
+			{
+				"name": "Grande Valse Brillante",
+				"fileName": "chp_op18.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "Ballade G minor, Opus 23",
+		"pieces": [
+			{
+				"name": "Ballade",
+				"fileName": "chpn_op23.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "Etudes, Opus 25",
+		"pieces": [
+			{
+				"name": "No. 1 - Harp etude",
+				"fileName": "chpn_op25_e1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 2",
+				"fileName": "chpn_op25_e2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 3",
+				"fileName": "chpn_op25_e3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 4",
+				"fileName": "chpn_op25_e4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 11 - Winter Wind",
+				"fileName": "chpn_op25_e11.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 12",
+				"fileName": "chpn_op25_e12.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "2 Nocturnes, Opus 27",
+		"pieces": [
+			{
+				"name": "No. 1",
+				"fileName": "chpn_op27_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 2",
+				"fileName": "chpn_op27_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "Préludes, Opus 28",
+		"pieces": [
+			{
+				"name": "No. 1",
+				"fileName": "chpn-p1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 2",
+				"fileName": "chpn-p2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "No. 3",
+				"fileName": "chpn-p3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 4",
+				"fileName": "chpn-p4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			},
+			{
+				"name": "No. 5",
+				"fileName": "chpn-p5.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 6",
+				"fileName": "chpn-p6.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"name": "No. 7",
+				"fileName": "chpn-p7.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 4
+			},
+			{
+				"name": "No. 8",
+				"fileName": "chpn-p8.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 9",
+				"fileName": "chpn-p9.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"name": "No. 10",
+				"fileName": "chpn-p10.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 11",
+				"fileName": "chpn-p11.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 12",
+				"fileName": "chpn-p12.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 13",
+				"fileName": "chpn-p13.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 14",
+				"fileName": "chpn-p14.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 15 - Raindrop",
+				"fileName": "chpn-p15.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "No. 16",
+				"fileName": "chpn-p16.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 17",
+				"fileName": "chpn-p17.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 18",
+				"fileName": "chpn-p18.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 19",
+				"fileName": "chpn-p19.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 20",
+				"fileName": "chpn-p20.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"name": "No. 21",
+				"fileName": "chpn-p21.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 22",
+				"fileName": "chpn-p22.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 23",
+				"fileName": "chpn-p23.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "No. 24",
+				"fileName": "chpn-p24.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "Scherzo Bb minor, Opus 31",
+		"pieces": [
+			{
+				"name": "Scherzo",
+				"fileName": "chp_op31.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "4 Mazurkas, Opus 33",
+		"pieces": [
+			{
+				"name": "No. 2",
+				"fileName": "chpn_op33_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			},
+			{
+				"name": "No. 4",
+				"fileName": "chpn_op33_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "Piano sonata No. 2 Bb minor, Opus 35",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "chpn_op35_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "chpn_op35_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "chpn_op35_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "4. Movement",
+				"fileName": "chpn_op35_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "Polonaise Ab major, Opus 53",
+		"pieces": [
+			{
+				"name": "Polonaise",
+				"fileName": "chpn_op53.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Frédéric Chopin",
+		"piece": "Fantaisie-Impromptu, Opus 66",
+		"pieces": [
+			{
+				"name": "Fantaisie-Impromptu",
+				"fileName": "chpn_op66.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Johannes Brahms",
+		"piece": "Sonata C major, Opus 1",
+		"pieces": [
+			{
+				"name": "1. Movement",
+				"fileName": "brahms_opus1_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "2. Movement",
+				"fileName": "brahms_opus1_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "3. Movement",
+				"fileName": "brahms_opus1_3.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			},
+			{
+				"name": "4. Movement",
+				"fileName": "brahms_opus1_4.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 9
+			}
+		]
+	},
+	{
+		"artist": "Johannes Brahms",
+		"piece": "7 Fantasia, Opus 116",
+		"pieces": [
+			{
+				"name": "No. 2 - Intermezzo",
+				"fileName": "br_im2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 7
+			},
+			{
+				"name": "No. 5 - Intermezzo",
+				"fileName": "br_im5.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			},
+			{
+				"name": "No. 6 - Intermezzo",
+				"fileName": "br_im6.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			}
+		]
+	},
+	{
+		"artist": "Johannes Brahms",
+		"piece": "3 Intermezzi, Opus 117",
+		"pieces": [
+			{
+				"name": "No. 1",
+				"fileName": "brahms_opus117_1.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 5
+			},
+			{
+				"name": "No. 2",
+				"fileName": "brahms_opus117_2.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 6
+			}
+		]
+	},
+	{
+		"artist": "Johannes Brahms",
+		"piece": "4 Piano pieces, Opus 119",
+		"pieces": [
+			{
+				"name": "Rhapsodie",
+				"fileName": "br_rhap.mid",
+				"copyright": "Bernd Krueger - piano-midi.de",
+				"difficulty": 8
+			}
+		]
+	}
+]

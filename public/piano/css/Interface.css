@@ -1,0 +1,422 @@
+:root {
+	/* Old Color Scheme
+	--bgColor: rgba(205, 205, 205, 1);
+	--innerMenuBgColor: rgba(225, 225, 225, 1);
+	--sliderBgColor: rgba(245, 245, 245, 1);
+	--fontColor: rgba(25, 25, 25, 1);
+	--buttonFontColor: #424242;
+	--buttonBgColor: #9e9e9e;
+	--buttonActiveBgColor: #d3d3d3;
+	--buttonHoverBgColor: #c9c9c9;
+	--borderColor: rgba(0, 0, 0, 0.5); */
+
+	--bgColor: #424242;
+	--innerMenuBgColor: #424242;
+	--lightInnerMenuHoverBgColor: #4e4e4e;
+
+	--inputBgColor: #757575;
+	--inputFontColor: #eeeeee;
+
+	--fontColor: #bdbdbd;
+	--fontWeightedColor: #d3d3d3;
+	--fontWeakenedColor: #8a8a8a;
+
+	--buttonFontColor: #bdbdbd;
+	--buttonBgColor: #494949;
+	--buttonActiveBgColor: #757575;
+	--buttonHoverBgColor: #494949;
+	--buttonHoverFontColor: #dfdfdf;
+
+	--borderColor: #616161;
+}
+
+#piano-viewer  {
+	width: 100%;
+	height: 100%;
+	min-height: 100%;
+	overflow-y: hidden;
+	overflow-x: auto;
+}
+.pcr-app:not(.visible) {
+	display: none;
+}
+#piano-viewer .navbar {
+	box-sizing: border-box;
+	transition: all 0.4s ease-out;
+	max-height: 150px;
+	background-color: var(--bgColor);
+	padding: 0.5em;
+}
+#piano-viewer #minimizeMenu {
+	position: absolute;
+	right: 5px;
+	transition: all 0.4s ease-out;
+	cursor: pointer;
+}
+#piano-viewer .zoomGroup {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+}
+#piano-viewer .zoomGroup:hover,
+#piano-viewer .pianoCanvas:hover ~ .zoomGroup {
+	z-index: 1055;
+}
+#piano-viewer canvas {
+	width: 100%;
+	z-index: -5;
+}
+#piano-viewer #progressBarCanvas {
+	transition: all 0.4s ease-out;
+	background-color: var(--inputBgColor);
+	box-sizing: border-box;
+	left: 0px;
+	position: absolute;
+	border-bottom: 4px solid var(--borderColor);
+	float: left;
+	cursor: pointer;
+	z-index: 10;
+}
+
+#piano-viewer .forcedThinButton {
+	width: 60px !important;
+}
+#piano-viewer .innerMenuDivsContainer {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0);
+	pointer-events: none;
+	overflow: none;
+}
+#piano-viewer .innerMenuDiv {
+	margin-top: 24px;
+	position: absolute;
+	box-sizing: border-box;
+	pointer-events: all;
+	z-index: 100;
+
+	width: 30%;
+	height: 100%;
+	min-width: 300px;
+	right: 0px;
+	padding: 5px;
+
+	background-color: var(--bgColor);
+	box-shadow: -3px 3px 10px 1px rgb(0 0 0, 0.5);
+
+	overflow-y: auto;
+	overflow-x: hidden;
+
+	transition: all 0.25s ease-out;
+}
+
+#piano-viewer .innerMenuContDiv:first-of-type {
+	border-top: none;
+}
+#piano-viewer .innerMenuContDiv {
+	background-color: var(--innerMenuBgColor);
+	background-image: var(--navBackground);
+	color: var(--buttonFontColor);
+	border-top: 1px solid var(--borderColor);
+	border-radius: 2px;
+	/* padding: 5px;
+	margin: 5px; */
+	box-sizing: border-box;
+	overflow: hidden;
+
+	transition: 0.3s all ease-out;
+}
+#piano-viewer .innerMenuContDiv.collapsed {
+	max-height: 2em;
+}
+#piano-viewer .clickableTitle:not(.glyphicon) {
+	position: relative;
+	padding-left: 5px;
+	height: 2em;
+	box-sizing: border-box;
+}
+#piano-viewer .clickableTitle:hover {
+	background-color: var(--lightInnerMenuHoverBgColor);
+}
+#piano-viewer .collapserGlyphSpan {
+	font-size: 1em;
+	position: absolute !important;
+	top: 0.5em !important;
+	height: 14px;
+	right: 8px;
+}
+#piano-viewer .centeredMenuDiv {
+	background-color: var(--bgColor);
+	max-height: calc(50% - 50px);
+	top: 24px;
+	padding: 2em;
+	position: absolute;
+	width: 50%;
+	left: 25%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border-radius: 5px;
+	transition: all 0.3s ease-out;
+}
+.notification {
+	background-color: var(--bgColor);
+	max-height: calc(50% - 50px);
+	top: 30%;
+	padding: 30px;
+	position: absolute;
+	width: 50%;
+	left: 25%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border-radius: 5px;
+}
+.highlighted {
+	animation: pulse 1.5s infinite;
+	box-shadow: 0em 0em 5px 5px rgba(0, 0, 0, 0.8);
+}
+
+@-webkit-keyframes pulse {
+	0% {
+		-webkit-box-shadow: 0 0 0 0 rgba(10, 141, 228, 0.4);
+	}
+	50% {
+		-webkit-box-shadow: 0 0 0 10px rgba(10, 141, 228, 0.4);
+	}
+	100% {
+		-webkit-box-shadow: 0 0 0 0 rgba(10, 141, 228, 0.4);
+	}
+}
+@keyframes pulse {
+	0% {
+		-moz-box-shadow: 0 0 0 0 rgba(10, 141, 228, 0.4);
+		box-shadow: 0 0 0 0 rgba(10, 141, 228, 0.4);
+	}
+	50% {
+		-moz-box-shadow: 0 0 0 10px rgba(10, 141, 228, 0.4);
+		box-shadow: 0 0 0 10px rgba(10, 141, 228, 0.4);
+	}
+	100% {
+		-moz-box-shadow: 0 0 0 0 rgba(10, 141, 228, 0.4);
+		box-shadow: 0 0 0 0 rgba(10, 141, 228, 0.4);
+	}
+}
+
+#piano-viewer .centeredBigText {
+	width: 100%;
+	text-align: center;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+#piano-viewer .trackName {
+	width: 100%;
+	padding-top: 0.1em;
+	font-size: 0.8em;
+}
+#piano-viewer .instrumentName {
+	width: 100%;
+	text-align: left;
+	font-size: 0.7em;
+	padding-left: 0.2em;
+}
+#piano-viewer .divider {
+	border: 0;
+	border: 1px solid var(--buttonColor);
+}
+
+#piano-viewer .floatSpanLeft span {
+	float: left;
+	margin-right: 2px;
+}
+#piano-viewer .container {
+	width: 100% !important;
+	display: flex;
+}
+#piano-viewer .halfContainer {
+	width: 50% !important;
+	float: left;
+}
+
+#piano-viewer .btn-group {
+	align-self: auto;
+}
+#piano-viewer .btn-group-vertical {
+	display: flex;
+	flex-direction: column;
+}
+#piano-viewer .btn {
+	position: relative;
+	box-sizing: border-box;
+
+	padding: 0.5em;
+
+	text-align: center;
+	font-size: 1em;
+	font-weight: normal !important;
+
+	color: var(--buttonFontColor);
+	background-color: var(--buttonBgColor);
+
+	outline: none;
+	border-radius: 1px;
+	border: 1px solid rgba(0, 0, 0, 0);
+
+	transition: all 0.15s ease-out;
+
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none;
+}
+#piano-viewer .btn:hover:active {
+	background-color: var(--buttonActiveBgColor);
+}
+#piano-viewer .btn:hover {
+	background-color: var(--buttonHoverBgColor);
+	color: var(--buttonHoverFontColor);
+	border: 1px solid var(--borderColor);
+}
+#piano-viewer .btn-select-line {
+	border-bottom: 4px solid #607d8b;
+	transition: all 0.15s ease-out;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 0%;
+	opacity: 0;
+}
+#piano-viewer .btn.selected {
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+#piano-viewer .btn.selected .btn-select-line {
+	opacity: 1;
+	width: 100%;
+}
+#piano-viewer .btn-lg {
+	font-size: 1.5em;
+	margin-left: 0.2em;
+	margin-right: 0.2em;
+}
+#piano-viewer .btn span {
+	font-size: 1em;
+}
+#piano-viewer .pcr-button {
+	opacity: 0;
+	position: absolute;
+}
+
+#piano-viewer .topContainer {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#piano-viewer .topContainer:first-child {
+	margin-right: auto;
+	justify-content: space-between !important;
+	align-items: unset;
+}
+
+#piano-viewer .topContainer:last-child {
+	margin-left: auto;
+	justify-content: space-between !important;
+	align-items: unset;
+}
+
+#piano-viewer .vertical-align {
+	display: flex;
+	align-items: center;
+}
+#piano-viewer .hidden {
+	visibility: hidden;
+	opacity: 0;
+	pointer-events: none;
+}
+#piano-viewer .unhidden {
+	visibility: visible;
+	opacity: 1;
+}
+#piano-viewer .fullscreen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+#piano-viewer .fullscreen p {
+	color: var(--inputBgColor);
+	text-align: center;
+	position: fixed;
+	z-index: 999;
+	overflow: show;
+	margin: auto;
+	top: 11.5em;
+	font-size: 1.5em;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	height: 50px;
+}
+
+#piano-viewer .floatLeft {
+	float: left;
+}
+#piano-viewer .loadingDiv {
+	text-align: left;
+}
+/* Loading Spinner */
+#piano-viewer .loader,
+#piano-viewer .loader:after {
+	position: fixed;
+	z-index: 999;
+	overflow: show;
+	margin: auto;
+	top: 150px;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	width: 10em;
+	height: 10em;
+}
+#piano-viewer .loader {
+	font-size: 0.5em;
+	border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+	border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+	border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+	border-left: 1.1em solid #ffffff;
+	-webkit-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-animation: load8 1.1s infinite linear;
+	animation: load8 1.1s infinite linear;
+}
+
+#piano-viewer #bg-piano,
+#piano-viewer #info-canvas,
+#piano-viewer #key-effects-canvas {
+	height: 100%;
+}
+
+@-webkit-keyframes load8 {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+@keyframes load8 {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}

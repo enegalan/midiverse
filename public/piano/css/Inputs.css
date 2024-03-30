@@ -1,0 +1,181 @@
+#piano-viewer .inputSelect {
+	float: right;
+	margin-left: 3px;
+}
+#piano-viewer .inputSelectLabel,
+#piano-viewer .sliderLabel,
+#piano-viewer .checkboxlabel,
+#piano-viewer .settingLabel {
+	display: inline-block;
+	color: var(--fontColor);
+	z-index: 15;
+	pointer-events: none;
+	font-size: 0.75rem;
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none;
+}
+
+#piano-viewer .colorPickerButtonContainer {
+	float: right;
+	width: 1.5em;
+	height: 1.5em;
+	margin-top: 0em;
+	border-radius: 0;
+	border: 1px solid var(--borderColor);
+	background-color: rgba(0, 0, 0, 0);
+}
+
+#piano-viewer .checkboxlabel {
+	color: var(--fontWeakenedColor);
+	transition: all 0.15s ease-out;
+}
+#piano-viewer .checkboxInput:checked + label {
+	color: var(--fontColor);
+}
+
+#piano-viewer .checkboxInput {
+	float: right;
+	width: 1.5em;
+	height: 1.5em;
+	margin-top: 0em;
+	border-radius: 0;
+	border: 1px solid var(--borderColor);
+	margin: 0;
+
+	background-color: none;
+	box-shadow: inset 0em 0em 0em 1em var(--inputBgColor),
+		inset 0em 0em 0em 0.75em var(--inputFontColor);
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+
+	transition: all 0.15s ease-out;
+}
+
+#piano-viewer .checkboxInput:checked {
+	box-shadow: inset 0em 0em 0em 0.3em var(--inputBgColor),
+		inset 0em 0em 0em 0.75em var(--inputFontColor);
+}
+#piano-viewer .checkboxInput:active {
+	border: 1px solid var(--borderColor);
+}
+#piano-viewer .checkboxInput:focus {
+	border: 1px solid var(--borderColor);
+	outline: none;
+}
+
+#piano-viewer input[type="text"] {
+	outline: none;
+	box-sizing: border-box;
+	margin-left: 1px;
+	margin-top: 1px;
+	border-width: 0px;
+	border-radius: 0em;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	background-color: var(--inputBgColor);
+	color: var(--inputFontColor);
+}
+
+#piano-viewer .sliderVal {
+	margin-top: 5px;
+	margin-right: 5px;
+	float: right;
+	color: var(--buttonFontColor);
+	z-index: 15;
+	pointer-events: none;
+	font-size: 0.75rem;
+}
+#piano-viewer input[type="range"] {
+	-webkit-appearance: none;
+	margin: 10px 0;
+	width: 100%;
+	padding-left: 1px;
+	padding-right: 1px;
+	transition: all 1s ease-out;
+	background-color: rgba(0, 0, 0, 0);
+}
+#piano-viewer input[type="range"]:focus {
+	outline: none;
+}
+#piano-viewer input[type="range"]::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 16px;
+	cursor: pointer;
+	background: var(--inputBgColor);
+	border-radius: 8px;
+	border: 1px solid var(--borderColor);
+	padding-left: 1px;
+	padding-right: 1px;
+}
+#piano-viewer input[type="range"]::-webkit-slider-thumb {
+	border: 0px solid var(--borderColor);
+	height: 12px;
+	width: 12px;
+	border-radius: 6px;
+	background: var(--buttonFontColor);
+	cursor: pointer;
+	-webkit-appearance: none;
+	margin-top: 1px;
+	transition: all 0.2s ease-out;
+}
+#piano-viewer input[type="range"]:focus::-webkit-slider-runnable-track {
+	background: var(--inputBgColor);
+}
+#piano-viewer input[type="range"]::-moz-range-track {
+	width: 100%;
+	height: 16px;
+	cursor: pointer;
+	background: var(--inputBgColor);
+	border-radius: 8px;
+	border: 1px solid var(--borderColor);
+	padding-left: 2px;
+	padding-right: 2px;
+}
+#piano-viewer input[type="range"]::-moz-range-thumb {
+	border: 0px solid var(--borderColor);
+	height: 12px;
+	width: 12px;
+	border-radius: 6px;
+	background: var(--buttonFontColor);
+	cursor: pointer;
+	margin-top: 1px;
+	transition: all 1s ease-out;
+}
+#piano-viewer input[type="range"]::-ms-track {
+	width: 100%;
+	height: 16px;
+	cursor: pointer;
+	background: transparent;
+	border-color: transparent;
+	color: transparent;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+#piano-viewer input[type="range"]::-ms-fill-lower {
+	background: var(--inputBgColor);
+	border: 1px solid var(--borderColor);
+	border-radius: 16px;
+}
+#piano-viewer input[type="range"]::-ms-fill-upper {
+	background: var(--inputBgColor);
+	border: 1px solid var(--borderColor);
+	border-radius: 16px;
+}
+#piano-viewer input[type="range"]::-ms-thumb {
+	border: 0px solid var(--borderColor);
+	height: 12px;
+	width: 12px;
+	border-radius: 6px;
+	background: var(--buttonFontColor);
+	cursor: pointer;
+	margin-top: 1px;
+}
+#piano-viewer input[type="range"]:focus::-ms-fill-lower {
+	background: var(--inputBgColor);
+}
+#piano-viewer input[type="range"]:focus::-ms-fill-upper {
+	background: var(--inputBgColor);
+}
