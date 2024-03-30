@@ -1,5 +1,5 @@
-import logoWhite from "../../../public/logoWhite.svg";
-import logoBlack from "../../../public/logoBlack.svg";
+import logoWhite from "../../../../public/logoWhite.svg";
+import logoBlack from "../../../../public/logoBlack.svg";
 import Dropdown from "@/Components/Dropdown";
 
 /* Icons */

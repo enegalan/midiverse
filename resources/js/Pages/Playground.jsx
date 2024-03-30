@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import MainLayout from '@/Layouts/mainLayout';
 
 export default function Playground() {
     useEffect(() => {
@@ -27,7 +26,6 @@ export default function Playground() {
         addCssFile('/piano/css/Inputs.css');
         addCssFile('/piano/css/Settings.css');
         addCssFile('/piano/css/nano.min.css');
-        addCssFile('/piano/css/bootstrap-theme.min.css');
 
         // Add JavaScript files
         addJsFile('/piano/lib/Pickr/pickr.es5.min.js');
@@ -53,9 +51,6 @@ export default function Playground() {
 
     return (
         <main className='w-full h-screen flex flex-col'>
-            <nav>
-                // TODO: PlaygroundPrimaryNavbar
-            </nav>
             <section className='pb-16 relative flex-1'>
                 <section id='piano-viewer'>
                     <div id='midiverse-piano'></div>

@@ -29,8 +29,8 @@ export class UI {
 			.querySelectorAll(".innerMenuDiv")
 			.forEach(
 				el =>
-					(el.style.height =
-						"calc(100% - " + (this.getNavBar().clientHeight + 24) + "px)")
+				(el.style.height =
+					"calc(100% - " + (this.getNavBar().clientHeight + 24) + "px)")
 			)
 
 		document.querySelector('#midiverse-piano')?.appendChild(new ZoomUI().getContentDiv(render))
@@ -59,7 +59,8 @@ export class UI {
 		}
 	}
 	createControlMenu() {
-		let topGroupsContainer = DomHelper.createDivWithClass("container")
+		let topGroupsContainer = DomHelper.createDivWithClass("menu-container")
+		let topNavbar = DomHelper.createDivWithIdAndClass('main-navbar', 'menu-container')
 
 		let fileGrp = this.getFileButtonGroup()
 		let songSpeedGrp = this.getSpeedButtonGroup()
@@ -67,6 +68,7 @@ export class UI {
 		let volumeGrp = this.getVolumneButtonGroup()
 		let settingsGrpRight = this.getSettingsButtonGroup()
 		let trackGrp = this.getTracksButtonGroup()
+		let mainNavbarContent = this.getMainNavbarContent();
 
 		DomHelper.addClassToElements("align-middle", [
 			fileGrp,
@@ -79,7 +81,9 @@ export class UI {
 		let leftTop = DomHelper.createElementWithClass("topContainer")
 		let middleTop = DomHelper.createElementWithClass("topContainer")
 		let rightTop = DomHelper.createElementWithClass("topContainer")
+		let mainNavbar = DomHelper.createElementWithClass('mainNavbar');
 
+		DomHelper.appendChildren(mainNavbar, [mainNavbarContent])
 		DomHelper.appendChildren(leftTop, [fileGrp, trackGrp])
 		DomHelper.appendChildren(middleTop, [songControlGrp])
 		DomHelper.appendChildren(rightTop, [
@@ -88,7 +92,9 @@ export class UI {
 			settingsGrpRight
 		])
 
+		DomHelper.appendChildren(topNavbar, [mainNavbarContent])
 		DomHelper.appendChildren(topGroupsContainer, [leftTop, middleTop, rightTop])
+		this.getNavBar().appendChild(topNavbar)
 		this.getNavBar().appendChild(topGroupsContainer)
 
 		let minimizeButton = this.getMinimizeButton()
@@ -202,6 +208,75 @@ export class UI {
 			this.getLoadedSongsButton()
 		])
 		return fileGrp
+	}
+
+	getMainNavbarContent() {
+		let fileGrp = DomHelper.createButtonGroup(true)
+		DomHelper.appendChildren(fileGrp, [
+			this.getLoadSongButton2(),
+		])
+		return fileGrp
+	}
+
+	getLoadSongButton2() {
+		if (!this.loadSongButton2) {
+			this.loadSongButton2 = DomHelper.createDiv({
+				"minWidth": "118px",
+				"width": "100%",
+				"height": "100%",
+				"justifyContent": "space-between",
+				"paddingTop": "4px",
+				"paddingX": "10px",
+				"color": "white",
+				"position": "relative",
+				"left": "0",
+				"zIndex": "30",
+				"transition": "ease-in-out",
+				"transitionDuration": "500ms",
+				"display": "flex",
+			});
+			let logoContainer = DomHelper.createDivWithClass("flex items-center flex-wrap w-full");
+			let logoLink = DomHelper.createElementWithClass("text-4xl font-bold justify-center flex gap-8 w-full self-center","a", "", {'href': '/home', 'data-ref': 'home'});
+			let logoImage = DomHelper.createElementWithClass("w-12 pointer-events-none", "img", "", {'alt' : 'Logo', 'src' : "http://0.0.0.0:5174/public/logoBlack.svg"});
+			logoLink.appendChild(logoImage);
+			logoContainer.appendChild(logoLink);
+
+			let navItemsContainer = DomHelper.createDivWithClass("flex-1 justify-center flex");
+			let ul = DomHelper.createElement("ul", {
+				'display' : 'flex',
+				'justify-content' : 'center',
+			});
+
+			let navItems = [
+				{ "href": "/", "text": "Home", "icon": "home", "ref" : "home", },
+				{ "href": "/explore", "text": "Explore", "icon": "search", "ref" : "explore", },
+				{ "href": "/concerts", "text": "Concerts", "icon": "music", "ref" : "concerts", },
+				{ "href": "/", "text": "Notifications", "icon": "bell", "ref" : "notifications", },
+				{ "href": "/", "text": "Messages", "icon": "envelope", "ref" : "messages", },
+				{ "href": "/", "text": "Bookmarks", "icon": "bookmark", "ref" : "bookmarks", },
+				{ "href": "/", "text": "Profile", "icon": "user", "ref" : "profile", },
+				{ "href": "/", "text": "Settings", "icon": "cog", "ref" : "settings", }
+			];
+
+			navItems.forEach(item => {
+				let li = DomHelper.createElement("li", {}, { "className": "xl:px-1 transition rounded-full self-center hover:bg-gray-300 w-full" });
+				let link = DomHelper.createElement("a",{}, {'href' : item.href, 'className': "p-3 xl:p-3 text-lg flex items-center xl:items-center gap-3"});
+				let iconSpan = DomHelper.getGlyphicon(item.icon);
+				let textSpan = DomHelper.createElement("span", {"className" : "hidden xl:block"} );
+				textSpan.innerText = item.text;
+				link.appendChild(iconSpan);
+				link.appendChild(textSpan);
+				li.appendChild(link);
+				ul.appendChild(li);
+			});
+
+			
+			navItemsContainer.appendChild(ul);
+
+			this.loadSongButton2.appendChild(logoContainer);
+			this.loadSongButton2.appendChild(navItemsContainer);
+		}
+		return this.loadSongButton2
 	}
 
 	getNavBar() {
@@ -525,9 +600,9 @@ export class UI {
 			.querySelectorAll(".instrumentName")
 			.forEach(
 				el =>
-					(el.innerHTML = getPlayer().getCurrentTrackInstrument(
-						el.id.split("instrumentName")[1]
-					))
+				(el.innerHTML = getPlayer().getCurrentTrackInstrument(
+					el.id.split("instrumentName")[1]
+				))
 			)
 		this.showDiv(this.getTrackMenuDiv())
 	}

@@ -43,9 +43,12 @@
 #piano-viewer .navbar {
 	box-sizing: border-box;
 	transition: all 0.4s ease-out;
-	max-height: 150px;
 	background-color: var(--bgColor);
-	padding: 0.5em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	justify-content: flex-end;
+	display: flex;
+	flex-direction: column;
 }
 #piano-viewer #minimizeMenu {
 	position: absolute;
@@ -228,9 +231,10 @@
 	float: left;
 	margin-right: 2px;
 }
-#piano-viewer .container {
+#piano-viewer .menu-container {
 	width: 100% !important;
 	display: flex;
+	justify-content: center;
 }
 #piano-viewer .halfContainer {
 	width: 50% !important;
@@ -398,6 +402,10 @@
 #piano-viewer #info-canvas,
 #piano-viewer #key-effects-canvas {
 	height: 100%;
+}
+
+#main-navbar {
+	min-height: 0;
 }
 
 @-webkit-keyframes load8 {

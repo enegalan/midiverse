@@ -1,4 +1,4 @@
-import Navbar from "@/Components/Navbar";
+import Navbar from "@/Components/Navbars/Navbar";
 
 export default function MainLayout({ user = null, children }) {
     return (
