@@ -26,7 +26,7 @@ import { FaUser } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoSettingsSharp } from "react-icons/io5";
 
-import { TbPencilPlus } from "react-icons/tb";
+import { MdOutlinePiano } from "react-icons/md";
 
 
 import { useEffect, useState } from "react";
@@ -255,7 +255,7 @@ const Navbar = ({
                                 href={route('playground')}
                                 className={`my-3 text-center rounded-full xl:px-16 self-center block xl:p-4 p-4 text-lg border-2 border-[var(--blue)] transition hover:bg-[var(--main-blue)] hover:text-white ${webRef === 'playground' ? 'bg-[var(--blue)] text-white' : 'bg-transparent text-[var(--blue)]'}`}
                             >
-                                <TbPencilPlus className="text-2xl block xl:hidden" />
+                                <MdOutlinePiano className="text-2xl block xl:hidden" />
                                 <span className="hidden xl:block font-bold">Playground</span>
                             </a>
                         </ul>
