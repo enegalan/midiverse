@@ -17,12 +17,6 @@ use Inertia\Inertia;
 |
  */
 
-// Redirection for /
-// TODO: Redirect to auth it's not logged
-Route::get('/', function () {
-    return redirect('/home');
-})->name('index');
-
 Route::get('/home', function () {
     return Inertia::render('Index');
 })->name('home');
@@ -38,5 +32,13 @@ Route::get('/concerts', function () {
 Route::get('/playground', function () {
     return Inertia::render('Playground');
 })->name('playground');
+
+Route::get('/messages', function () {
+    return Inertia::render('Messages');
+})->name('messages');
+
+Route::get('/', function () {
+    return Inertia::render('Register');
+})->name('register');
 
 require __DIR__ . '/auth.php';

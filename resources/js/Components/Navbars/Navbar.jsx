@@ -104,7 +104,7 @@ const Navbar = ({
         },
         {
             title: 'Messages',
-            href: '/',
+            href: '/messages',
             id: 'messages',
             ref: 'messages',
             icon: <AiOutlineMessage className={`text-[${iconWidth}]`} />,
@@ -163,7 +163,7 @@ const Navbar = ({
         },
         {
             title: 'Messages',
-            href: '/',
+            href: '/messages',
             id: 'm-messages',
             ref: 'messages',
             icon: '',

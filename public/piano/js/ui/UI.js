@@ -305,7 +305,7 @@ export class UI {
 				{ "href": "/explore", "text": "Explore", "icon": "search", "ref": "explore", },
 				{ "href": "/concerts", "text": "Concerts", "icon": "music", "ref": "concerts", },
 				{ "href": "/", "text": "Notifications", "icon": "bell", "ref": "notifications", },
-				{ "href": "/", "text": "Messages", "icon": "envelope", "ref": "messages", },
+				{ "href": "/messages", "text": "Messages", "icon": "envelope", "ref": "messages", },
 				{ "href": "/", "text": "Bookmarks", "icon": "bookmark", "ref": "bookmarks", },
 				{ "href": "/", "text": "Profile", "icon": "user", "ref": "profile", },
 				{ "href": "/", "text": "Settings", "icon": "cog", "ref": "settings", }
