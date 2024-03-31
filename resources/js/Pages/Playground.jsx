@@ -51,10 +51,11 @@ export default function Playground() {
 
     return (
         <main className='w-full h-screen flex flex-col'>
-            <section className='pb-16 relative flex-1'>
+            <section className='relative flex-1'>
                 <section id='piano-viewer'>
                     <div id='midiverse-piano'></div>
                     <div style={{ height: 'inherit', pointerEvents: 'none' }} id='midiverse-piano-menus'></div>
+                    <div id='playground-navbar'></div>
                 </section>
             </section>
         </main>

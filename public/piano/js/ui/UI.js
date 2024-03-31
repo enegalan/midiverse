@@ -42,10 +42,8 @@ export class UI {
 
 	fireInitialListeners() {
 		this.onMenuHeightChange(this.getNavBar().clientHeight)
-		window.setTimeout(
-			() => this.onMenuHeightChange(this.getNavBar().clientHeight),
-			500
-		)
+		window.addEventListener("resize", () => this.onMenuHeightChange(this.getNavBar().clientHeight))
+		this.mouseMoved()
 	}
 
 	mouseMoved() {
@@ -68,8 +66,20 @@ export class UI {
 		let volumeGrp = this.getVolumneButtonGroup()
 		let settingsGrpRight = this.getSettingsButtonGroup()
 		let trackGrp = this.getTracksButtonGroup()
+		// Main Navbar
 		let mainNavbarContent = this.getMainNavbarContent();
+		// Hamburger
+		let hamburgerBtn = this.getHamburgerButton();
+		let closeLink = this.getCloseLink();
+		let loadSongLink = this.getLoadSongLink();
+		let loadedSongsLink = this.getLoadedSongsLink();
+		let midiSetupLink = this.getMidiSetupLink();
+		let tracksLink = this.getTracksLink();
+		let muteLink = this.getMuteLink();
+		let fullscreenLink = this.getFullscreenLink();
+		let settingsLink = this.getSettingsLink();
 
+		// Add classes
 		DomHelper.addClassToElements("align-middle", [
 			fileGrp,
 			songSpeedGrp,
@@ -78,11 +88,15 @@ export class UI {
 			trackGrp
 		])
 
-		let leftTop = DomHelper.createElementWithClass("topContainer")
-		let middleTop = DomHelper.createElementWithClass("topContainer")
-		let rightTop = DomHelper.createElementWithClass("topContainer")
-		let mainNavbar = DomHelper.createElementWithClass('mainNavbar');
+		// Create Elements
+		let leftTop = DomHelper.createElementWithIdAndClass('left-container', "hidden lg:flex justify-around flex-1")
+		let middleTop = DomHelper.createElementWithIdAndClass('center-container', "topContainer")
+		let rightTop = DomHelper.createElementWithIdAndClass('right-container', "hidden lg:flex justify-around flex-1")
+		let hamburgerTop = DomHelper.createElementWithIdAndClass('hamburger-container', 'flex lg:hidden justify-center items-center')
+		let hamburgerNavbar = DomHelper.createElementWithIdAndClass('hamburger-navbar', 'hidden-hamburger-nav items-stretch fixed bg-gray-700 top-[8rem] z-[700] h-screen lg:hidden w-full  flex flex-col')
+		let mainNavbar = DomHelper.createElementWithIdAndClass('mainNavbar', 'mainNavbar');
 
+		// Append childrens
 		DomHelper.appendChildren(mainNavbar, [mainNavbarContent])
 		DomHelper.appendChildren(leftTop, [fileGrp, trackGrp])
 		DomHelper.appendChildren(middleTop, [songControlGrp])
@@ -91,14 +105,24 @@ export class UI {
 			volumeGrp,
 			settingsGrpRight
 		])
-
+		DomHelper.appendChildren(hamburgerTop, [hamburgerBtn])
+		DomHelper.appendChildren(hamburgerNavbar, [
+			closeLink,
+			loadSongLink,
+			loadedSongsLink,
+			midiSetupLink,
+			tracksLink,
+			muteLink,
+			fullscreenLink,
+			settingsLink,
+		])
 		DomHelper.appendChildren(topNavbar, [mainNavbarContent])
-		DomHelper.appendChildren(topGroupsContainer, [leftTop, middleTop, rightTop])
+		DomHelper.appendChildren(topGroupsContainer, [leftTop, middleTop, rightTop, hamburgerTop])
 		this.getNavBar().appendChild(topNavbar)
 		this.getNavBar().appendChild(topGroupsContainer)
 
+		// Minimize Button
 		let minimizeButton = this.getMinimizeButton()
-
 		let innerMenuDivsContainer = DomHelper.createElementWithClass(
 			"innerMenuDivsContainer"
 		)
@@ -108,11 +132,42 @@ export class UI {
 			this.getSettingsDiv()
 		])
 
+		// Last appendChilds
 		document.querySelector('#midiverse-piano')?.appendChild(minimizeButton)
 		document.querySelector('#midiverse-piano')?.appendChild(this.getNavBar())
 		document.querySelector('#midiverse-piano-menus')?.appendChild(innerMenuDivsContainer)
+		document.querySelector('#playground-navbar')?.appendChild(hamburgerNavbar)
 
+		// Create File Drag Area
 		this.createFileDragArea()
+	}
+
+	getHamburgerButton() {
+		if (!this.hamburgerButton) {
+			this.hamburgerButton = DomHelper.createGlyphiconButton(
+				'hamburger-button',
+				'menu-hamburger',
+				() => {
+					this.toggleHamburgerNavbar()
+				}
+			)
+		}
+		return this.hamburgerButton;
+	}
+
+	getCloseLink() {
+		if (!this.closeLink) {
+			this.closeLink = DomHelper.createGlyphiconButton(
+				'close-button',
+				'remove',
+				() => {
+					this.toggleHamburgerNavbar()
+				}
+			)
+			DomHelper.addClassToElement('hamburger-link', this.closeLink)
+			DomHelper.addClassToElement('closeButton', this.closeLink)
+		}
+		return this.closeLink;
 	}
 
 	getMinimizeButton() {
@@ -146,7 +201,6 @@ export class UI {
 					}
 				}
 			)
-			this.minimizeButton.style.padding = "0px"
 			this.minimizeButton.style.fontSize = "0.5em"
 		}
 		let navbarHeight = this.navMinimized ? 0 : this.getNavBar().clientHeight
@@ -179,8 +233,7 @@ export class UI {
 	getVolumneButtonGroup() {
 		let volumeGrp = DomHelper.createButtonGroup(true)
 		DomHelper.appendChildren(volumeGrp, [
-			this.getMainVolumeSlider().container,
-			this.getMuteButton()
+			this.getMainVolumeSlider().container
 		])
 		return volumeGrp
 	}
@@ -236,33 +289,33 @@ export class UI {
 				"display": "flex",
 			});
 			let logoContainer = DomHelper.createDivWithClass("flex items-center flex-wrap w-full");
-			let logoLink = DomHelper.createElementWithClass("text-4xl font-bold justify-center flex gap-8 w-full self-center","a", "", {'href': '/home', 'data-ref': 'home'});
-			let logoImage = DomHelper.createElementWithClass("w-12 pointer-events-none select-none", "img", "", {'alt' : 'Logo', 'src' : "http://0.0.0.0:5174/public/logoBlack.svg"});
+			let logoLink = DomHelper.createElementWithClass("text-4xl font-bold justify-center flex gap-8 w-full self-center", "a", "", { 'href': '/home', 'data-ref': 'home' });
+			let logoImage = DomHelper.createElementWithClass("w-12 pointer-events-none select-none", "img", "", { 'alt': 'Logo', 'src': "http://0.0.0.0:5174/public/logoBlack.svg" });
 			logoLink.appendChild(logoImage);
 			logoContainer.appendChild(logoLink);
 
 			let navItemsContainer = DomHelper.createDivWithClass("flex-1 justify-center flex");
 			let ul = DomHelper.createElement("ul", {
-				'display' : 'flex',
-				'justify-content' : 'center',
+				'display': 'flex',
+				'justify-content': 'center',
 			});
 
 			let navItems = [
-				{ "href": "/", "text": "Home", "icon": "home", "ref" : "home", },
-				{ "href": "/explore", "text": "Explore", "icon": "search", "ref" : "explore", },
-				{ "href": "/concerts", "text": "Concerts", "icon": "music", "ref" : "concerts", },
-				{ "href": "/", "text": "Notifications", "icon": "bell", "ref" : "notifications", },
-				{ "href": "/", "text": "Messages", "icon": "envelope", "ref" : "messages", },
-				{ "href": "/", "text": "Bookmarks", "icon": "bookmark", "ref" : "bookmarks", },
-				{ "href": "/", "text": "Profile", "icon": "user", "ref" : "profile", },
-				{ "href": "/", "text": "Settings", "icon": "cog", "ref" : "settings", }
+				{ "href": "/", "text": "Home", "icon": "home", "ref": "home", },
+				{ "href": "/explore", "text": "Explore", "icon": "search", "ref": "explore", },
+				{ "href": "/concerts", "text": "Concerts", "icon": "music", "ref": "concerts", },
+				{ "href": "/", "text": "Notifications", "icon": "bell", "ref": "notifications", },
+				{ "href": "/", "text": "Messages", "icon": "envelope", "ref": "messages", },
+				{ "href": "/", "text": "Bookmarks", "icon": "bookmark", "ref": "bookmarks", },
+				{ "href": "/", "text": "Profile", "icon": "user", "ref": "profile", },
+				{ "href": "/", "text": "Settings", "icon": "cog", "ref": "settings", }
 			];
 
 			navItems.forEach(item => {
 				let li = DomHelper.createElement("li", {}, { className: "xl:px-1 transition rounded-full self-center hover:bg-gray-300 w-full select-none" });
-				let link = DomHelper.createElement("a",{}, {href : item.href, className: "p-3 xl:p-3 text-lg flex items-center xl:items-center gap-3"});
+				let link = DomHelper.createElement("a", {}, { href: item.href, className: "p-3 xl:p-3 text-lg flex items-center xl:items-center gap-3" });
 				let iconSpan = DomHelper.getGlyphicon(item.icon);
-				let textSpan = DomHelper.createElement("span", {}, {className : "hidden xl:block"} );
+				let textSpan = DomHelper.createElement("span", {}, { className: "hidden xl:block" });
 				textSpan.innerText = item.text;
 				link.appendChild(iconSpan);
 				link.appendChild(textSpan);
@@ -270,7 +323,7 @@ export class UI {
 				ul.appendChild(li);
 			});
 
-			
+
 			navItemsContainer.appendChild(ul);
 
 			this.mainNavbar.appendChild(logoContainer);
@@ -290,6 +343,21 @@ export class UI {
 			)
 		}
 		return this.navBar
+	}
+	getSettingsLink() {
+		if (!this.settingsLink) {
+			this.settingsLink = DomHelper.createGlyphiconTextButton(
+				"settingsButton",
+				"cog",
+				"Settings",
+				() => {
+					this.showSettings()
+					this.toggleHamburgerNavbar()
+				}
+			)
+			DomHelper.addClassToElement('hamburger-link', this.settingsLink)
+		}
+		return this.settingsLink
 	}
 	getSettingsButton() {
 		if (!this.settingsButton) {
@@ -315,6 +383,9 @@ export class UI {
 		div.classList.remove("hidden")
 		div.classList.add("unhidden")
 	}
+	toggleHamburgerNavbar() {
+		document.querySelector('#hamburger-navbar')?.classList.toggle('hidden-hamburger-nav')
+	}
 	hideSettings() {
 		DomHelper.removeClass("selected", this.getSettingsButton())
 		this.settingsShown = false
@@ -333,6 +404,14 @@ export class UI {
 				"innerMenuDiv"
 			)
 			this.hideDiv(this.settingsDiv)
+			let closeButton = DomHelper.createGlyphiconButton(
+				'settings-close',
+				'remove',
+				() => {
+					this.hideDiv(this.settingsDiv)
+				}
+			)
+			this.settingsDiv.appendChild(closeButton)
 			this.settingsDiv.appendChild(this.getSettingsContent())
 		}
 		return this.settingsDiv
@@ -360,6 +439,28 @@ export class UI {
 		}
 		return this.fullscreenButton
 	}
+	getFullscreenLink() {
+		if (!this.fullscreenLink) {
+			this.fullscreen = false
+			let clickFullscreen = () => {
+				if (!this.fullscreen) {
+					document.body.requestFullscreen()
+				} else {
+					document.exitFullscreen()
+				}
+			}
+			this.fullscreenLink = DomHelper.createGlyphiconTextButton(
+				"fullscreenLink",
+				"fullscreen",
+				'Fullscreen',
+				clickFullscreen.bind(this),
+				'hamburger-link'
+			)
+			let fullscreenSwitch = () => (this.fullscreen = !this.fullscreen)
+			document.body.onfullscreenchange = fullscreenSwitch.bind(this)
+		}
+		return this.fullscreenLink
+	}
 	getLoadSongButton() {
 		if (!this.loadSongButton) {
 			this.loadSongButton = DomHelper.createFileInput(
@@ -369,6 +470,31 @@ export class UI {
 			DomHelper.addClassToElement("floatSpanLeft", this.loadSongButton)
 		}
 		return this.loadSongButton
+	}
+	getLoadSongLink() {
+		if (!this.loadSongLink) {
+			this.loadSongLink = DomHelper.createFileInput(
+				"Upload Midi",
+				this.handleFileSelect.bind(this)
+			)
+			DomHelper.addClassToElement('hamburger-link', this.loadSongLink)
+		}
+		return this.loadSongLink
+	}
+	getLoadedSongsLink() {
+		if (!this.loadedSongsLink) {
+			this.loadedSongsLink = DomHelper.createGlyphiconTextButton(
+				"mute",
+				"music",
+				"Loaded Songs",
+				ev => {
+					this.toggleHamburgerNavbar()
+					this.showLoadedSongsDiv()
+				}
+			)
+			DomHelper.addClassToElement('hamburger-link', this.loadedSongsLink)
+		}
+		return this.loadedSongsLink
 	}
 	getLoadedSongsButton() {
 		if (!this.loadedSongsButton) {
@@ -402,7 +528,7 @@ export class UI {
 
 	getLoadedSongsDiv() {
 		if (!this.loadedSongsDiv) {
-			this.loadedSongsDiv = DomHelper.createDivWithClass("innerMenuDiv")
+			this.loadedSongsDiv = DomHelper.createDivWithIdAndClass('loaded-songs', "innerMenuDiv")
 			this.loadedSongsDiv.appendChild(this.songUI.getDivContent())
 			this.hideDiv(this.loadedSongsDiv)
 		}
@@ -567,6 +693,21 @@ export class UI {
 		}
 		return this.speedDownButton
 	}
+	getTracksLink() {
+		if (!this.tracksLink) {
+			this.tracksLink = DomHelper.createGlyphiconTextButton(
+				"tracks",
+				"align-justify",
+				"Tracks",
+				ev => {
+					this.showTracks()
+					this.toggleHamburgerNavbar()
+				}
+			)
+			DomHelper.addClassToElement("hamburger-link", this.tracksLink)
+		}
+		return this.tracksLink
+	}
 	getTracksButton() {
 		if (!this.tracksButton) {
 			this.tracksButton = DomHelper.createGlyphiconTextButton(
@@ -605,6 +746,22 @@ export class UI {
 				))
 			)
 		this.showDiv(this.getTrackMenuDiv())
+	}
+
+	getMidiSetupLink() {
+		if (!this.midiSetupLink) {
+			this.midiSetupLink = DomHelper.createGlyphiconTextButton(
+				"midiSetup",
+				"tower",
+				"Midi-Setup",
+				ev => {
+					this.showMidiSetupDialog()
+					this.toggleHamburgerNavbar()
+				}
+			)
+			DomHelper.addClassToElement("hamburger-link", this.midiSetupLink)
+		}
+		return this.midiSetupLink
 	}
 
 	getMidiSetupButton() {
@@ -724,10 +881,42 @@ export class UI {
 							"volume-up"
 						)
 					}
-				}
+				},
+				this.getMuteButton()
 			)
 		}
 		return this.mainVolumeSlider
+	}
+	getMuteLink() {
+		if (!this.muteLink) {
+			this.muteLink = DomHelper.createGlyphiconTextButton(
+				"mute",
+				"volume-up",
+				"Mute",
+				ev => {
+					if (getPlayer().muted) {
+						getPlayer().muted = false
+						if (!isNaN(getPlayer().mutedAtVolume)) {
+							if (getPlayer().mutedAtVolume == 0) {
+								getPlayer().mutedAtVolume = 100
+							}
+							this.getMainVolumeSlider().slider.value = getPlayer().mutedAtVolume
+							getPlayer().volume = getPlayer().mutedAtVolume
+						}
+						DomHelper.replaceGlyph(this.muteLink, "volume-off", "volume-up")
+
+					} else {
+						getPlayer().mutedAtVolume = getPlayer().volume
+						getPlayer().muted = true
+						getPlayer().volume = 0
+						this.getMainVolumeSlider().slider.value = 0
+						DomHelper.replaceGlyph(this.muteLink, "volume-up", "volume-off")
+					}
+				},
+				'hamburger-link'
+			)
+		}
+		return this.muteLink
 	}
 	getMuteButton() {
 		if (!this.muteButton) {
@@ -829,6 +1018,17 @@ export class UI {
 			)
 			this.hideDiv(this.midiSetupDialog)
 			document.body.appendChild(this.midiSetupDialog)
+
+			let closeButton = DomHelper.createGlyphiconButton(
+				'midi-setup-close',
+				'remove',
+				() => {
+					this.hideDiv(this.midiSetupDialog)
+				},
+				'flex lg:hidden'
+			)
+			DomHelper.addClassToElement('float-right', closeButton)
+			this.midiSetupDialog.appendChild(closeButton)
 
 			let text = DomHelper.createDivWithClass(
 				"centeredBigText",

@@ -440,6 +440,7 @@ export class Render {
 	onMenuHeightChanged(menuHeight) {
 		this.renderDimensions.menuHeight = menuHeight
 		this.pianoRender.repositionCanvases()
+		console.log('menu height changed to', menuHeight)
 		this.getProgressBarCanvas().style.top = menuHeight + "px"
 		this.noteRender.setMenuHeight(menuHeight)
 	}

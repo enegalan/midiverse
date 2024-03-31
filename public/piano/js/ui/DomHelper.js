@@ -40,7 +40,7 @@ export class DomHelper {
 			}
 		})
 	}
-	static createSliderWithLabel(id, label, val, min, max, step, onChange) {
+	static createSliderWithLabel(id, label, val, min, max, step, onChange, rightsideElement = null) {
 		let cont = DomHelper.createElement(
 			"div",
 			{},
@@ -52,7 +52,18 @@ export class DomHelper {
 			{ id: id + "label", className: "sliderLabel", innerHTML: label }
 		)
 		let slider = DomHelper.createSlider(id, val, min, max, step, onChange)
-		cont.appendChild(labelDiv)
+		if (rightsideElement) {
+			let flexDiv = DomHelper.createElementWithIdAndClass(
+				'slider-flex-div',
+				'flex gap-3 items-center',
+				'div'
+			)
+			flexDiv.appendChild(labelDiv)
+			flexDiv.appendChild(rightsideElement)
+			cont.appendChild(flexDiv)
+		} else {
+			cont.appendChild(labelDiv)
+		}
 		cont.appendChild(slider)
 		return { slider: slider, container: cont }
 	}
@@ -100,15 +111,17 @@ export class DomHelper {
 
 		return { slider: slider, container: cont }
 	}
-	static createGlyphiconButton(id, glyph, onClick) {
-		let bt = DomHelper.createButton(id, onClick)
+	static createGlyphiconButton(id, glyph, onClick, className = '') {
+		let bt = DomHelper.createButton(id, onClick, className)
 		bt.appendChild(this.getGlyphicon(glyph))
 		return bt
 	}
-	static createGlyphiconTextButton(id, glyph, text, onClick) {
-		let bt = DomHelper.createButton(id, onClick)
+	static createGlyphiconTextButton(id, glyph, text, onClick, className = '') {
+		let bt = DomHelper.createButton(id, onClick, className)
 		bt.appendChild(this.getGlyphicon(glyph))
-		bt.innerHTML += " " + text
+		let span = DomHelper.createElementWithClass('buttonText', 'span')
+		span.innerHTML += " " + text
+		bt.appendChild(span)
 		return bt
 	}
 	static createDiv(styles, attributes) {
@@ -246,7 +259,9 @@ export class DomHelper {
 			{ className: "btn btn-default btn-file" }
 		)
 		customFile.appendChild(DomHelper.getGlyphicon("folder-open"))
-		customFile.innerHTML += " " + text
+		let fileLabel = DomHelper.createElementWithClass('buttonText', 'span')
+		fileLabel.innerHTML += " " + text
+		customFile.appendChild(fileLabel)
 		let inp = DomHelper.createElement(
 			"input",
 			{ display: "none" },
@@ -261,14 +276,16 @@ export class DomHelper {
 	static getDivider() {
 		return DomHelper.createElement("div", {}, { className: "divider" })
 	}
-	static createButton(id, onClick) {
+	static createButton(id, onClick, className = '') {
+		var defaultStyle = 'btn btn-default '
+		defaultStyle += className;
 		let bt = DomHelper.createElement(
 			"button",
 			{},
 			{
 				id: id,
 				type: "button",
-				className: "btn btn-default",
+				className: defaultStyle,
 				onclick: onClick
 			}
 		)

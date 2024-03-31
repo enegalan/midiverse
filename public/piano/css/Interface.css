@@ -1,17 +1,6 @@
 :root {
-	/* Old Color Scheme
-	--bgColor: rgba(205, 205, 205, 1);
-	--innerMenuBgColor: rgba(225, 225, 225, 1);
-	--sliderBgColor: rgba(245, 245, 245, 1);
-	--fontColor: rgba(25, 25, 25, 1);
-	--buttonFontColor: #424242;
-	--buttonBgColor: #9e9e9e;
-	--buttonActiveBgColor: #d3d3d3;
-	--buttonHoverBgColor: #c9c9c9;
-	--borderColor: rgba(0, 0, 0, 0.5); */
-
-	--bgColor: #424242;
-	--innerMenuBgColor: #424242;
+	--bgColor: var(--grey);
+	--innerMenuBgColor: var(--grey);
 	--lightInnerMenuHoverBgColor: #4e4e4e;
 
 	--inputBgColor: #757575;
@@ -70,7 +59,6 @@
 	z-index: -5;
 }
 #piano-viewer #progressBarCanvas {
-	transition: all 0.4s ease-out;
 	background-color: var(--inputBgColor);
 	box-sizing: border-box;
 	left: 0px;
@@ -149,7 +137,7 @@
 	height: 14px;
 	right: 8px;
 }
-#piano-viewer .centeredMenuDiv {
+.centeredMenuDiv {
 	background-color: var(--bgColor);
 	max-height: calc(50% - 50px);
 	top: 24px;
@@ -161,6 +149,7 @@
 	overflow-x: hidden;
 	border-radius: 5px;
 	transition: all 0.3s ease-out;
+	color: var(--light-grey);
 }
 .notification {
 	background-color: var(--bgColor);
@@ -247,6 +236,10 @@
 #piano-viewer .btn-group-vertical {
 	display: flex;
 	flex-direction: column;
+}
+#hamburger-navbar .btn {
+	display: inline-flex;
+	align-items: center;
 }
 #piano-viewer .btn {
 	position: relative;
@@ -404,6 +397,29 @@
 	min-height: 0;
 }
 
+.buttonText {
+	flex: 1;
+}
+
+.hidden-hamburger-nav {
+	display: none;
+}
+
+.closeButton {
+	border: none !important;
+	margin-bottom: 2px;
+	text-align: left !important;
+}
+
+.hamburger-link {
+	width: 100%;
+    appearance: auto;
+    font-size: 1.2rem !important;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+    padding-left: 32px !important;
+}
+
 @-webkit-keyframes load8 {
 	0% {
 		-webkit-transform: rotate(0deg);
@@ -422,5 +438,11 @@
 	100% {
 		-webkit-transform: rotate(360deg);
 		transform: rotate(360deg);
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	.innerMenuDiv {
+		width: 100% !important;
 	}
 }

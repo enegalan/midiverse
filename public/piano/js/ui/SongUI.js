@@ -10,6 +10,16 @@ export class SongUI {
 		this.wrapper = DomHelper.createDiv()
 	}
 	getDivContent() {
+		var closeButton = DomHelper.createGlyphiconButton(
+			'close-songs',
+			'remove',
+			() => {
+				document.querySelector('#loaded-songs')?.classList.remove('unhidden')
+				document.querySelector('#loaded-songs')?.classList.add('hidden')
+			},
+			'flex lg:hidden'
+		)
+		this.wrapper.appendChild(closeButton);
 		return this.wrapper
 	}
 	setExampleSongs(jsonSongs) {

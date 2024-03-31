@@ -18,7 +18,20 @@ import { getMidiHandler } from "../MidiInputHandler.js"
  */
 
 export const createTrackDivs = () => {
-	return Object.keys(getTracks()).map(trackId => createTrackDiv(trackId))
+	let trackDivs = [];
+	let closeButton = DomHelper.createGlyphiconButton(
+		'close-tracks',
+		'remove',
+		() => {
+			document.querySelector('#trackContainerDiv')?.classList.add('hidden')
+		},
+		'flex m-1 lg:hidden'
+	)
+	// DomHelper.addClassToElement('', closeButton)
+	trackDivs.push(closeButton)
+	const newTracks = Object.keys(getTracks()).map(trackId => createTrackDiv(trackId))
+    trackDivs.push(...newTracks)
+    return trackDivs
 }
 
 export const createTrackDiv = trackId => {
