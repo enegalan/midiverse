@@ -218,4 +218,12 @@ const FollowButton = ({ id = null, action = null }) => {
     )
 }
 
-export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton };
+const AuthButton = ({ id = null, text = '', className = '', action = null }) => {
+    return (
+        <Link className={`${className} font-bold py-[0.7rem] px-4 text-sm rounded-full transition hover:bg-[var(--hover-black)]`} href={''}>
+            {text}
+        </Link>
+    )
+}
+
+export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton, AuthButton };
