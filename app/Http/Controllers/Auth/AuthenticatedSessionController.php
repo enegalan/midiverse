@@ -11,15 +11,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Redirect;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
-    public function create(): Response
-    {
-        return Inertia::render('Auth/Login', [
+    public function create() {
+        // Redirect home auth user
+        if (auth()->user()) return Redirect::route('home');
+        return Inertia::render('Auth', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
         ]);

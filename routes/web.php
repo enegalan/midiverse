@@ -17,28 +17,30 @@ use Inertia\Inertia;
 |
  */
 
-Route::get('/home', function () {
-    return Inertia::render('Index');
-})->name('home');
-
-Route::get('/explore', function () {
-    return Inertia::render('Explore');
-})->name('explore');
-
-Route::get('/concerts', function () {
-    return Inertia::render('Concerts');
-})->name('concerts');
-
-Route::get('/playground', function () {
-    return Inertia::render('Playground');
-})->name('playground');
-
-Route::get('/messages', function () {
-    return Inertia::render('Messages');
-})->name('messages');
-
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/home', function () {
+        return Inertia::render('Index');
+    })->name('home');
+    
+    Route::get('/explore', function () {
+        return Inertia::render('Explore');
+    })->name('explore');
+    
+    Route::get('/concerts', function () {
+        return Inertia::render('Concerts');
+    })->name('concerts');
+    
+    Route::get('/playground', function () {
+        return Inertia::render('Playground');
+    })->name('playground');
+    
+    Route::get('/messages', function () {
+        return Inertia::render('Messages');
+    })->name('messages');
+});
 Route::get('/', function () {
-    return Inertia::render('Register');
-})->name('register');
-
+    if (Auth::check()) {
+        return Redirect::route('home');
+    }
+});
 require __DIR__ . '/auth.php';

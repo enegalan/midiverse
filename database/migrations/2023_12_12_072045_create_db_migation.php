@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('lastname');
-            $table->date('birthdate');
+            $table->date('birthdate')->nullable(true);
             $table->string('avatar')->nullable(true);
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable(true);
+            $table->string('sub')->nullable(true); // Google auth verification password
             $table->rememberToken();
             $table->timestamps();
         });
