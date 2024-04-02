@@ -3,6 +3,8 @@ import { router } from '@inertiajs/react'
 import { useForm } from "@inertiajs/inertia-react";
 import PropTypes from "prop-types";
 import '../../css/Inputs.css';
+import { InputText } from "primereact/inputtext";
+import { Password } from 'primereact/password';
 
 
 const SearchInput = ({ placeholder = '', action = null }) => {
@@ -16,7 +18,7 @@ const SearchInput = ({ placeholder = '', action = null }) => {
         setData('query', newQueryValue);
         if (action) {
             setData('query', newQueryValue);
-            if (action !== null) router.get(action, {'query': newQueryValue}, { preserveState: true })
+            if (action !== null) router.get(action, { 'query': newQueryValue }, { preserveState: true })
         }
     };
 
@@ -33,10 +35,10 @@ const SearchInput = ({ placeholder = '', action = null }) => {
                 placeholder={placeholder}
                 onChange={handleSearchChange}
                 value={data.query}
-                className="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5"/>
-                {errors.query && (
-                    <div className="text-red-500">{errors.query}</div>
-                )}
+                className="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5" />
+            {errors.query && (
+                <div className="text-red-500">{errors.query}</div>
+            )}
         </div>
     );
 };
@@ -49,7 +51,7 @@ const DragAndDropBox = () => {
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
         const fileList = document.getElementById('fileList');
-    
+
         /* When the user is dragging a file over the box */
         const dragOver = (e) => {
             e.preventDefault();
@@ -61,12 +63,12 @@ const DragAndDropBox = () => {
             dropzone.classList.remove('border-blue-500', 'border-2');
             dropzone.classList.add('border-gray-300', 'border-2');
         }
-        
+
         const drop = (e) => {
             e.preventDefault();
             dropzone.classList.remove('border-blue-500', 'border-2');
             dropzone.classList.add('border-gray-300', 'border-2');
-    
+
             const files = e.dataTransfer.files;
             handleFiles(files);
         }
@@ -75,12 +77,12 @@ const DragAndDropBox = () => {
             const files = e.target.files;
             handleFiles(files);
         }
-    
+
         dropzone.addEventListener('dragover', dragOver);
         dropzone.addEventListener('dragleave', dragLeave);
         dropzone.addEventListener('drop', drop);
         fileInput.addEventListener('change', change);
-    
+
         function handleFiles(files) {
             fileList.innerHTML = '';
             for (const file of files) {
@@ -94,7 +96,7 @@ const DragAndDropBox = () => {
             formData.append("file", files[0]);
             router.post('/preview', formData);
         }
-    
+
         function formatBytes(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -103,8 +105,8 @@ const DragAndDropBox = () => {
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
     }, []);
-    
-    return(
+
+    return (
         <div className="w-full max-w-[1000px] p-9 bg-white rounded-lg shadow-lg">
             <h1 className="text-center text-2xl sm:text-2xl font-semibold mb-4 text-gray-800">File Drop and Upload</h1>
             <div className="bg-gray-100 p-8 text-center rounded-lg border-dashed border-2 border-gray-300 hover:border-blue-500 transition duration-300 ease-in-out" id="dropzone">
@@ -115,7 +117,7 @@ const DragAndDropBox = () => {
                     <span className="text-gray-600">Drag and drop your files here</span>
                     <span className="text-gray-500 text-sm">(or click to select)</span>
                 </label>
-                <input type="file" id="fileInput" accept=".stl" className="hidden" multiple/>
+                <input type="file" id="fileInput" accept=".stl" className="hidden" multiple />
             </div>
             <div className="mt-6 text-center" id="fileList"></div>
         </div>
@@ -133,7 +135,7 @@ const TextInput = ({ name = "", placeholder = "", width = "full", type = "text",
 
     return (
         <div className="relative mt-2 z-20">
-            <input id={id} maxLength={maxLength} minLength={minLength} name={name} className={`textInput ${width} ${hasContentClass}`} onChange={handleInputChange} type={type} placeholder="" value={inputValue}/>
+            <input id={id} maxLength={maxLength} minLength={minLength} name={name} className={`textInput ${width} ${hasContentClass}`} onChange={handleInputChange} type={type} placeholder="" value={inputValue} />
             {icon && <div className="flex w-[35px] h-full items-center absolute top-0"><i className={`${icon}`}></i></div>}
             {image && <img className="w-[20px] h-[20px]" src={`${image}`} alt="icon" />}
             {(icon || image) && <label>{placeholder}</label>}
@@ -161,53 +163,28 @@ const TextAreaInput = ({ placeholder = "", rows = 20, cols = 20 }) => {
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
     }
-    
+
     const hasContentClass = inputValue ? 'has-content' : '';
 
     return (
         <div className="relative mt-2 z-20">
-            <textarea cols={cols} rows={rows} className={`textAreaInput ${hasContentClass}`} onChange={handleInputChange} placeholder={placeholder}/>
+            <textarea cols={cols} rows={rows} className={`textAreaInput ${hasContentClass}`} onChange={handleInputChange} placeholder={placeholder} />
         </div>
     );
 }
 TextAreaInput.propTypes = {
     placeholder: PropTypes.string,
-    rows: PropTypes.string||PropTypes.number,
-    cols: PropTypes.string||PropTypes.number,
+    rows: PropTypes.string || PropTypes.number,
+    cols: PropTypes.string || PropTypes.number,
 };
 
 const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const [filters, setFilters] = useState(null);
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
-    useEffect(() => {
-        if (selectedOptions.length > 0) {
-            // This effect runs every time selectedOptions changes
-
-            const newFilters = {
-                filters: {
-                    [name]: selectedOptions,
-                },
-            };
-
-            if (JSON.stringify(filters) !== JSON.stringify(newFilters)) {
-                if (action) {
-                    router.get(action, { filters: newFilters }, { preserveState: true });
-                }
-                setFilters(newFilters);
-            }
-        } else {
-            if (filters !== null) {
-                router.get('/market');
-                setFilters(null);
-            }
-        }
-    }, [selectedOptions, action, name, router, filters]);
-    
 
     const handleCheckboxChange = (option) => {
         setSelectedOptions((prevSelectedOptions) => {
@@ -256,4 +233,40 @@ const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) 
     );
 };
 
-export { SearchInput, DragAndDropBox, TextInput, TextAreaInput, DropdownCheckbox };
+const Dropdown = ({ options = [{}], id = '', onChange = () => {}, placeholder = null }) => {
+    return (
+        <select onChange={onChange} id={id} className="min-w-[80px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            {placeholder !== null ? (
+                <option key={`${id}-placeholder`}>{placeholder}</option>
+            ) : (
+                <></>
+            )}
+            {options.map((option, index) => {
+                const { label, value } = option;
+                return (
+                    <option key={index} value={value}>{label}</option>
+                );
+            })}
+        </select>
+    );
+}
+
+const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, autoFocus = false, keyfilter = '', onChange = () => {}}) => {
+    if (type === 'text') {
+        return (
+            <span className="p-float-label">
+                <InputText keyfilter={keyfilter} autoFocus={autoFocus} disabled={disabled} id={id} value={value} onChange={onChange} className={`${className} rounded-md`} />
+                <label htmlFor={id}>{text}</label>
+            </span>
+        );
+    } else if (type === 'password') {
+        return (
+            <span className="p-float-label w-full">
+                <Password keyfilter={keyfilter} toggleMask feedback={false} className='w-full' autoFocus={autoFocus} inputId={id} disabled={disabled} value={value} onChange={onChange} inputClassName={`${className} rounded-md`} />
+                <label htmlFor={id}>{text}</label>
+            </span>
+        );
+    }
+}
+
+export { SearchInput, DragAndDropBox, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput };

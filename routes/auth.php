@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/users/login', [UserController::class, 'login'])->name('user.login');
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -21,7 +22,6 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/users/register', [UserController::class, 'store'])->name('user.register');
 
-    Route::post('/users/login', [UserController::class, 'login'])->name('user.login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
@@ -57,6 +57,6 @@ Route::middleware('auth')->group(function () {
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-    Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->name('logout');
 });
+Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');

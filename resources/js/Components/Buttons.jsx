@@ -5,6 +5,10 @@ import chroma from 'chroma-js';
 import '../../css/ButtonGlow.css';
 import { Link } from '@inertiajs/react';
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+import { router } from '@inertiajs/react';
 
 const GlowButton = ({ value = "", href = "#", backgroundColor = "#09041e", textColor = "white", image = "", imageClass = "", icon = "" }) => {
     const buttonRef = useRef(null);
@@ -180,7 +184,7 @@ const SubmitButton = ({ value = "", hoverBackgroundColor = "var(--light-grey)", 
         <div className='flex items-center gap-5'>
             {image ? <img src={`${image}`} className={`${imageClass}`} /> : ""}
             {icon ? <i className={icon}></i> : ""}
-            <input value={value} type="submit" className={`bg-[${backgroundColor}] text-[${textColor}] rounded-xl p-3 px-8 ${borderColor ? 'border-2' : ''} border-[${borderColor}] transition hover:bg-[${hoverBackgroundColor}] hover:text-[${hoverTextColor}] hover:cursor-pointer`}/>
+            <input value={value} type="submit" className={`bg-[${backgroundColor}] text-[${textColor}] rounded-xl p-3 px-8 ${borderColor ? 'border-2' : ''} border-[${borderColor}] transition hover:bg-[${hoverBackgroundColor}] hover:text-[${hoverTextColor}] hover:cursor-pointer`} />
         </div>
     );
 };
@@ -201,7 +205,7 @@ const BackButton = ({ className = "", iconClass = "", href = "index", }) => {
     return (
         <Link href={route(href)} className={defaultClass + ' ' + className}>
             <IoMdArrowRoundBack className={iconClass} />
-        </Link> 
+        </Link>
     );
 };
 BackButton.propTypes = {
@@ -210,20 +214,80 @@ BackButton.propTypes = {
     href: PropTypes.string,
 };
 
-const FollowButton = ({ id = null, action = null }) => {
+const FollowButton = ({ id = null, href = '' }) => {
     return (
-        <Link className='bg-black text-white font-bold py-2 px-4 text-sm rounded-full transition hover:bg-[var(--hover-black)]' href={''}>
+        <Link href={href} className='bg-black text-white font-bold py-2 px-4 text-sm rounded-full transition hover:bg-[var(--hover-black)]'>
             Follow
         </Link>
     )
 }
 
-const AuthButton = ({ id = null, text = '', className = '', action = null }) => {
+const AuthButton = ({ id = null, text = '', className = '', onClick = (e) => { }, href = '', disabled = false }) => {
     return (
-        <Link className={`${className} font-bold py-[0.7rem] px-4 text-sm rounded-full transition hover:bg-[var(--hover-black)]`} href={''}>
+        <Link disabled={disabled} href={href} onClick={onClick} className={`${className} font-bold py-[0.7rem] px-4 text-sm rounded-full transition hover:bg-[var(--hover-black)] ${disabled ? 'bg-[var(--hover-light)] hover:bg-[var(--hover-light)]' : ''}`}>
             {text}
         </Link>
     )
 }
 
-export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton, AuthButton };
+const GoogleLoginButton = ({ onAuth = () => {}, onAuthError = (e) => {} }) => {
+    const postSuccess = () => {
+        // Redirect logged user to home
+        router.get('/home')
+        // Other events passed by params
+        onAuth();
+    }
+    const onSuccess = async (credentialResponse) => {
+        const userCredentials = jwtDecode(credentialResponse.credential);
+        const formData = new FormData();
+        formData.append('google_user', JSON.stringify(userCredentials));
+        try {
+            await axios.post('/users/register', formData);
+            postSuccess();
+        } catch (error) {
+            try {
+                await axios.post('/users/login', formData)
+                postSuccess();
+            } catch (error2) {
+                console.error(error2)
+            }
+        }
+    };
+    const onError = (e) => {
+        onAuthError(e);
+        console.failed('Google login error: ' + e)
+    }
+    return (
+        <GoogleLogin
+            onSuccess={onSuccess}
+            onError={onError}
+        />
+    );
+}
+
+const CloseButton = ({ onClick }) => {
+    return (
+        <button
+            onClick={onClick}
+            className="my-2 hover:cursor-pointer p-2 rounded-full transition duration-300 hover:bg-gray-200 focus:outline-none focus:bg-gray-300"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                />
+            </svg>
+        </button>
+    );
+};
+
+
+export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton, AuthButton, GoogleLoginButton, CloseButton };

@@ -2,7 +2,6 @@
 @import url('../css/Colors.css');
 
 * {
-  margin: 0;
   box-sizing: border-box;
   padding: 0;
   scrollbar-width: auto;
@@ -88,4 +87,28 @@ body {
 #buttons-container {
   display: flex;
   justify-content: center;
+}
+
+svg:focus {
+  outline: none;
+}
+
+/* PrimeReact CSS that for any reason is overwritten by tailwindcss or other styles */
+.p-invalid {
+  border-color: #e24c4c !important;
+}
+.p-inputtext {
+  padding: 0.75rem 0.75rem !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none !important;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 6px !important;
+}
+.p-disabled, .p-disabled * {
+  cursor: default !important;
+  pointer-events: none;
+  user-select: none;
+  background: var(--light-grey);
+  color: var(--grey);
 }

@@ -1,6 +1,9 @@
 import './bootstrap';
 import '../css/app.css';
 import "@/App.css";
+import 'primeicons/primeicons.css';
+import 'primereact/resources/primereact.css';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
 
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
@@ -15,7 +18,15 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render(<><GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_API}><PrimeReactProvider><App {...props} /></PrimeReactProvider></GoogleOAuthProvider></>);
+        root.render(
+            <>
+                <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_API}>
+                    <PrimeReactProvider>
+                        <App {...props} />
+                    </PrimeReactProvider>
+                </GoogleOAuthProvider>
+            </>
+        );
     },
     progress: {
         color: '#4B5563',

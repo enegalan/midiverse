@@ -43,4 +43,8 @@ Route::get('/', function () {
         return Redirect::route('home');
     }
 });
+
+// Get Data Routes
+Route::get('/user/email/exists/', [UserController::class,'existsByEmail'])->name('user.exists.email');
+
 require __DIR__ . '/auth.php';

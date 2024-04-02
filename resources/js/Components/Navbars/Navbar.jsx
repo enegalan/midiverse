@@ -260,9 +260,9 @@ const Navbar = ({
                             </a>
                         </ul>
                     </div>
-                    <div className="hidden flex-1 lg:flex justify-end items-center xl:gap-4 gap-2">
+                    <div className="flex-1 lg:flex justify-end items-center xl:gap-4 gap-2">
                         {user ? (
-                            <div className="hidden sm:flex sm:items-center sm:ms-6">
+                            <div className="flex items-center ms-6">
                                 <div className="ms-3 relative">
                                     <Dropdown>
                                         <Dropdown.Trigger>
@@ -324,64 +324,7 @@ const Navbar = ({
                         )}
                     </div>
 
-                    {isMenuOpen && (
-                        <div className="lg:hidden w-full text-center" style={menuStyle}>
-                            <div className="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
-                            <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-[var(--dark-gray)] border-r overflow-y-auto">
-                                <div className="flex items-center mb-8">
-                                    <div className="flex items-center gap-5 mr-auto text-3xl font-bold leading-none">
-                                        <Link href="/">
-                                            <img src={logoWhite} alt="Logo" />
-                                        </Link>
-                                        <span className="text-white text-4xl font-bold">
-                                            miDiverse
-                                        </span>
-                                    </div>
-                                    <button className="navbar-close" onClick={toggleNavbar}>
-                                        <svg
-                                            className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2"
-                                                d="M6 18L18 6M6 6l12 12"
-                                            ></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div>
-                                    {/*Menu links*/}
-                                    <ul>
-                                        {mobileLinks.map((link) => (
-                                            <li id={link.id} className="mb-1">
-                                                <Link
-                                                    href={link.href}
-                                                    className="block p-4 text-lg transition font-semibold text-gray-400 hover:bg-blue-50 hover:text-[--blue] rounded"
-                                                >
-                                                    <span>{link.title}</span>
-                                                </Link>
-                                            </li>
-                                        ))}
-                                        {isAdmin && (
-                                            <li className="mb-1">
-                                                <Link
-                                                    className="block p-4 text-lg transition font-semibold text-gray-400 hover:bg-blue-50 hover:text-[--blue] rounded"
-                                                    href={''}
-                                                >
-                                                    Admin Dashboard
-                                                </Link>
-                                            </li>
-                                        )}
-                                    </ul>
-                                </div>
-                            </nav>
-                        </div>
-                    )}
+                    
                 </div>
             </header>
         </>
