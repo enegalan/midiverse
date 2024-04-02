@@ -19,7 +19,8 @@ use Inertia\Inertia;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', function () {
-        return Inertia::render('Index');
+        $user = auth()->user();
+        return Inertia::render('Index', compact('user'));
     })->name('home');
     
     Route::get('/explore', function () {

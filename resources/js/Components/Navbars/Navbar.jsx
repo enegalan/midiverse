@@ -34,6 +34,8 @@ import PropTypes from "prop-types";
 
 import { Link } from "@inertiajs/react";
 
+import { Avatar } from "primereact/avatar";
+
 const Navbar = ({
     user = null,
     className = "",
@@ -42,24 +44,12 @@ const Navbar = ({
 
     if (user && user.hasOwnProperty('roles')) isAdmin = user.roles.some(role => role.name === 'admin');
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    var userInitials = user.name[0].toUpperCase();
+    if (user.hasOwnProperty('lastname') && user.lastname && user.lastname.length > 0) {
+        userInitials += user.lastname[0].toUpperCase();
+    }
+
     const [webRef, setWebRef] = useState(localStorage.getItem('web-ref') ? localStorage.getItem('web-ref') : 'home');
-
-    useEffect(() => {
-        setIsMenuOpen(false);
-    }, [location]);
-
-    const toggleNavbar = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-
-    const menuStyle = {
-        height: isMenuOpen ? '100vh' : '0',
-        overflow: isMenuOpen ? 'visible' : 'hidden',
-        transition: 'height 0.3s ease-in-out',
-        width: '45%',
-        zIndex: 1000,
-    };
 
     const iconWidth = '26.5px';
 
@@ -67,6 +57,41 @@ const Navbar = ({
         var dataRef = e.target.getAttribute('data-ref');
         if (dataRef !== null) setWebRef(dataRef);
         localStorage.setItem('web-ref', dataRef);
+    }
+
+    const [isLogoutModal, setIsLogoutModal] = useState(false);
+
+    const toggleLogoutModal = () => {
+        setIsLogoutModal(!isLogoutModal);
+    }
+
+    // Close all dropdowns when click on outside a dropdown
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const dropdownElements = document.querySelectorAll(".dropdown");
+            let outsideClick = true;
+            for (let dropdown of dropdownElements) {
+                if (dropdown.contains(event.target)) {
+                    outsideClick = false;
+                }
+            }
+            if (outsideClick) {
+                setIsLogoutModal(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isLogoutModal]);
+
+    const handleLogout = (e) => {
+        console.log('hello');
+        try {
+            axios.get('/logout')
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     const menuLinks = [
@@ -226,7 +251,7 @@ const Navbar = ({
                             onClick={onLinkClick}
                             href='/home'
                             data-ref='home'
-                            className="text-4xl mb-4 font-bold justify-start flex gap-8 self-start"
+                            className="text-4xl mb-4 font-bold justify-center flex gap-8 self-center"
                         >
                             <img className="w-10 pointer-events-none" src={logoBlack} alt="Logo" />
                         </Link>
@@ -235,12 +260,12 @@ const Navbar = ({
                         {/* Menu links */}
                         <ul className="justify-center flex flex-col xl:[&>li]:px-4 xl:gap-2">
                             {menuLinks.map((link) => (
-                                <li data-ref={link.ref} className="xl:px-1 transition rounded-full self-start hover:bg-gray-300 w-full" key={link.id}>
+                                <li data-ref={link.ref} className="xl:px-1 transition rounded-full self-center hover:bg-gray-300 w-full" key={link.id}>
                                     <Link
                                         onClick={onLinkClick}
                                         href={link.href}
                                         data-ref={link.ref}
-                                        className="p-3 xl:p-3 text-lg flex items-center xl:items-center gap-3"
+                                        className="p-3 xl:p-3 text-lg flex items-center justify-center xl:items-center gap-3"
                                     >
                                         <div className='pointer-events-none'>
                                             {webRef === link.ref ? link.activeIcon : link.icon}
@@ -260,71 +285,29 @@ const Navbar = ({
                             </a>
                         </ul>
                     </div>
-                    <div className="flex-1 lg:flex justify-end items-center xl:gap-4 gap-2">
-                        {user ? (
-                            <div className="flex items-center ms-6">
-                                <div className="ms-3 relative">
-                                    <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <span className="inline-flex rounded-md border border-slate-400">
-                                                <button
-                                                    type="button"
-                                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                                >
-                                                    <div className="">
-                                                        {user.avatar ? (
-                                                            <img className="w-7 h-7" src={`/storage/avatars/${user.avatar}`} alt="Avatar" />
-                                                        ) : (
-                                                            <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center content-center justify-center text-white text-xl font-bold">
-                                                                {user.name[0].toUpperCase() + user.lastname[0].toUpperCase()}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <p className="ms-2 font-medium">{user.name}</p>
-                                                </button>
-                                            </span>
-                                        </Dropdown.Trigger>
-
-                                        <Dropdown.Content>
-                                            <h3 className=" ms-4 text-sm text-slate-700 mt-3">ACCOUNT</h3>
-                                            <div className="flex items-center content-center justify-center mt-3 mb-3">
-
-                                                {user.avatar ? (
-                                                    <img src={`/storage/avatars/${user.avatar}`} className="w-10 h-10 ms-4" alt="Avatar" />
-                                                ) : (
-                                                    <div className="w-10 h-10 bg-blue-500 ms-4 rounded-full flex items-center content-center justify-center text-white text-2xl font-bold">
-                                                        {user.name[0].toUpperCase() + user.lastname[0].toUpperCase()}
-                                                    </div>
-                                                )}
-
-                                                <div className="flex flex-col overflow-hidden">
-                                                    <p className="ms-4 text-slate-700 font-bold">{user.name} {user.lastname}</p>
-                                                    <p className="ms-4 text-slate-700 me-4 truncate">{user.email}</p>
-                                                </div>
-                                            </div>
-
-                                            <hr></hr>
-                                            {isAdmin && (<Dropdown.Link className="rounded" href={''}>Admin Dashboard</Dropdown.Link>)}
-                                            {isAdmin && (<hr />)}
-                                            <Dropdown.Link
-                                                href={''}
-                                                method="post"
-                                                as="button"
-                                                className="rounded text-red-700"
-                                            >
-                                                Log Out
-                                            </Dropdown.Link>
-                                        </Dropdown.Content>
-                                    </Dropdown>
-                                </div>
-                            </div>
+                    <div className="absolute mt-24 flex-1 flex justify-center items-center">
+                        {user.avatar ? (
+                            <span onClick={toggleLogoutModal} className='px-2 py-2 flex justify-center items-center transition rounded-full hover:cursor-pointer hover:bg-gray-300 w-full"'>
+                                <Avatar image={user.avatar} size="large" shape="circle" />
+                            </span>
                         ) : (
-                            <>
-                            </>
+                            <span onClick={toggleLogoutModal} className='px-1 p-3 flex justify-center items-center transition rounded-full hover:cursor-pointer hover:bg-gray-300 w-full"'>
+                                <Avatar label={userInitials} size="large" shape="circle" style={{ backgroundColor: '#2196F3', color: '#ffffff' }} />
+                            </span>
                         )}
+                        {isLogoutModal ? (
+                            <section className='dropdown absolute top-3 left-0'>
+                                <div className='absolute -top-20 left-4 min-w-[150px] bg-white rounded-lg shadow py-2'>
+                                    <div className='flex flex-col gap-2'>
+                                        <Link href={route('logout')} className='font-bold px-4 py-2 hover:bg-[var(--hover-light)]'>Log out</Link>
+                                    </div>
+                                </div>
+                                <div className="absolute -top-6 left-6 w-5 flex justify-center overflow-hidden">
+                                    <div className="shadow h-3 w-3 bg-white -rotate-45 transform origin-top-left"></div>
+                                </div>
+                            </section>
+                        ) : (<></>)}
                     </div>
-
-                    
                 </div>
             </header>
         </>

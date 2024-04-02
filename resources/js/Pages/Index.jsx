@@ -7,14 +7,14 @@ import RecentPosts from "@/Components/Sections/RecentPosts";
 import { SearchInput } from "@/Components/Inputs";
 import ForYouAndFollowingNavbar from "@/Components/Navbars/ForYouAndFollowingNavbar";
 
-export default function Index() {
+export default function Index({ user = null }) {
     const [isForYouActive, setForYouActive] = useState(true);
     const getHomeSectionStatus = (status) => {
         setForYouActive(status === 'for_you');
     };
     return (
         <>
-            <MainLayout headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
+            <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
                 <section className="pb-16 border-r relative max-w-[800px] flex-1">
                     <div className="w-full h-full">
                         <ForYouAndFollowingNavbar getHomeSectionStatus={getHomeSectionStatus} />
