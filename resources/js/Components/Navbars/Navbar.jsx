@@ -265,7 +265,7 @@ const Navbar = ({
                                         onClick={onLinkClick}
                                         href={link.href}
                                         data-ref={link.ref}
-                                        className="p-3 xl:p-3 text-lg flex items-center justify-center xl:items-center gap-3"
+                                        className="p-3 xl:p-3 text-lg flex items-center justify-center xl:justify-start xl:items-center gap-3"
                                     >
                                         <div className='pointer-events-none'>
                                             {webRef === link.ref ? link.activeIcon : link.icon}

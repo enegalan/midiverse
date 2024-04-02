@@ -9,7 +9,7 @@ import GroupCard from '@/Components/Cards/GroupCard';
 import PeopleSection from '@/Components/Sections/PeopleSection';
 import ExploreNavbar from '@/Components/Navbars/ExploreNavbar';
 
-export default function Explore({ users = [], posts = [], concerts = [], groups = [] }) {
+export default function Explore({ user = null, users = [], posts = [], concerts = [], groups = [] }) {
     const [exploreSection, setExploreSection] = useState(localStorage.getItem('explore_default_section') ? localStorage.getItem('explore_default_section') : 'top')
     users = [
         {
@@ -149,7 +149,7 @@ export default function Explore({ users = [], posts = [], concerts = [], groups 
     };
     return (
         <>
-            <MainLayout headerClassName='backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50' defaultBackgroundColor='transparent' defaultTextColor='var(--main-blue)' dynamicBackground={false}>
+            <MainLayout user={user} headerClassName='backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50' defaultBackgroundColor='transparent' defaultTextColor='var(--main-blue)' dynamicBackground={false}>
                 <section className='pb-16 border-r relative max-w-[800px] flex-1'>
                     <div className='w-full h-full'>
                         <div className='px-3 py-3'>

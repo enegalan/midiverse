@@ -5,7 +5,7 @@ import { SearchInput } from '@/Components/Inputs';
 import ConcertCard from '@/Components/Cards/ConcertCard';
 import ConcertsNavbar from '@/Components/Navbars/ConcertsNavbar';
 
-export default function Concerts({ users = [], concerts = [] }) {
+export default function Concerts({ user = null, users = [], concerts = [] }) {
     const [concertsSection, setConcertsSection] = useState(localStorage.getItem('concerts_default_section') ? localStorage.getItem('concerts_default_section') : 'new')
     users = [
         {
@@ -107,7 +107,7 @@ export default function Concerts({ users = [], concerts = [] }) {
     }
     return (
         <>
-            <MainLayout headerClassName='backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50' defaultBackgroundColor='transparent' defaultTextColor='var(--main-blue)' dynamicBackground={false}>
+            <MainLayout user={user} headerClassName='backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50' defaultBackgroundColor='transparent' defaultTextColor='var(--main-blue)' dynamicBackground={false}>
                 <section className='pb-16 border-r relative max-w-[800px] flex-1'>
                     <div className='px-3 py-3'>
                         <SearchInput placeholder='Search' />

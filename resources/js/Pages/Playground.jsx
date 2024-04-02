@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Playground() {
+export default function Playground({ user = null}) {
     useEffect(() => {
         // Dynamically add CSS files to the document head
         const addCssFile = (href) => {

@@ -20,23 +20,32 @@ use Inertia\Inertia;
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', function () {
         $user = auth()->user();
+        $user->roles();
         return Inertia::render('Index', compact('user'));
     })->name('home');
     
     Route::get('/explore', function () {
-        return Inertia::render('Explore');
+        $user = auth()->user();
+        $user->roles();
+        return Inertia::render('Explore', compact('user'));
     })->name('explore');
     
     Route::get('/concerts', function () {
-        return Inertia::render('Concerts');
+        $user = auth()->user();
+        $user->roles();
+        return Inertia::render('Concerts', compact('user'));
     })->name('concerts');
     
     Route::get('/playground', function () {
-        return Inertia::render('Playground');
+        $user = auth()->user();
+        $user->roles();
+        return Inertia::render('Playground', compact('user'));
     })->name('playground');
     
     Route::get('/messages', function () {
-        return Inertia::render('Messages');
+        $user = auth()->user();
+        $user->roles();
+        return Inertia::render('Messages', compact('user'));
     })->name('messages');
 });
 Route::get('/', function () {
