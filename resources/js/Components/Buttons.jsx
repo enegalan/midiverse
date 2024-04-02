@@ -200,18 +200,20 @@ SubmitButton.propTypes = {
     icon: PropTypes.string,
 };
 
-const BackButton = ({ className = "", iconClass = "", href = "index", }) => {
-    const defaultClass = "bg-[lightgrey] w-[40px] p-3 rounded-lg mb-5 self-start transition hover:bg-[#bbbbbb]";
+const BackButton = ({ className = '', iconClass = '' }) => {
+    const defaultClass = "w-[40px] p-3 rounded-full self-start transition hover:bg-[var(--hover-light)]";
+    const handleClick = () => {
+        window.history.back();
+    };
     return (
-        <Link href={route(href)} className={defaultClass + ' ' + className}>
+        <Link onClick={handleClick} className={`${defaultClass} ${className}`}>
             <IoMdArrowRoundBack className={iconClass} />
         </Link>
     );
 };
 BackButton.propTypes = {
-    divClass: PropTypes.string,
+    className: PropTypes.string,
     iconClass: PropTypes.string,
-    href: PropTypes.string,
 };
 
 const FollowButton = ({ id = null, href = '' }) => {

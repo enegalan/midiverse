@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -21,8 +22,7 @@ class UserController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): Response
-    {
+    public function edit(Request $request): Response {
         $this->getRoles();
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
@@ -30,8 +30,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function avatar(Request $request): RedirectResponse
-    {
+    public function avatar(Request $request): RedirectResponse {
         $request->validate([
             'avatar' => ['required', 'image', 'max:2048'],
         ]);
@@ -53,8 +52,7 @@ class UserController extends Controller
         return redirect()->route('profile.edit')->with('status', 'Avatar uploaded successfully.');
     }
 
-    public function deleteAvatar(Request $request)
-    {
+    public function deleteAvatar(Request $request) {
         $user = $request->user();
 
         if ($user->avatar) {
@@ -69,8 +67,7 @@ class UserController extends Controller
     /**
      * Store user.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         if ($request->has('google_user')) {
             $userRequest = json_decode($request->input('google_user'), true);
             if (array_key_exists('sub', $userRequest)) {
@@ -141,8 +138,7 @@ class UserController extends Controller
     /**
      * Login user.
      */
-    public function login(Request $request)
-    {
+    public function login(Request $request) {
         if ($request->has('google_user')) {
             $googleUser = json_decode($request->input('google_user'), true);
             $user = User::where('email', $googleUser['email'])->where('sub', $googleUser['sub'])->first();
@@ -173,8 +169,7 @@ class UserController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
+    public function update(ProfileUpdateRequest $request): RedirectResponse {
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
@@ -189,8 +184,7 @@ class UserController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
-    {
+    public function destroy(Request $request): RedirectResponse {
         $request->validate([
             'password' => ['required', 'current_password'],
         ]);
@@ -207,8 +201,7 @@ class UserController extends Controller
         return Redirect::to('/');
     }
 
-    public static function getRoles()
-    {
+    public static function getRoles() {
         if (auth()->check()) {
             $roles = auth()->user()->roles->pluck('name')->toArray();
             return $roles;
@@ -216,8 +209,108 @@ class UserController extends Controller
         return array('You are not logged in.');
     }
 
-    public function restore($id)
-    {
+    public static function getPosts() {
+        if (auth()->check()) {
+            $posts = auth()->user()->posts->pluck('name')->toArray();
+            return $posts;
+        }
+        return array('You are not logged in.');
+    }
+
+    public static function getFollowings() {
+        if (auth()->check()) {
+            $followings = auth()->user()->followings->pluck('name')->toArray();
+            return $followings;
+        }
+        return array('You are not logged in.');
+    }
+
+    public static function getFollowers() {
+        if (auth()->check()) {
+            $followers = auth()->user()->followers->pluck('name')->toArray();
+            return $followers;
+        }
+        return array('You are not logged in.');
+    }
+
+    public static function getUserPostsGivenLikes() {
+        if (auth()->check()) {
+            $user = auth()->user();
+            $postIds = $user->posts->pluck('id')->toArray();
+            $postLikesGiven = DB::table('post_likes')
+                                ->whereIn('post_id', $postIds)
+                                ->pluck('user_id')
+                                ->toArray();
+
+            $user->post_given_likes = $postLikesGiven;
+
+            return $postLikesGiven;
+        }
+        return array('You are not logged in.');
+    }
+
+    public static function getUserPostsReceivedLikes() {
+        if (auth()->check()) {
+            $user = auth()->user();
+            $postLikesReceived = $user->posts->flatMap(function ($post) {
+                return DB::table('post_likes')
+                            ->where('post_id', $post->id)
+                            ->pluck('user_id')
+                            ->toArray();
+            });
+
+            $user->post_received_likes = $postLikesReceived;
+
+            return $postLikesReceived;
+        }
+        return array('You are not logged in.');
+    }
+
+    public static function getUserConcertsGivenLikes() {
+        if (auth()->check()) {
+            $user = auth()->user();
+            $concertIds = DB::table('concerts')
+                            ->where('user_id', $user->id)
+                            ->pluck('id')
+                            ->toArray();
+            $concertLikesGiven = DB::table('concert_likes')
+                                        ->whereIn('concert_id', $concertIds)
+                                        ->pluck('user_id')
+                                        ->toArray();
+
+            $user->concert_given_likes = $concertLikesGiven;
+
+            return $concertLikesGiven;
+        }
+        return array('You are not logged in.');
+    }
+
+    public static function getUserConcertsReceivedLikes() {
+        if (auth()->check()) {
+            $user = auth()->user();
+            $concertLikesReceived = DB::table('concert_likes')
+                                        ->where('user_id', $user->id)
+                                        ->pluck('concert_id')
+                                        ->toArray();
+
+            $user->concert_received_likes = $concertLikesReceived;
+
+            return $concertLikesReceived;
+        }
+        return array('You are not logged in.');
+    }
+
+    public static function getUserMidis () {
+        if (auth()->check()) {
+            $user = auth()->user();
+            $midis = $user->midis->pluck('midi')->toArray();
+            $user->midis = $midis;
+            return $midis;
+        }
+        return array('You are not logged in.');
+    }
+
+    public function restore($id) {
         $user = User::withTrashed()->find($id);
 
         if ($user) {
@@ -226,15 +319,13 @@ class UserController extends Controller
             abort('402', 'User not found');
         }
     }
-    public function dashboard()
-    {
+    public function dashboard() {
         $user = User::findOrFail(auth()->user()->id);
         $user->roles;
         return Inertia::render('', compact('user', 'orders', 'wishlist'));
     }
 
-    public function existsByEmail(Request $request)
-    {
+    public function existsByEmail(Request $request) {
         $email = $request->input('email');
         $user = User::where('email', $email)->first();
         if ($user) {

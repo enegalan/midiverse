@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('lastname')->nullable(true);
             $table->date('birthdate')->nullable(true);
             $table->string('avatar')->nullable(true);
+            $table->string('banner')->nullable(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable(true);
             $table->string('sub')->nullable(true); // Google auth verification password

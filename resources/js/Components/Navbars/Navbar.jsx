@@ -28,6 +28,8 @@ import { IoSettingsSharp } from "react-icons/io5";
 
 import { MdOutlinePiano } from "react-icons/md";
 
+import { BsThreeDots } from "react-icons/bs";
+
 
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
@@ -145,7 +147,7 @@ const Navbar = ({
         },
         {
             title: 'Profile',
-            href: '/',
+            href: '/profile',
             id: 'profile',
             ref: 'profile',
             icon: <FaRegUser className={`text-[22px] ml-[2px]`} />,
@@ -199,7 +201,7 @@ const Navbar = ({
     const mobileLinks = [
         {
             title: 'Profile',
-            href: '/',
+            href: '/profile',
             id: 'm-profile',
             ref: 'profile',
             icon: '',
@@ -285,13 +287,21 @@ const Navbar = ({
                             </a>
                         </ul>
                     </div>
-                    <div className="absolute mt-24 flex-1 flex justify-center items-center">
+                    <div className="absolute mt-24 xl:mt-1 flex-1 flex justify-center items-center">
                         {user.avatar ? (
-                            <span onClick={toggleLogoutModal} className='px-2 py-2 flex justify-center items-center transition rounded-full hover:cursor-pointer hover:bg-gray-300 w-full"'>
+                            <span onClick={toggleLogoutModal} className='px-2 py-2 flex gap-3 justify-center items-center transition rounded-full hover:cursor-pointer hover:bg-[var(--hover-light)] w-full"'>
                                 <Avatar image={user.avatar} size="large" shape="circle" />
+                                {/* <img src={'https://lh3.googleusercontent.com/a/ACg8ocLHGmAZcqZaiWkBKYTc5PM7K6kVberb2KrzSLFMfBB_agI=s96-c'} alt="User avatar" /> */}
+                                <div className='hidden xl:flex flex-col'>
+                                    <span className='font-bold'>{user.name}</span>
+                                    <span className='text-sm text-[var(--grey)]'>@{user.username}</span>
+                                </div>
+                                <div className='hidden xl:flex pr-2'>
+                                    <BsThreeDots />
+                                </div>
                             </span>
                         ) : (
-                            <span onClick={toggleLogoutModal} className='px-2 py-2 flex justify-center items-center transition rounded-full hover:cursor-pointer hover:bg-gray-300 w-full"'>
+                            <span onClick={toggleLogoutModal} className='px-2 py-2 flex justify-center items-center transition rounded-full hover:cursor-pointer hover:bg-[var(--hover-light)] w-full"'>
                                 <Avatar label={userInitials} size="large" shape="circle" style={{ backgroundColor: '#2196F3', color: '#ffffff' }} />
                             </span>
                         )}
