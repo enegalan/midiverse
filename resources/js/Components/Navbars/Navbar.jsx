@@ -291,7 +291,7 @@ const Navbar = ({
                                 <Avatar image={user.avatar} size="large" shape="circle" />
                             </span>
                         ) : (
-                            <span onClick={toggleLogoutModal} className='px-1 p-3 flex justify-center items-center transition rounded-full hover:cursor-pointer hover:bg-gray-300 w-full"'>
+                            <span onClick={toggleLogoutModal} className='px-2 py-2 flex justify-center items-center transition rounded-full hover:cursor-pointer hover:bg-gray-300 w-full"'>
                                 <Avatar label={userInitials} size="large" shape="circle" style={{ backgroundColor: '#2196F3', color: '#ffffff' }} />
                             </span>
                         )}
