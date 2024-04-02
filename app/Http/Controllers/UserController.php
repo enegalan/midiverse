@@ -201,7 +201,22 @@ class UserController extends Controller
         return Redirect::to('/');
     }
 
-    public static function getRoles() {
+    public static function getProfileData ($user) {
+        if ($user['name'] === auth()->user()->name) {
+            $user = auth()->user();
+        }
+        app()->call([self::class, 'getRoles'], compact('user'));
+        app()->call([self::class, 'getPosts'], compact('user'));
+        app()->call([self::class, 'getFollowers'], compact('user'));
+        app()->call([self::class, 'getFollowings'], compact('user'));
+        app()->call([self::class, 'getUserPostsGivenLikes'], compact('user'));
+        app()->call([self::class, 'getUserPostsReceivedLikes'], compact('user'));
+        app()->call([self::class, 'getUserConcertsGivenLikes'], compact('user'));
+        app()->call([self::class, 'getUserConcertsReceivedLikes'], compact('user'));
+        app()->call([self::class, 'getUserMidis'], compact('user'));
+    }
+
+    public static function getRoles($user) {
         if (auth()->check()) {
             $roles = auth()->user()->roles->pluck('name')->toArray();
             return $roles;

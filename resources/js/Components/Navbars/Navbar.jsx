@@ -147,7 +147,7 @@ const Navbar = ({
         },
         {
             title: 'Profile',
-            href: '/profile',
+            href: '/' + user.username,
             id: 'profile',
             ref: 'profile',
             icon: <FaRegUser className={`text-[22px] ml-[2px]`} />,
@@ -201,7 +201,7 @@ const Navbar = ({
     const mobileLinks = [
         {
             title: 'Profile',
-            href: '/profile',
+            href: '/' + user.username,
             id: 'm-profile',
             ref: 'profile',
             icon: '',

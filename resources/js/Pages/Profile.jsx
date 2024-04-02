@@ -37,21 +37,21 @@ export default function Profile({ user = null }) {
         // Implement the logic for rendering:
         // concert_given_likes & post_given_likes
         // to render all concerts and posts that have been liked by the user in the correct date order
-        return user.likes.map((like) => <>Like</>);
+        //return user.likes.map((like) => <>Like</>);
     };
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
                 <div className='flex flex-col w-full' >
                     <ProfileTopNavbar user={user} />
-                    <section className="pb-16 border-r relative max-w-[800px] flex-1">
+                    <section className="pb-16 border-r relative flex-1">
                         <div className="w-full h-full">
                             <div id="profile-header">
                                 <div className={`min-h-[200px] w-full ${user.banner === null ? 'bg-[var(--hover-lightblue)]' : ''}`} id="banner">
                                     {user.banner !== null ? (<img src={user.banner} alt="Banner" />) : (<></>)}
                                 </div>
                                 <div className={`-mt-[50px] lg:-mt-[75px] ml-5`} id="avatar">
-                                    <div className='border-4 border-white rounded-full w-fit flex justify-center items-center'>
+                                    <div className='min-h-[10rem] border-4 border-white rounded-full w-fit flex justify-center items-center'>
                                         <img className='rounded-full h-auto w-24 lg:w-36' src={user.avatar !== null ? user.avatar : userInitials} alt="Avatar" />
                                     </div>
                                 </div>
