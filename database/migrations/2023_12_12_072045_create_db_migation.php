@@ -33,6 +33,9 @@ return new class extends Migration
             $table->id()->autoIncrement();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('midi')->nullable(false);
+            $table->string('name')->nullable(false);
+            $table->string('duration')->nullable(false);
+            $table->string('description')->nullable(true);
             $table->timestamps();
         });
 

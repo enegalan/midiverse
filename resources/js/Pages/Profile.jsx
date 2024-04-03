@@ -9,6 +9,7 @@ import PostCard from "@/Components/Cards/PostCard";
 import { IconButton } from "@/Components/Buttons";
 import { AiOutlineMessage } from "react-icons/ai";
 import { Link } from "@inertiajs/react";
+import MidiCard from "@/Components/Cards/MidiCard";
 
 export default function Profile({ auth_user = null, user = null }) {
     var isAuthUserProfile = false;
@@ -37,7 +38,7 @@ export default function Profile({ auth_user = null, user = null }) {
         // TODO: When Save Midi feature is for implement:
         // Create MidiCard
         if (user.midis.length === 0) return;
-        return user.midis.map((midi) => <>Midi</>);
+        return user.midis.map((midi) => <MidiCard user={user} midi={midi}/>);
     };
     const renderUserLikes = () => {
         // TODO: When Like feature is for implement:
@@ -64,8 +65,8 @@ export default function Profile({ auth_user = null, user = null }) {
                                     </div>
                                 </div>
                             </div>
-                            <div id="profile-content" className='flex flex-col relative mx-4'>
-                                <div className='absolute -top-8 right-0 lg:-top-14'>
+                            <div id="profile-content" className='flex flex-col relative'>
+                                <div className='mx-4 absolute -top-8 right-0 lg:-top-14'>
                                     {isAuthUserProfile ? (
                                         <AuthButton className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
                                     ) : (
@@ -77,17 +78,17 @@ export default function Profile({ auth_user = null, user = null }) {
                                         </div>
                                     )}
                                 </div>
-                                <div className='mt-5'>
+                                <div className='mx-4 mt-5'>
                                     <h1 className='text-xl font-bold'>{userFullName}</h1>
                                     <h4 className='text-sm text-[var(--grey)]'>@{user.username}</h4>
                                 </div>
-                                <div className='mt-3'>
+                                <div className='mx-4 mt-3'>
                                     <div className='flex items-center gap-1 text-[var(--grey)]'>
                                         <IoCalendarOutline />
                                         <span className='text-sm'>Joined {joined}</span>
                                     </div>
                                 </div>
-                                <div className='flex gap-5 mt-2'>
+                                <div className='mx-4 flex gap-5 mb-8 mt-2'>
                                     <Link href={`/u/${user.username}/following`} className='text-sm hover:underline'>
                                         <span className='font-bold'>{user.followings.length}</span>
                                         <span className='text-[var(--grey)]'> Following</span>
