@@ -8,8 +8,7 @@ import { IoCalendarOutline } from "react-icons/io5";
 import PostCard from "@/Components/Cards/PostCard";
 import { IconButton } from "@/Components/Buttons";
 import { AiOutlineMessage } from "react-icons/ai";
-import axios from "axios";
-
+import { Link } from "@inertiajs/react";
 
 export default function Profile({ auth_user = null, user = null }) {
     var isAuthUserProfile = false;
@@ -88,15 +87,15 @@ export default function Profile({ auth_user = null, user = null }) {
                                         <span className='text-sm'>Joined {joined}</span>
                                     </div>
                                 </div>
-                                <div className='flex gap-2 mt-2'>
-                                    <div className='flex gap-1 text-sm'>
+                                <div className='flex gap-5 mt-2'>
+                                    <Link href={`/u/${user.username}/following`} className='text-sm hover:underline'>
                                         <span className='font-bold'>{user.followings.length}</span>
-                                        <Link href={''} className='text-[var(--grey)]'>Following</Link>
-                                    </div>
-                                    <div className='flex gap-1 text-sm'>
+                                        <span className='text-[var(--grey)]'> Following</span>
+                                    </Link>
+                                    <Link href={`/u/${user.username}/followers`} className='text-sm hover:underline'>
                                         <span className='font-bold'>{user.followers.length}</span>
-                                        <Link href={''} className='text-[var(--grey)]'>Followers</Link>
-                                    </div>
+                                        <span href={''} className='text-[var(--grey)]'> Followers</span>
+                                    </Link>
                                 </div>
                                 <ProfileBottomNavbar getProfileSection={getProfileSection} />
                                 <section id="profile-sections">

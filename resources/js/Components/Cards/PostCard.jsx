@@ -8,7 +8,7 @@ import { IoShareOutline } from 'react-icons/io5';
 
 export default function PostCard({ post = {} }) {
     const blueHovereableStyle = 'relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]';
-    const redHovereableStyle = 'relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-red)] hover:text-[var(--red)]';
+    const redHovereableStyle = 'relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-like-red)] hover:text-[var(--like-red)]';
     return (
         <article className='border-t flex p-3 gap-2 justify-start' key={post.id}>
             <div>

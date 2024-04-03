@@ -1,13 +1,13 @@
 import { FollowButton } from "@/Components/Buttons";
 import { Link } from "@inertiajs/react";
 
-export default function PeopleCard({ auth_user = {}, user = {} }) {
+export default function PeopleCard({ auth_user = {}, user = {}, className = '' }) {
     var isAuthUser = false;
     if (auth_user['username'] == user['username']) {
         isAuthUser = true;
     }
     return (
-        <article className='flex p-3 gap-2 justify-start' id={user.id} key={user.id}>
+        <article className={`${className} flex p-3 gap-2 justify-start`} id={user.id} key={user.id}>
             <div>
                 <img className='w-10 min-w-10 rounded-full' src={user.avatar} alt={`${user.username} avatar`} />
             </div>

@@ -224,7 +224,6 @@ const FollowButton = ({ user = null, onClick = () => {}, href = '' }) => {
         try {
             await axios.post('/user/follow/' + user.username)
             .then(res => {
-                console.log(res)
                 setUserFollowing(res.data.status);
             })
         } catch (error) {
@@ -244,9 +243,9 @@ const FollowButton = ({ user = null, onClick = () => {}, href = '' }) => {
         };
         checkFollowingStatus();
     }, []);
-    const text = isUserFollowing === true ? 'Unfollow' : 'Follow';
+    const text = isUserFollowing === true ? 'Following' : 'Follow';
     return (
-        <Link onClick={handleFollow} href={href} className='bg-black text-white font-bold py-2 px-4 text-sm rounded-full transition hover:bg-[var(--hover-black)]'>
+        <Link onClick={handleFollow} href={href} className={`${isUserFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'}   font-bold py-2 px-4 text-sm rounded-full transition `}>
             {text}
         </Link>
     );

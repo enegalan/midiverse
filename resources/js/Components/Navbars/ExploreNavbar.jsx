@@ -10,6 +10,7 @@ export default function ExploreNavbar({ getExploreSection = () => {} }) {
         if (!defaultSection) {
             localStorage.setItem('explore_default_section', 'top');
             getExploreSection('top')
+            setDefaultExploreSection('top')
         } else {
             setDefaultExploreSection(defaultSection);
             getExploreSection(defaultSection);

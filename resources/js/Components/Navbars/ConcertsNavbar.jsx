@@ -10,6 +10,7 @@ export default function ConcertsNavbar({ getConcertsSection = () => {} }) {
         if (!defaultSection) {
             localStorage.setItem('concerts_default_section', 'new');
             getConcertsSection('new')
+            setDefaultConcertSection('new')
         } else {
             setDefaultConcertSection(defaultSection);
             getConcertsSection(defaultSection);

@@ -52,9 +52,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/u/{username}', [UserController::class, 'getProfile'])->name('profile');
 
-    // Route::get('/profile', function () {
-    //     return redirect('/' . auth()->user()->username);
-    // });
+    Route::get('/profile', function () {
+        return redirect('/u/' . auth()->user()->username);
+    });
+
+    Route::get('/u/{username}/following', [UserController::class,'getUserFollowings'])->name('user.following');
+    Route::get('/u/{username}/followers', [UserController::class,'getUserFollowers'])->name('user.followers');
 });
 Route::get('/', function () {
     if (Auth::check()) {

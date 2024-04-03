@@ -397,4 +397,23 @@ class UserController extends Controller
         return $users;
     }
 
+    public static function getUserFollowings () {
+        $auth_user = auth()->user();
+        $type = 'following';
+        $followersIds = DB::table('user_followers')->where('user_id', $auth_user->id)->get();
+        $followingsIds = DB::table('user_followers')->where('follower_id', $auth_user->id)->get();
+        $followers = DB::table('users')->whereIn('id', $followersIds->pluck(('follower_id')))->get();
+        $followings = DB::table('users')->whereIn('id', $followingsIds->pluck('user_id'))->get();
+        return Inertia::render('Follows', compact('auth_user', 'type', 'followers', 'followings'));
+    }
+
+    public static function getUserFollowers () {
+        $auth_user = auth()->user();
+        $type = 'followers';
+        $followersIds = DB::table('user_followers')->where('user_id', $auth_user->id)->get();
+        $followingsIds = DB::table('user_followers')->where('follower_id', $auth_user->id)->get();
+        $followers = DB::table('users')->whereIn('id', $followersIds->pluck('follower_id'))->get();
+        $followings = DB::table('users')->whereIn('id', $followingsIds->pluck('user_id'))->get();
+        return Inertia::render('Follows', compact('auth_user', 'type', 'followers', 'followings'));
+    }
 }

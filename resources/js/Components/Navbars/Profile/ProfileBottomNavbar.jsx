@@ -9,6 +9,7 @@ export default function ProfileBottomNavbar({ getProfileSection = () => {} }) {
         if (!defaultSection) {
             localStorage.setItem('profile_default_section', 'posts');
             getProfileSection('posts')
+            setDefaultProfileSection('posts')
         } else {
             setDefaultProfileSection(defaultSection);
             getProfileSection(defaultSection);
