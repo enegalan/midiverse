@@ -56,8 +56,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return redirect('/u/' . auth()->user()->username);
     });
 
-    Route::get('/u/{username}/following', [UserController::class,'getUserFollowings'])->name('user.following');
-    Route::get('/u/{username}/followers', [UserController::class,'getUserFollowers'])->name('user.followers');
+    Route::get('/u/{username}/following', [UserController::class,'renderUserFollowings'])->name('user.following');
+    Route::get('/u/{username}/followers', [UserController::class,'renderUserFollowers'])->name('user.followers');
 });
 Route::get('/', function () {
     if (Auth::check()) {

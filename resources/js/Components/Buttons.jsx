@@ -216,37 +216,46 @@ BackButton.propTypes = {
     iconClass: PropTypes.string,
 };
 
-const FollowButton = ({ user = null, onClick = () => {}, href = '' }) => {
-    if (!user) return;
+const FollowButton = ({ user = null, onClick = () => { }, href = '' }) => {
     const [isUserFollowing, setUserFollowing] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
+
     const handleFollow = async () => {
         onClick();
         try {
-            await axios.post('/user/follow/' + user.username)
-            .then(res => {
-                setUserFollowing(res.data.status);
-            })
+            const response = await axios.post(`/user/follow/${user.username}`);
+            setUserFollowing(response.data.status);
         } catch (error) {
             console.error(error);
         }
     };
 
-    // Determine on the first render if the user is followed by the authenticated user or not
     useEffect(() => {
         const checkFollowingStatus = async () => {
             try {
-                const response = await axios.get('/user/following/' + user.username);
+                const response = await axios.get(`/user/following/${user.username}`);
                 setUserFollowing(response.data.status);
             } catch (error) {
                 console.error(error);
             }
         };
         checkFollowingStatus();
-    }, []);
-    const text = isUserFollowing === true ? 'Following' : 'Follow';
+    }, [user]);
+
+    let text = 'Follow';
+    if (isUserFollowing) {
+        text = isHovering ? 'Unfollow' : 'Following';
+    }
+
     return (
-        <Link onClick={handleFollow} href={href} className={`${isUserFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'}   font-bold py-2 px-4 text-sm rounded-full transition `}>
-            {text}
+        <Link
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            onClick={handleFollow}
+            href={href}
+            className={`min-w-[110px] text-center min-h-[25px] border-1 ${isUserFollowing && isHovering ? 'bg-[var(--hover-like-red)] border-[var(--pink)] text-[var(--red)] py-[0.56rem]' : isUserFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'} font-bold py-2 px-4 text-sm rounded-full transition `}
+        >
+            <span className={`${isUserFollowing && isHovering ? '' : ''}`}>{text}</span>
         </Link>
     );
 };
@@ -259,7 +268,7 @@ const AuthButton = ({ id = null, text = '', className = '', onClick = (e) => { }
     )
 }
 
-const GoogleLoginButton = ({ onAuth = () => {}, onAuthError = (e) => {} }) => {
+const GoogleLoginButton = ({ onAuth = () => { }, onAuthError = (e) => { } }) => {
     const postSuccess = () => {
         // Redirect logged user to home
         router.get('/home')
@@ -318,7 +327,7 @@ const CloseButton = ({ onClick }) => {
     );
 };
 
-const IconButton = ({ children, className = '', href = '', onClick = () => {}}) => {
+const IconButton = ({ children, className = '', href = '', onClick = () => { } }) => {
     return (
         <Link onClick={onClick} href={href} className={`${className} p-2 rounded-full border transition duration-200 hover:bg-[var(--hover-light)]`} >
             {children}

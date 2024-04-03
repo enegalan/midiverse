@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -397,23 +398,42 @@ class UserController extends Controller
         return $users;
     }
 
-    public static function getUserFollowings () {
+    public function renderUserFollowings ($username) {
+        if ($username === auth()->user()->username) {
+            $user = auth()->user();
+        } else {
+            $user = User::where('username', $username)->firstOrFail();
+        }
         $auth_user = auth()->user();
         $type = 'following';
-        $followersIds = DB::table('user_followers')->where('user_id', $auth_user->id)->get();
-        $followingsIds = DB::table('user_followers')->where('follower_id', $auth_user->id)->get();
-        $followers = DB::table('users')->whereIn('id', $followersIds->pluck(('follower_id')))->get();
-        $followings = DB::table('users')->whereIn('id', $followingsIds->pluck('user_id'))->get();
-        return Inertia::render('Follows', compact('auth_user', 'type', 'followers', 'followings'));
+        $followers = $this->getUserFollowers($user);
+        $followings = $this->getUserFollowings($user);
+        return Inertia::render('Follows', compact('auth_user', 'user', 'type', 'followers', 'followings'));
     }
 
-    public static function getUserFollowers () {
+    public function renderUserFollowers ($username) {
+        if ($username === auth()->user()->username) {
+            $user = auth()->user();
+        } else {
+            $user = User::where('username', $username)->first();
+        }
         $auth_user = auth()->user();
         $type = 'followers';
-        $followersIds = DB::table('user_followers')->where('user_id', $auth_user->id)->get();
-        $followingsIds = DB::table('user_followers')->where('follower_id', $auth_user->id)->get();
-        $followers = DB::table('users')->whereIn('id', $followersIds->pluck('follower_id'))->get();
-        $followings = DB::table('users')->whereIn('id', $followingsIds->pluck('user_id'))->get();
-        return Inertia::render('Follows', compact('auth_user', 'type', 'followers', 'followings'));
+        $followers = $this->getUserFollowers($user);
+        $followings = $this->getUserFollowings($user);
+        return Inertia::render('Follows', compact('auth_user', 'user', 'type', 'followers', 'followings'));
     }
+
+    private function getUserFollowings ($user) {
+        $followingsIds = DB::table('user_followers')->where('follower_id', $user->id)->get();
+        $followings = User::whereIn('id', $followingsIds->pluck('user_id'))->get();
+        return $followings;
+    }
+    
+    private function getUserFollowers ($user) {
+        $followersIds = DB::table('user_followers')->where('user_id', $user->id)->get();
+        $followers = User::whereIn('id', $followersIds->pluck('follower_id'))->get();
+        return $followers;
+    }
+
 }

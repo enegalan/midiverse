@@ -10,7 +10,7 @@ import { IconButton } from "@/Components/Buttons";
 import { AiOutlineMessage } from "react-icons/ai";
 import PeopleCard from "@/Components/Cards/PeopleCard";
 
-export default function Follows({ auth_user = null, type = '', followings = null, followers = null }) {
+export default function Follows({ auth_user = null, user = null, type = '', followings = null, followers = null }) {
     // var userInitials = user.name[0].toUpperCase();
     // if (user.hasOwnProperty('lastname') && user.lastname && user.lastname.length > 0) {
     //     userInitials += user.lastname[0].toUpperCase();
@@ -25,14 +25,14 @@ export default function Follows({ auth_user = null, type = '', followings = null
         <>
             <MainLayout user={auth_user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
                 <div className='flex flex-col w-full' >
-                    <FollowsTopNavbar type={type} getFollowsSection={getFollowsSection} user={auth_user} />
+                    <FollowsTopNavbar type={type} getFollowsSection={getFollowsSection} user={user} />
                     <section className="pb-16 border-r relative flex-1">
                         {followsSection === 'followers' ? (
                             <div id='followers' className="w-full h-full">
                                 {followers && followers.length > 0 ? (
                                     followers.map((follower) => {
                                         return (
-                                            <PeopleCard user={follower} />
+                                            <PeopleCard auth_user={auth_user} user={follower} />
                                         );
                                     })
                                 ) : (
@@ -47,7 +47,7 @@ export default function Follows({ auth_user = null, type = '', followings = null
                                 {followings && followings.length > 0 ? (
                                     followings.map((following) => {
                                         return (
-                                            <PeopleCard className='transition hover:bg-[var(--hover-light)] hover:cursor-pointer' user={following} />
+                                            <PeopleCard auth_user={auth_user} className='transition hover:bg-[var(--hover-light)] hover:cursor-pointer' user={following} />
                                         );
                                     })
                                 ) : (
