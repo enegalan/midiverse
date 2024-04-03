@@ -9,9 +9,9 @@ import GroupCard from '@/Components/Cards/GroupCard';
 import PeopleSection from '@/Components/Sections/PeopleSection';
 import ExploreNavbar from '@/Components/Navbars/ExploreNavbar';
 
-export default function Explore({ user = null, users = [], posts = [], concerts = [], groups = [] }) {
+export default function Explore({ auth_user = null, user = null, top_users = [], all_users = [], posts = [], concerts = [], groups = [] }) {
     const [exploreSection, setExploreSection] = useState(localStorage.getItem('explore_default_section') ? localStorage.getItem('explore_default_section') : 'top')
-    users = [
+    const users = [
         {
             id: 1,
             name: 'Eneko',
@@ -149,7 +149,7 @@ export default function Explore({ user = null, users = [], posts = [], concerts 
     };
     return (
         <>
-            <MainLayout user={user} headerClassName='backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50' defaultBackgroundColor='transparent' defaultTextColor='var(--main-blue)' dynamicBackground={false}>
+            <MainLayout user={auth_user} headerClassName='backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50' defaultBackgroundColor='transparent' defaultTextColor='var(--main-blue)' dynamicBackground={false}>
                 <section className='pb-16 border-r relative max-w-[800px] flex-1'>
                     <div className='w-full h-full'>
                         <div className='px-3 py-3'>
@@ -161,7 +161,7 @@ export default function Explore({ user = null, users = [], posts = [], concerts 
                         <section className={`${exploreSection === 'top' ? 'block' : 'hidden'}`} id='top'>
                             <section className='w-full'>
                                 <h1 className='font-bold text-xl pl-3 py-2'>People</h1>
-                                <PeopleSection users={users} viewAll={true} />
+                                <PeopleSection auth_user={auth_user} users={top_users} viewAll={true} />
                             </section>
                             <section className='w-full'>
                                 {posts.map((post) => (
@@ -189,8 +189,8 @@ export default function Explore({ user = null, users = [], posts = [], concerts 
                         </section>
 
                         <section className={`${exploreSection === 'people' ? 'block' : 'hidden'}`} id='people'>
-                            {users.map((user) => (
-                                <PeopleCard key={user.id} user={user} />
+                            {all_users.map((user) => (
+                                <PeopleCard auth_user={auth_user} key={user.id} user={user} />
                             ))}
                         </section>
 

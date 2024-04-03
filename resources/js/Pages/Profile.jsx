@@ -2,12 +2,20 @@ import MainLayout from "@/Layouts/mainLayout";
 import { SearchInput } from "@/Components/Inputs";
 import ProfileTopNavbar from "@/Components/Navbars/Profile/ProfileTopNavbar";
 import ProfileBottomNavbar from "@/Components/Navbars/Profile/ProfileBottomNavbar";
-import { AuthButton } from "@/Components/Buttons";
-import { useState } from "react";
+import { AuthButton, FollowButton } from "@/Components/Buttons";
+import { useState, useEffect } from "react";
 import { IoCalendarOutline } from "react-icons/io5";
 import PostCard from "@/Components/Cards/PostCard";
+import { IconButton } from "@/Components/Buttons";
+import { AiOutlineMessage } from "react-icons/ai";
+import axios from "axios";
 
-export default function Profile({ user = null }) {
+
+export default function Profile({ auth_user = null, user = null }) {
+    var isAuthUserProfile = false;
+    if (auth_user['username'] === user['username']) {
+        isAuthUserProfile = true;
+    }
     var userInitials = user.name[0].toUpperCase();
     if (user.hasOwnProperty('lastname') && user.lastname && user.lastname.length > 0) {
         userInitials += user.lastname[0].toUpperCase();
@@ -39,9 +47,10 @@ export default function Profile({ user = null }) {
         // to render all concerts and posts that have been liked by the user in the correct date order
         //return user.likes.map((like) => <>Like</>);
     };
+    
     return (
         <>
-            <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
+            <MainLayout user={auth_user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
                 <div className='flex flex-col w-full' >
                     <ProfileTopNavbar user={user} />
                     <section className="pb-16 border-r relative flex-1">
@@ -51,14 +60,23 @@ export default function Profile({ user = null }) {
                                     {user.banner !== null ? (<img src={user.banner} alt="Banner" />) : (<></>)}
                                 </div>
                                 <div className={`-mt-[50px] lg:-mt-[75px] ml-5`} id="avatar">
-                                    <div className='min-h-[10rem] border-4 border-white rounded-full w-fit flex justify-center items-center'>
+                                    <div className='min-h-[6rem] xl:min-h-[9rem] border-4 border-white rounded-full w-fit flex justify-center items-center'>
                                         <img className='rounded-full h-auto w-24 lg:w-36' src={user.avatar !== null ? user.avatar : userInitials} alt="Avatar" />
                                     </div>
                                 </div>
                             </div>
-                            <div id="profile-content" className='flex flex-col relative mx-6'>
+                            <div id="profile-content" className='flex flex-col relative mx-4'>
                                 <div className='absolute -top-8 right-0 lg:-top-14'>
-                                    <AuthButton className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
+                                    {isAuthUserProfile ? (
+                                        <AuthButton className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
+                                    ) : (
+                                        <div className='flex items-center gap-2'>
+                                            <IconButton className='text-2xl' >
+                                                <AiOutlineMessage />
+                                            </IconButton>
+                                            <FollowButton user={user} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border'/>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className='mt-5'>
                                     <h1 className='text-xl font-bold'>{userFullName}</h1>
@@ -73,11 +91,11 @@ export default function Profile({ user = null }) {
                                 <div className='flex gap-2 mt-2'>
                                     <div className='flex gap-1 text-sm'>
                                         <span className='font-bold'>{user.followings.length}</span>
-                                        <span className='text-[var(--grey)]'>Following</span>
+                                        <Link href={''} className='text-[var(--grey)]'>Following</Link>
                                     </div>
                                     <div className='flex gap-1 text-sm'>
                                         <span className='font-bold'>{user.followers.length}</span>
-                                        <span className='text-[var(--grey)]'>Followers</span>
+                                        <Link href={''} className='text-[var(--grey)]'>Followers</Link>
                                     </div>
                                 </div>
                                 <ProfileBottomNavbar getProfileSection={getProfileSection} />

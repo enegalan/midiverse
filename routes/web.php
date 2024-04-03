@@ -25,9 +25,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('home');
     
     Route::get('/explore', function () {
-        $user = auth()->user();
+        $user = $auth_user = auth()->user();
         app()->call([UserController::class, 'getRoles'], compact('user'));
-        return Inertia::render('Explore', compact('user'));
+        $top_users = app()->call([UserController::class,'getTopUsers']);
+        $all_users = app()->call([UserController::class,'getAllUsers']);
+        return Inertia::render('Explore', compact('auth_user', 'top_users', 'all_users'));
     })->name('explore');
     
     Route::get('/concerts', function () {
@@ -48,14 +50,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Messages', compact('user'));
     })->name('messages');
 
-    Route::get('/{username}', function ($username) {
-        $user = App\Models\User::where('username', $username)->first();
-        //var_dump($user);
-        $user = auth()->user();
-        //var_dump($user);
-        app()->call([UserController::class, 'getProfileData'], compact('user'));
-        return Inertia::render('Profile', compact('user'));
-    })->name('profile');
+    Route::get('/u/{username}', [UserController::class, 'getProfile'])->name('profile');
+
+    // Route::get('/profile', function () {
+    //     return redirect('/' . auth()->user()->username);
+    // });
 });
 Route::get('/', function () {
     if (Auth::check()) {
@@ -65,5 +64,9 @@ Route::get('/', function () {
 
 // Get Data Routes
 Route::get('/user/email/exists/', [UserController::class,'existsByEmail'])->name('user.exists.email');
+Route::get('/user/following/{username}', [UserController::class, 'isFollowing'])->name('user.is.following');
+
+// Follow
+Route::post('/user/follow/{username}', [UserController::class,'toggleFollow'])->name('user.follow');
 
 require __DIR__ . '/auth.php';

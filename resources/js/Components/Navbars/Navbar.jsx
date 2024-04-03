@@ -147,7 +147,7 @@ const Navbar = ({
         },
         {
             title: 'Profile',
-            href: '/' + user.username,
+            href: '/u/' + user.username,
             id: 'profile',
             ref: 'profile',
             icon: <FaRegUser className={`text-[22px] ml-[2px]`} />,
@@ -201,7 +201,7 @@ const Navbar = ({
     const mobileLinks = [
         {
             title: 'Profile',
-            href: '/' + user.username,
+            href: '/u/' + user.username,
             id: 'm-profile',
             ref: 'profile',
             icon: '',
@@ -253,7 +253,7 @@ const Navbar = ({
                             onClick={onLinkClick}
                             href='/home'
                             data-ref='home'
-                            className="text-4xl mb-4 font-bold justify-center flex gap-8 self-center"
+                            className="text-4xl mb-4 font-bold justify-center flex gap-8 xl:self-start self-center"
                         >
                             <img className="w-10 pointer-events-none" src={logoBlack} alt="Logo" />
                         </Link>

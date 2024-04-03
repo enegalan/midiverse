@@ -301,13 +301,13 @@ export class UI {
 			});
 
 			let navItems = [
-				{ "href": "/", "text": "Home", "icon": "home", "ref": "home", },
+				{ "href": "/home", "text": "Home", "icon": "home", "ref": "home", },
 				{ "href": "/explore", "text": "Explore", "icon": "search", "ref": "explore", },
 				{ "href": "/concerts", "text": "Concerts", "icon": "music", "ref": "concerts", },
 				{ "href": "/", "text": "Notifications", "icon": "bell", "ref": "notifications", },
 				{ "href": "/messages", "text": "Messages", "icon": "envelope", "ref": "messages", },
 				{ "href": "/", "text": "Bookmarks", "icon": "bookmark", "ref": "bookmarks", },
-				{ "href": "/", "text": "Profile", "icon": "user", "ref": "profile", },
+				{ "href": "/profile", "text": "Profile", "icon": "user", "ref": "profile", },
 				{ "href": "/", "text": "Settings", "icon": "cog", "ref": "settings", }
 			];
 

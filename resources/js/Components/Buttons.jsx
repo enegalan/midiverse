@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import PropTypes from "prop-types";
 import gsap from 'gsap';
 import chroma from 'chroma-js';
@@ -216,13 +216,41 @@ BackButton.propTypes = {
     iconClass: PropTypes.string,
 };
 
-const FollowButton = ({ id = null, href = '' }) => {
+const FollowButton = ({ user = null, onClick = () => {}, href = '' }) => {
+    if (!user) return;
+    const [isUserFollowing, setUserFollowing] = useState(false);
+    const handleFollow = async () => {
+        onClick();
+        try {
+            await axios.post('/user/follow/' + user.username)
+            .then(res => {
+                console.log(res)
+                setUserFollowing(res.data.status);
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Determine on the first render if the user is followed by the authenticated user or not
+    useEffect(() => {
+        const checkFollowingStatus = async () => {
+            try {
+                const response = await axios.get('/user/following/' + user.username);
+                setUserFollowing(response.data.status);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        checkFollowingStatus();
+    }, []);
+    const text = isUserFollowing === true ? 'Unfollow' : 'Follow';
     return (
-        <Link href={href} className='bg-black text-white font-bold py-2 px-4 text-sm rounded-full transition hover:bg-[var(--hover-black)]'>
-            Follow
+        <Link onClick={handleFollow} href={href} className='bg-black text-white font-bold py-2 px-4 text-sm rounded-full transition hover:bg-[var(--hover-black)]'>
+            {text}
         </Link>
-    )
-}
+    );
+};
 
 const AuthButton = ({ id = null, text = '', className = '', onClick = (e) => { }, href = '', disabled = false }) => {
     return (
@@ -291,5 +319,13 @@ const CloseButton = ({ onClick }) => {
     );
 };
 
+const IconButton = ({ children, className = '', href = '', onClick = () => {}}) => {
+    return (
+        <Link onClick={onClick} href={href} className={`${className} p-2 rounded-full border transition duration-200 hover:bg-[var(--hover-light)]`} >
+            {children}
+        </Link>
+    );
+}
 
-export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton, AuthButton, GoogleLoginButton, CloseButton };
+
+export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton, AuthButton, GoogleLoginButton, CloseButton, IconButton };
