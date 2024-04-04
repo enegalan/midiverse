@@ -76,12 +76,14 @@ function renderLoop() {
 }
 async function loadStartingSong() {
 	const domain = window.location.href
-	let url = "https://app.midiano.com/resources/exampleSongs/piano-midi/mz_311_1.mid" // "https://bewelge.github.io/piano-midi.de-Files/midi/alb_esp1.mid?raw=true" //
+	const defaultSong = 'https://app.midiano.com/resources/exampleSongs/piano-midi/mz_311_1.mid'
+	const defaultSongName = 'Mozart - Sonata nº8 KV 311 I.'
+	let url = localStorage.getItem('playing_midi') ? localStorage.getItem('playing_midi') : defaultSong;
 	if (domain.split("github").length > 1) {
 		url = "https://app.midiano.com/resources/exampleSongs/piano-midi/mz_311_1.mid"
 	}
-
+	var name = localStorage.getItem('playing_midi_name') ? localStorage.getItem('playing_midi_name') : defaultSongName;
 	FileLoader.loadSongFromURL(url, (response, fileName) =>
-		getPlayer().loadSong(response, fileName, "Mozart - Turkish March")
-	) // Local: "../mz_331_3.mid")
+		getPlayer().loadSong(response, fileName, name)
+	)
 }

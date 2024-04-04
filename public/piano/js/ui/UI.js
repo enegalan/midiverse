@@ -290,7 +290,7 @@ export class UI {
 			});
 			let logoContainer = DomHelper.createDivWithClass("flex items-center flex-wrap w-full");
 			let logoLink = DomHelper.createElementWithClass("text-4xl font-bold justify-center flex gap-8 w-full self-center", "a", "", { 'href': '/home', 'data-ref': 'home' });
-			let logoImage = DomHelper.createElementWithClass("w-12 pointer-events-none select-none", "img", "", { 'alt': 'Logo', 'src': "http://0.0.0.0:5174/public/logoBlack.svg" });
+			let logoImage = DomHelper.createElementWithClass("w-12 pointer-events-none select-none", "img", "", { 'alt': 'Logo', 'src': "/logoBlack.svg" });
 			logoLink.appendChild(logoImage);
 			logoContainer.appendChild(logoLink);
 
@@ -322,7 +322,6 @@ export class UI {
 				li.appendChild(link);
 				ul.appendChild(li);
 			});
-
 
 			navItemsContainer.appendChild(ul);
 

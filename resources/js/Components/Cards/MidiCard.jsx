@@ -4,6 +4,7 @@ import { AuthButton } from "@/Components/Buttons";
 export default function MidiCard({ user = null, midi = {}, }) {
     const handleMidiClicked = () => {
         localStorage.setItem('playing_midi', midi.midi);
+        localStorage.setItem('playing_midi_name', midi.name);
         window.location.href = '/playground';
     }
     return (

@@ -1,6 +1,6 @@
 import { getSettingObject } from "./Settings.js"
 
-const SAVE_PATH_ROOT = "Midiano/SavedSettings"
+const SAVE_PATH_ROOT = "midiverse/SavedSettings"
 export const getGlobalSavedSettings = () => {
 	let obj = {}
 	if (window.localStorage) {

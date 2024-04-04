@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\UserMidi;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
@@ -434,6 +435,17 @@ class UserController extends Controller
         $followersIds = DB::table('user_followers')->where('user_id', $user->id)->get();
         $followers = User::whereIn('id', $followersIds->pluck('follower_id'))->get();
         return $followers;
+    }
+
+    public static function storeMidi (Request $request) {
+        $midi = json_decode($request->input('midi'), true);
+        UserMidi::create([
+            'user_id' => auth()->user()->id,
+            'midi' => $midi['midi'],
+            'name' => $midi['name'],
+            'description' => $midi['description'],
+            'duration' => $midi['duration'],
+        ]);
     }
 
 }

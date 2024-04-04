@@ -4,7 +4,7 @@ export class MidiLoader {
 	 * @param {String} url
 	 */
 	static async loadFile(url) {
-		const response = await fetch(url)
+		const response = await fetch(url, { method: 'GET', mode: 'no-cors' });
 		if (response.ok) {
 			let arrayBuffer = await response.arrayBuffer()
 			if (arrayBuffer) {

@@ -12,7 +12,8 @@ export class SoundfontLoader {
 			soundfontName = "FluidR3_GM"
 			baseUrl = ""
 		}
-		let fileType = iOS ? "mp3" : "ogg"
+		// let fileType = iOS ? "mp3" : "ogg"
+		let fileType = "ogg";
 		return fetch(
 			baseUrl + soundfontName + "/" + instrument + "-" + fileType + ".js"
 		)

@@ -306,12 +306,7 @@ export class Render {
 	}
 
 	addStartingOverlayMessage() {
-		this.overlayRender.addOverlay("MIDiano", 150)
-		this.overlayRender.addOverlay("A Javascript MIDI-Player", 150)
-		this.overlayRender.addOverlay(
-			"Example song by Bernd Krueger from piano-midi.de",
-			150
-		)
+		this.overlayRender.addOverlay("MiDiverse", 150)
 	}
 
 	/**
@@ -440,7 +435,6 @@ export class Render {
 	onMenuHeightChanged(menuHeight) {
 		this.renderDimensions.menuHeight = menuHeight
 		this.pianoRender.repositionCanvases()
-		console.log('menu height changed to', menuHeight)
 		this.getProgressBarCanvas().style.top = menuHeight + "px"
 		this.noteRender.setMenuHeight(menuHeight)
 	}
