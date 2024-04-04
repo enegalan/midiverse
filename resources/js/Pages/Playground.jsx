@@ -53,7 +53,7 @@ export default function Playground({ user = null}) {
         <main className='w-full h-screen flex flex-col'>
             <section className='relative flex-1'>
                 <section id='piano-viewer'>
-                    <div id='midiverse-piano'></div>
+                    <div className='bg-[var(--grey)]' id='midiverse-piano'></div>
                     <div style={{ height: 'inherit', pointerEvents: 'none' }} id='midiverse-piano-menus'></div>
                     <div id='playground-navbar'></div>
                 </section>

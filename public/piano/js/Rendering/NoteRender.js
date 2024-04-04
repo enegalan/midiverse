@@ -468,15 +468,20 @@ export class NoteRender {
 	}
 
 	getAlphaFromY(y) {
-		//TODO broken.
-		return Math.min(
+		if (this.renderDimensions.windowHeight === 0 || this.menuHeight === 0) {
+			// Return a default alpha value if the dimensions are invalid
+			return 1;
+		}
+		// Calculate the alpha value based on the position 'y'
+		const alpha = Math.min(
 			1,
 			Math.max(
 				0,
 				(y - this.menuHeight - 5) /
 					((this.renderDimensions.windowHeight - this.menuHeight) * 0.5)
 			)
-		)
+		);
+		return alpha;
 	}
 	/**
 	 * Sets Menu (Navbar) Height.  Required to calculate fadeIn alpha value

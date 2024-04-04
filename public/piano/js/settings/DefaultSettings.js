@@ -61,7 +61,7 @@ const defaultSettings = {
 				type: "checkbox",
 				id: "showMiliseconds",
 				label: "Show Miliseconds",
-				value: true,
+				value: false,
 				onChange: ev => setSetting("showMiliseconds", ev.target.checked)
 			},
 			{
@@ -89,7 +89,7 @@ const defaultSettings = {
 				type: "checkbox",
 				id: "showFps",
 				label: "Show FPS",
-				value: true,
+				value: false,
 				onChange: ev => setSetting("showFps", ev.target.checked)
 			},
 			{

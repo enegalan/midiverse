@@ -89,10 +89,10 @@ export class UI {
 		])
 
 		// Create Elements
-		let leftTop = DomHelper.createElementWithIdAndClass('left-container', "hidden lg:flex justify-around flex-1")
+		let leftTop = DomHelper.createElementWithIdAndClass('left-container', "hidden flex-lg justify-around flex-1")
 		let middleTop = DomHelper.createElementWithIdAndClass('center-container', "topContainer")
-		let rightTop = DomHelper.createElementWithIdAndClass('right-container', "hidden lg:flex justify-around flex-1")
-		let hamburgerTop = DomHelper.createElementWithIdAndClass('hamburger-container', 'flex lg:hidden justify-center items-center')
+		let rightTop = DomHelper.createElementWithIdAndClass('right-container', "hidden flex-lg justify-around flex-1")
+		let hamburgerTop = DomHelper.createElementWithIdAndClass('hamburger-container', 'flex flex-lg-hidden lg:hidden justify-center items-center')
 		let hamburgerNavbar = DomHelper.createElementWithIdAndClass('hamburger-navbar', 'hidden-hamburger-nav items-stretch fixed bg-gray-700 top-[8rem] z-[700] h-screen lg:hidden w-full  flex flex-col')
 		let mainNavbar = DomHelper.createElementWithIdAndClass('mainNavbar', 'mainNavbar');
 

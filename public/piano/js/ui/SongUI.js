@@ -17,9 +17,21 @@ export class SongUI {
 				document.querySelector('#loaded-songs')?.classList.remove('unhidden')
 				document.querySelector('#loaded-songs')?.classList.add('hidden')
 			},
-			'flex lg:hidden'
+			'flex-lg-hidden mb-2'
 		)
-		this.wrapper.appendChild(closeButton);
+		var clearCurrentSongButton = DomHelper.createGlyphiconTextButton(
+			'clear-current-song',
+			'trash',
+			'Clear current song',
+			() => {
+				localStorage.removeItem('playing_midi');
+				localStorage.removeItem('playing_midi_name');
+			}
+		)
+		const container = DomHelper.createElementWithClass('flex justify-between')
+		container.appendChild(closeButton);
+		container.appendChild(clearCurrentSongButton);
+		this.wrapper.appendChild(container);
 		return this.wrapper
 	}
 	setExampleSongs(jsonSongs) {

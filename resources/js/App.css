@@ -93,6 +93,16 @@ svg:focus {
   outline: none;
 }
 
+/*Playground fix styles*/
+@media (min-width: 1024px) {
+  .flex-lg-hidden {
+    display: none !important;
+  }
+  .flex-lg {
+    display: flex !important;
+  }
+}
+
 /* PrimeReact CSS that for any reason is overwritten by tailwindcss or other styles */
 .p-invalid {
   border-color: #e24c4c !important;

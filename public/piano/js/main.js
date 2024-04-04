@@ -76,6 +76,7 @@ function renderLoop() {
 }
 async function loadStartingSong() {
 	const domain = window.location.href
+	const defaultStartingSong = true;
 	const defaultSong = 'https://app.midiano.com/resources/exampleSongs/piano-midi/mz_311_1.mid'
 	const defaultSongName = 'Mozart - Sonata nº8 KV 311 I.'
 	let url = localStorage.getItem('playing_midi') ? localStorage.getItem('playing_midi') : defaultSong;
@@ -83,6 +84,7 @@ async function loadStartingSong() {
 		url = "https://app.midiano.com/resources/exampleSongs/piano-midi/mz_311_1.mid"
 	}
 	var name = localStorage.getItem('playing_midi_name') ? localStorage.getItem('playing_midi_name') : defaultSongName;
+	if (!defaultStartingSong) return;
 	FileLoader.loadSongFromURL(url, (response, fileName) =>
 		getPlayer().loadSong(response, fileName, name)
 	)
