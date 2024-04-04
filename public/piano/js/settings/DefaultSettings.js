@@ -40,7 +40,7 @@ const defaultSettings = {
 				type: "checkbox",
 				id: "reverseNoteDirection",
 				label: "Reverse note direction",
-				value: false,
+				value: true,
 				onChange: ev => {
 					setSetting("reverseNoteDirection", ev.target.checked)
 					setSetting(

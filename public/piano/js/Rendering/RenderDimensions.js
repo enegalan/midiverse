@@ -4,7 +4,7 @@ import { getSetting, setSettingCallback } from "../settings/Settings.js"
 const MAX_NOTE_NUMBER = 87
 const MIN_NOTE_NUMBER = 0
 
-const MIN_WIDTH = 1040
+const MIN_WIDTH = 0
 const MIN_HEIGHT = 560
 
 /**
