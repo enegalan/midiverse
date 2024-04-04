@@ -181,7 +181,7 @@ export class InputListeners {
 	onMouseDown(ev, render) {
 		let pos = this.getXYFromMouseEvent(ev)
 		if (
-			ev.target == document.body &&
+			(ev.target === document.body || ev.target === document.querySelector('#piano-viewer')) &&
 			render.isOnMainCanvas(pos) &&
 			!this.grabbedProgressBar
 		) {
