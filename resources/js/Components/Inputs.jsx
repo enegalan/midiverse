@@ -235,7 +235,7 @@ const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) 
 
 const Dropdown = ({ options = [{}], id = '', onChange = () => {}, placeholder = null }) => {
     return (
-        <select onChange={onChange} id={id} className="min-w-[80px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+        <select onChange={onChange} id={id} className="min-w-[80px] text-[var(--grey)] border rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-3 p-2.5">
             {placeholder !== null ? (
                 <option key={`${id}-placeholder`}>{placeholder}</option>
             ) : (
