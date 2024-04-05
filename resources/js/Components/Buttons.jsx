@@ -235,7 +235,6 @@ const FollowButton = ({
                 setFollowing(response.data.status);
             } else if (groupFollow && group) {
                 var response = await axios.post(`/group/follow/${group.name}`)
-                console.log(response.data.status)
                 setFollowing(response.data.status);
             }
         } catch (error) {
@@ -251,7 +250,6 @@ const FollowButton = ({
                     setFollowing(response.data.status);
                 } else if (groupFollow && group) {
                     const response = await axios.get(`/group/following/${group.name}`)
-                    console.log(response.data.status)
                     setFollowing(response.data.status);
                 }
             } catch (error) {
