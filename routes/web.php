@@ -58,8 +58,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return redirect('/u/' . auth()->user()->username);
     });
 
+    // Follows
     Route::get('/u/{username}/following', [UserController::class,'renderUserFollowings'])->name('render.user.following');
     Route::get('/u/{username}/followers', [UserController::class,'renderUserFollowers'])->name('render.user.followers');
+    Route::get('/g/{name}/followers', [GroupController::class,'renderGroupFollowers'])->name('render.group.followers');
+    Route::get('/g/{name}/members', [GroupController::class,'renderGroupMembers'])->name('render.group.members');
 
     // Store Midi
     Route::post('/midi/create', [UserController::class,'storeMidi'])->name('store.midi');
@@ -67,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Groups
     Route::get('/groups', [UserController::class,'renderGroups'])->name('render.groups');
     Route::post('/group/create', [GroupController::class,'store'])->name('groups.store');
+    Route::get('/g/{name}', [GroupController::class,'getProfile'])->name('group.profile');
 });
 Route::get('/', function () {
     if (Auth::check()) {

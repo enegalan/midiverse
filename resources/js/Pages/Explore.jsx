@@ -8,7 +8,7 @@ import ConcertCard from '@/Components/Cards/ConcertCard';
 import GroupCard from '@/Components/Cards/GroupCard';
 import PeopleSection from '@/Components/Sections/PeopleSection';
 import ExploreNavbar from '@/Components/Navbars/ExploreNavbar';
-
+import { Link } from '@inertiajs/react';
 export default function Explore({ auth_user = null, user = null, top_users = [], all_users = [], posts = [], concerts = [], all_groups = [] }) {
     const [exploreSection, setExploreSection] = useState(localStorage.getItem('explore_default_section') ? localStorage.getItem('explore_default_section') : 'top')
     
@@ -127,13 +127,17 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
 
                         <section className={`${exploreSection === 'people' ? 'block' : 'hidden'}`} id='people'>
                             {all_users.map((user) => (
-                                <PeopleCard auth_user={auth_user} key={user.id} user={user} />
+                                <Link href={`/u/${user.username}`}>
+                                    <PeopleCard className='transition duration-300 hover:bg-[var(--hover-light)]' auth_user={auth_user} key={user.id} user={user} />
+                                </Link>
                             ))}
                         </section>
 
                         <section className={`${exploreSection === 'groups' ? 'block' : 'hidden'}`} id='groups'>
                             {all_groups.map((group) => (
-                                <GroupCard auth_user={auth_user} group={group} />
+                                <Link href={`/g/${group.name}`}>
+                                    <GroupCard auth_user={auth_user} group={group} />
+                                </Link>
                             ))}
                         </section>
                     </div>

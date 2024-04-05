@@ -32,7 +32,7 @@ export default function Groups({ auth_user = null, groups = null, top_groups = n
                         <section className={`${groupsSection === 'top' ? 'block' : 'hidden'}`} id='top'>
                             {top_groups && top_groups.length > 0 ? (
                                 top_groups.map((group, id) => (
-                                    <Link key={id} href={`/group/${group.name}`}>
+                                    <Link key={id} href={`/g/${group.name}`}>
                                         <GroupCard className='transition duration-200 hover:bg-[var(--hover-light)]' key={id} group={group} />
                                     </Link>
                                 ))
@@ -44,7 +44,7 @@ export default function Groups({ auth_user = null, groups = null, top_groups = n
                         <section className={`${groupsSection === 'new' ? 'block' : 'hidden'}`} id='new'>
                             {groups && groups.length > 0 ? (
                                 groups.map((group, id) => (
-                                    <Link key={id} href={`/group/${group.name}`}>
+                                    <Link key={id} href={`/g/${group.name}`}>
                                         <GroupCard className='transition duration-200 hover:bg-[var(--hover-light)]' key={id} group={group} />
                                     </Link>
                                 ))
@@ -65,7 +65,7 @@ export default function Groups({ auth_user = null, groups = null, top_groups = n
                                     </IconButton>
                                 </div>
                                 {auth_user.groups.map((group, id) => (
-                                    <Link key={id} href={`/group/${group.name}`}>
+                                    <Link key={id} href={`/g/${group.name}`}>
                                         <GroupCard className='transition duration-200 hover:bg-[var(--hover-light)]' disableFollowButton={true} key={id} group={group} />
                                     </Link>
                                     ))}

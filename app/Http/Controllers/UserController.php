@@ -210,6 +210,7 @@ class UserController extends Controller
         app()->call([self::class, 'getUserConcertsGivenLikes'], compact('user'));
         app()->call([self::class, 'getUserConcertsReceivedLikes'], compact('user'));
         app()->call([self::class, 'getUserMidis'], compact('user'));
+        app()->call([self::class, 'getConcerts'], compact('user'));
     }
 
     public static function getRoles(&$user)
@@ -244,6 +245,15 @@ class UserController extends Controller
         if (auth()->check()) {
             $followers = $user->followers->pluck('name')->toArray();
             return $followers;
+        }
+        return array('You are not logged in.');
+    }
+
+    public static function getConcerts(&$user)
+    {
+        if (auth()->check()) {
+            $concerts = $user->concerts->pluck('name')->toArray();
+            return $concerts;
         }
         return array('You are not logged in.');
     }

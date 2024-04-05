@@ -1,7 +1,7 @@
 import { GlowButton } from "@/Components/Buttons";
 import { Link } from "@inertiajs/react";
 
-export default function ConcertCard({ concert = {}, user = {} }) {
+export default function ConcertCard({ concert = {}, user = null, group = null, }) {
     return (
         <article className='flex flex-col p-3 gap-2 min-h-[8rem] border-b border-gray-200' id={concert.id} key={concert.id}>
             <div className='flex justify-end text-sm select-none'>
@@ -14,13 +14,24 @@ export default function ConcertCard({ concert = {}, user = {} }) {
                 </div>
                 <div className='flex md:gap-7'>
                     <div>
-                        <img className='w-10 min-w-10 rounded-full' src={user.avatar} alt={`${user.username} avatar`} />
+                        {user !== null ? (<img className='w-10 min-w-10 rounded-full' src={user.avatar} alt={`${user.username} avatar`} />) :
+                        (<img className='w-10 min-w-10 rounded-full' src={group.logo} alt={`${group.name} avatar`} />)}
                     </div>
                     <div className='flex flex-col items-center justify-between'>
                         <div className="flex flex-row justify-between sm:-translate-x-[25px]">
                             <div className='flex flex-col items-start'>
-                                <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline hover:cursor-pointer'>{user.name + ' ' + user.lastname}</span>
-                                <span className='text-sm text-gray-400'><label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + user.username}</label></span>
+                                {user !== null ? (
+                                    <>
+                                        <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline hover:cursor-pointer'>{user.name + ' ' + user.lastname}</span>
+                                        <span className='text-sm text-gray-400'><label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + user.username}</label></span>
+                                    </>
+                                ) : 
+                                (
+                                    <>
+                                        <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline hover:cursor-pointer'>{group.name}</span>
+                                    </>
+                                )
+                                }
                             </div>
                         </div>
                         <div className='flex flex-col -translate-x-[25px]'>

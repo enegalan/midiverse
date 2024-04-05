@@ -99,6 +99,7 @@ return new class extends Migration
             $table->id()->autoIncrement();
             $table->string('title')->nullable(false);
             $table->string('description')->nullable(true);
+            $table->foreignId('group_id')->nullable(true)->references('id')->on('groups')->onDelete('cascade');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->boolean('live')->default(0);
             $table->date('planificated_at')->nullable(true);
@@ -107,7 +108,8 @@ return new class extends Migration
         Schema::create('concert_midis', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->foreignId('concert_id')->references('id')->on('concerts')->onDelete('cascade');
-            $table->foreignId('user_midi_id')->references('id')->on('user_midis')->onDelete('cascade');
+            $table->foreignId('user_midi_id')->nullable(true)->references('id')->on('user_midis')->onDelete('cascade');
+            $table->foreignId('group_midi_id')->nullable(true)->references('id')->on('group_midis')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -127,7 +129,8 @@ return new class extends Migration
 
         Schema::create('concert_likes', function (Blueprint $table) {
             $table->foreignId('concert_id')->references('id')->on('concerts')->onDelete('cascade');
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable(true)->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('group_id')->nullable(true)->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
 
