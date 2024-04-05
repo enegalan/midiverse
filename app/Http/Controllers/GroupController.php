@@ -113,6 +113,7 @@ class GroupController extends Controller
         app()->call([self::class, 'getGroupConcertsReceivedLikes'], compact('group'));
         app()->call([self::class, 'getGroupMidis'], compact('group'));
         app()->call([self::class,'getConcerts'], compact('group'));
+        app()->call([self::class,'getMembers'], compact('group'));
     }
 
     public static function getFollowers(&$group)

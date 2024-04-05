@@ -75,7 +75,11 @@ export default function Profile({ auth_user = null, group = null }) {
                                 <div className='mx-4 flex gap-5 mb-8 mt-2'>
                                     <Link href={`/g/${group.name}/followers`} className='text-sm hover:underline'>
                                         <span className='font-bold'>{group.followers.length}</span>
-                                        <span href={''} className='text-[var(--grey)]'> Followers</span>
+                                        <span className='text-[var(--grey)]'> Followers</span>
+                                    </Link>
+                                    <Link href={`/g/${group.name}/members`} className='text-sm hover:underline'>
+                                        <span className='font-bold'>{group.members.length}</span>
+                                        <span className='text-[var(--grey)]'> Members</span>
                                     </Link>
                                 </div>
                                 <ProfileBottomNavbar getProfileSection={getProfileSection} />
