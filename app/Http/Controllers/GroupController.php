@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Group;
+use App\Models\User;
 
 class GroupController extends Controller
 {
@@ -45,18 +46,44 @@ class GroupController extends Controller
     public function isFollowing($name) {
         if (auth()->check()) {
             $group = Group::where('name', $name)->first();
-            $authUserId = auth()->id();
-            if ($group && $group->user_id !== $authUserId) {
+            $isGroupMember = $this->isGroupUserMember(auth()->user());
+            if ($group && !$isGroupMember) {
                 $isFollowing = \DB::table('group_followers')
                     ->where('group_id', $group->id)
-                    ->where('follower_id', $authUserId)
+                    ->where('follower_id', auth()->user()->id)
                     ->exists();
                 return response()->json(['status' => $isFollowing]);
             } else {
-                return response()->json(['status' => false]);
+                return response()->json(['status' => null]);
             }
         } else {
             return response()->json(['status' => false]);
+        }
+    }
+    public static function getAll() {
+        return Group::all();
+    }
+
+    public static function isGroupUserMember($user) {
+        return \DB::table('group_members')->where('user_id', $user['id'])->exists();
+    }
+
+    public function toggleFollow($name) {
+        $group = Group::where('name', $name)->first();
+        $isGroupMember = $this->isGroupUserMember(auth()->user());
+        if (auth()->check() &&  $group && !$isGroupMember) {
+            $authUser = auth()->user();
+            $isFollowing = $authUser->group_followings->contains($group);
+            if ($isFollowing) {
+                $authUser->group_followings()->detach($group->id);
+                $status = false;
+            } else {
+                $authUser->group_followings()->attach($group->id);
+                $status = true;
+            }
+            return response()->json(['status' => $status]);
+        } else {
+            return response()->json(['status'=> 'false']);
         }
     }
 }

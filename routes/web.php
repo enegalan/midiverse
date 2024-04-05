@@ -30,7 +30,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         app()->call([UserController::class, 'getRoles'], compact('user'));
         $top_users = app()->call([UserController::class,'getTopUsers']);
         $all_users = app()->call([UserController::class,'getAllUsers']);
-        return Inertia::render('Explore', compact('auth_user', 'top_users', 'all_users'));
+        $all_groups = app()->call( [GroupController::class ,'getAll']);
+        return Inertia::render('Explore', compact('auth_user', 'top_users', 'all_users', 'all_groups'));
     })->name('explore');
     
     Route::get('/concerts', function () {
@@ -81,5 +82,6 @@ Route::get('/group/following/{name}', [GroupController::class, 'isFollowing'])->
 
 // Follow
 Route::post('/user/follow/{username}', [UserController::class,'toggleFollow'])->name('user.follow');
+Route::post('/group/follow/{name}', [GroupController::class,'toggleFollow'])->name('group.follow');
 
 require __DIR__ . '/auth.php';

@@ -224,7 +224,7 @@ const FollowButton = ({
     userFollow = true,
     groupFollow = false
 }) => {
-    const [isFollowing, setFollowing] = useState(false);
+    const [isFollowing, setFollowing] = useState(null);
     const [isHovering, setIsHovering] = useState(false);
 
     const handleFollow = async () => {
@@ -235,6 +235,7 @@ const FollowButton = ({
                 setFollowing(response.data.status);
             } else if (groupFollow && group) {
                 var response = await axios.post(`/group/follow/${group.name}`)
+                console.log(response.data.status)
                 setFollowing(response.data.status);
             }
         } catch (error) {
@@ -250,6 +251,7 @@ const FollowButton = ({
                     setFollowing(response.data.status);
                 } else if (groupFollow && group) {
                     const response = await axios.get(`/group/following/${group.name}`)
+                    console.log(response.data.status)
                     setFollowing(response.data.status);
                 }
             } catch (error) {
@@ -270,7 +272,7 @@ const FollowButton = ({
             onMouseLeave={() => setIsHovering(false)}
             onClick={handleFollow}
             href={href}
-            className={`min-w-[110px] text-center min-h-[25px] border-1 ${isFollowing && isHovering ? 'bg-[var(--hover-like-red)] border-[var(--pink)] text-[var(--red)] py-[0.56rem]' : isFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'} font-bold py-2 px-4 text-sm rounded-full transition `}
+            className={`${isFollowing === null ? 'hidden' : ''} min-w-[110px] text-center min-h-[25px] border-1 ${isFollowing && isHovering ? 'bg-[var(--hover-like-red)] border-[var(--pink)] text-[var(--red)] py-[0.56rem]' : isFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'} font-bold py-2 px-4 text-sm rounded-full transition `}
         >
             <span className={`${isFollowing && isHovering ? '' : ''}`}>{text}</span>
         </Link>

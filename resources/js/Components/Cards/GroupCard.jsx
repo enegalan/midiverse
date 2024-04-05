@@ -13,7 +13,7 @@ export default function GroupCard({ className = '', disableFollowButton = false,
                     </div>
                     {!disableFollowButton && (
                         <div>
-                            <FollowButton groupFollow={true} group={group} user={auth_user} id={group.id} />
+                            <FollowButton userFollow={false} groupFollow={true} group={group} user={auth_user} id={group.id} />
                         </div>
                     )}
                 </div>

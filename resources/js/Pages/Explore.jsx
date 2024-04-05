@@ -9,50 +9,9 @@ import GroupCard from '@/Components/Cards/GroupCard';
 import PeopleSection from '@/Components/Sections/PeopleSection';
 import ExploreNavbar from '@/Components/Navbars/ExploreNavbar';
 
-export default function Explore({ auth_user = null, user = null, top_users = [], all_users = [], posts = [], concerts = [], groups = [] }) {
+export default function Explore({ auth_user = null, user = null, top_users = [], all_users = [], posts = [], concerts = [], all_groups = [] }) {
     const [exploreSection, setExploreSection] = useState(localStorage.getItem('explore_default_section') ? localStorage.getItem('explore_default_section') : 'top')
-    const users = [
-        {
-            id: 1,
-            name: 'Eneko',
-            lastname: 'Galan',
-            username: 'egalan',
-            description: 'Cuando veas un unicornio en el cielo avísame! Salgamos del manicomio a buscarlo y seamos felices. Business: vegetta777@vizz-agency.com',
-            avatar: 'https://pbs.twimg.com/profile_images/1727305364549279744/CAUlxYmC_x96.jpg',
-            groups: [
-                {
-                    name: 'Developer',
-                    logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-                }, {
-                    name: 'Developer2',
-                    logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-                }, {
-                    name: 'Developer3',
-                    logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-                }
-            ],
-        },
-        {
-            id: 2,
-            name: 'Eneko2',
-            lastname: 'Galan2',
-            username: 'egalan2',
-            description: 'Cuando veas un unicornio en el cielo avísame! Salgamos del manicomio a buscarlo y seamos felices. Business: vegetta777@vizz-agency.com',
-            avatar: 'https://pbs.twimg.com/profile_images/1727305364549279744/CAUlxYmC_x96.jpg',
-            groups: [
-                {
-                    name: 'Developer4',
-                    logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-                }, {
-                    name: 'Developer5',
-                    logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-                }, {
-                    name: 'Developer6',
-                    logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-                }
-            ],
-        },
-    ];
+    
 
     posts = [
         {
@@ -122,28 +81,6 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
             },
         },
     ];
-    groups = [
-        {
-            name: 'Developer1',
-            logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-            description: 'This is a default description for a default group.'
-        },
-        {
-            name: 'Developer2',
-            logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-            description: 'This is a default description for a default group.'
-        },
-        {
-            name: 'Developer3',
-            logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-            description: 'This is a default description for a default group.'
-        },
-        {
-            name: 'Developer4',
-            logo: 'https://static.vecteezy.com/system/resources/previews/006/202/823/original/group-of-eight-people-logo-in-a-circle-persons-teamwork-vector.jpg',
-            description: 'This is a default description for a default group.'
-        },
-    ];
     const getExploreSection = (section) => {
         setExploreSection(section);
     };
@@ -195,8 +132,8 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
                         </section>
 
                         <section className={`${exploreSection === 'groups' ? 'block' : 'hidden'}`} id='groups'>
-                            {groups.map((group) => (
-                                <GroupCard group={group} />
+                            {all_groups.map((group) => (
+                                <GroupCard auth_user={auth_user} group={group} />
                             ))}
                         </section>
                     </div>
