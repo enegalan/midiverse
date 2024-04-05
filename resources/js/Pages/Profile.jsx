@@ -10,6 +10,8 @@ import { IconButton } from "@/Components/Buttons";
 import { AiOutlineMessage } from "react-icons/ai";
 import { Link } from "@inertiajs/react";
 import MidiCard from "@/Components/Cards/MidiCard";
+import RightNavbar from "@/Components/Navbars/RightNavbar";
+import MyGroups from "@/Components/Navbars/Components/MyGroups";
 
 export default function Profile({ auth_user = null, user = null }) {
     var isAuthUserProfile = false;
@@ -36,7 +38,7 @@ export default function Profile({ auth_user = null, user = null }) {
     };
     const renderUserMidis = () => {
         if (user.midis.length === 0) return;
-        return user.midis.map((midi) => <MidiCard user={user} midi={midi}/>);
+        return user.midis.map((midi) => <MidiCard user={user} midi={midi} />);
     };
     const renderUserLikes = () => {
         // TODO: When Like feature is for implement:
@@ -49,7 +51,7 @@ export default function Profile({ auth_user = null, user = null }) {
         // TODO: When Concerts feature is for implement:
         // Implement the logic for rendering:
     }
-    
+
     return (
         <>
             <MainLayout user={auth_user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
@@ -76,7 +78,7 @@ export default function Profile({ auth_user = null, user = null }) {
                                             <IconButton className='text-2xl' >
                                                 <AiOutlineMessage />
                                             </IconButton>
-                                            <FollowButton user={user} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border'/>
+                                            <FollowButton user={user} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />
                                         </div>
                                     )}
                                 </div>
@@ -118,7 +120,7 @@ export default function Profile({ auth_user = null, user = null }) {
                                         <section>
                                             {renderUserLikes()}
                                         </section>
-                                    ): (<></>)
+                                    ) : (<></>)
                                     }
                                 </section>
                             </div>
@@ -126,13 +128,10 @@ export default function Profile({ auth_user = null, user = null }) {
                     </section>
 
                 </div>
-                <section className="lg:min-w-[350px] px-6 py-12 ">
-                    <div className="w-[260px] hidden lg:block">
-                        <div className="fixed">
-                            <SearchInput placeholder="Search" />
-                        </div>
-                    </div>
-                </section>
+                <RightNavbar>
+                    <SearchInput placeholder="Search" />
+                    <MyGroups groups={auth_user.groups} />
+                </RightNavbar>
             </MainLayout>
         </>
     );

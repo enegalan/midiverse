@@ -4,6 +4,8 @@ import MainLayout from '@/Layouts/mainLayout';
 import { SearchInput } from '@/Components/Inputs';
 import ConcertCard from '@/Components/Cards/ConcertCard';
 import ConcertsNavbar from '@/Components/Navbars/ConcertsNavbar';
+import RightNavbar from '@/Components/Navbars/RightNavbar';
+import MyGroups from '@/Components/Navbars/Components/MyGroups';
 
 export default function Concerts({ user = null, users = [], concerts = [] }) {
     const [concertsSection, setConcertsSection] = useState(localStorage.getItem('concerts_default_section') ? localStorage.getItem('concerts_default_section') : 'new')
@@ -122,25 +124,26 @@ export default function Concerts({ user = null, users = [], concerts = [] }) {
                         </section>
                         {/* Live */}
                         <section className={`${concertsSection === 'live' ? 'block' : 'hidden'}`} id='live'>
-                            {concerts.map((concert) => { if (concert.live) return (
-                                <ConcertCard key={concert.id} concert={concert} user={concert.user} />
-                            )})}
+                            {concerts.map((concert) => {
+                                if (concert.live) return (
+                                    <ConcertCard key={concert.id} concert={concert} user={concert.user} />
+                                )
+                            })}
                         </section>
                         {/* Upcoming */}
                         <section className={`${concertsSection === 'upcoming' ? 'block' : 'hidden'}`} id='upcoming'>
-                            {concerts.map((concert) => { if (!concert.live) return (
-                                <ConcertCard key={concert.id} concert={concert} user={concert.user} />
-                            )})}
+                            {concerts.map((concert) => {
+                                if (!concert.live) return (
+                                    <ConcertCard key={concert.id} concert={concert} user={concert.user} />
+                                )
+                            })}
                         </section>
                     </div>
                 </section>
-                <section className='lg:min-w-[350px] px-6 py-12 '>
-                    <div className='w-[260px] hidden lg:block'>
-                        <div className='fixed'>
-                            <SearchInput placeholder="Search" />
-                        </div>
-                    </div>
-                </section>
+                <RightNavbar>
+                    <SearchInput placeholder="Search" />
+                    <MyGroups groups={user.groups} />
+                </RightNavbar>
             </MainLayout>
         </>
     );

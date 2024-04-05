@@ -211,6 +211,7 @@ class UserController extends Controller
         app()->call([self::class, 'getUserConcertsReceivedLikes'], compact('user'));
         app()->call([self::class, 'getUserMidis'], compact('user'));
         app()->call([self::class, 'getConcerts'], compact('user'));
+        app()->call([self::class, 'getGroups'], compact('user'));
     }
 
     public static function getRoles(&$user)
@@ -474,6 +475,7 @@ class UserController extends Controller
         $groups = Group::all();
         app()->call([self::class, 'getRoles'], ['user' => $auth_user]);
         app()->call([self::class, 'getGroups'], ['user' => $auth_user]);
+        app()->call([UserController::class, 'getGroups'], ['user' => $auth_user]);
         $top_groups = app()->call([GroupController::class,'getTopGroups']);
         // Get the top groups with more followers
         return Inertia::render('Groups', compact('auth_user', 'groups', 'top_groups'));

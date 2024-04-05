@@ -9,9 +9,12 @@ import GroupCard from '@/Components/Cards/GroupCard';
 import PeopleSection from '@/Components/Sections/PeopleSection';
 import ExploreNavbar from '@/Components/Navbars/ExploreNavbar';
 import { Link } from '@inertiajs/react';
+import RightNavbar from '@/Components/Navbars/RightNavbar';
+import MyGroups from '@/Components/Navbars/Components/MyGroups';
+
 export default function Explore({ auth_user = null, user = null, top_users = [], all_users = [], posts = [], concerts = [], all_groups = [] }) {
     const [exploreSection, setExploreSection] = useState(localStorage.getItem('explore_default_section') ? localStorage.getItem('explore_default_section') : 'top')
-    
+
 
     posts = [
         {
@@ -115,7 +118,7 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
                                 // TODO: ConcertSection
                             }
                             <section className='w-full'>
-                                
+
                             </section>
                         </section>
 
@@ -126,29 +129,25 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
                         </section>
 
                         <section className={`${exploreSection === 'people' ? 'block' : 'hidden'}`} id='people'>
-                            {all_users.map((user) => (
-                                <Link href={`/u/${user.username}`}>
+                            {all_users.map((user, index) => (
+                                <Link key={index} href={`/u/${user.username}`}>
                                     <PeopleCard className='transition duration-300 hover:bg-[var(--hover-light)]' auth_user={auth_user} key={user.id} user={user} />
                                 </Link>
                             ))}
                         </section>
 
                         <section className={`${exploreSection === 'groups' ? 'block' : 'hidden'}`} id='groups'>
-                            {all_groups.map((group) => (
-                                <Link href={`/g/${group.name}`}>
+                            {all_groups.map((group, index) => (
+                                <Link key={index} href={`/g/${group.name}`}>
                                     <GroupCard auth_user={auth_user} group={group} />
                                 </Link>
                             ))}
                         </section>
                     </div>
                 </section>
-                <section className='lg:min-w-[350px] px-6 py-12 '>
-                    <div className='w-[260px] hidden lg:block'>
-                        <div className='fixed'>
-
-                        </div>
-                    </div>
-                </section>
+                <RightNavbar>
+                    <MyGroups groups={auth_user.groups} />
+                </RightNavbar>
             </MainLayout>
         </>
     );

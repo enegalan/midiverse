@@ -9,6 +9,8 @@ import PostCard from "@/Components/Cards/PostCard";
 import { IconButton } from "@/Components/Buttons";
 import { AiOutlineMessage } from "react-icons/ai";
 import PeopleCard from "@/Components/Cards/PeopleCard";
+import RightNavbar from "@/Components/Navbars/RightNavbar";
+import MyGroups from "@/Components/Navbars/Components/MyGroups";
 
 export default function Follows({ auth_user = null, user = null, type = '', followings = null, followers = null }) {
     // var userInitials = user.name[0].toUpperCase();
@@ -60,13 +62,10 @@ export default function Follows({ auth_user = null, user = null, type = '', foll
                         ) : (<></>)}
                     </section>
                 </div>
-                <section className="lg:min-w-[350px] px-6 py-12 ">
-                    <div className="w-[260px] hidden lg:block">
-                        <div className="fixed">
-                            <SearchInput placeholder="Search" />
-                        </div>
-                    </div>
-                </section>
+                <RightNavbar>
+                    <SearchInput placeholder="Search" />
+                    <MyGroups groups={auth_user.groups} />
+                </RightNavbar>
             </MainLayout>
         </>
     );

@@ -9,8 +9,10 @@ import { FaPlus } from "react-icons/fa";
 import { openModal, closeModal } from '@/Functions';
 import CreateGroup from './Modals/Group/CreateGroup';
 import { Link } from '@inertiajs/react';
+import RightNavbar from '@/Components/Navbars/RightNavbar';
+import MyGroups from '@/Components/Navbars/Components/MyGroups';
+
 export default function Groups({ auth_user = null, groups = null, top_groups = null }) {
-    console.log(auth_user)
     const [groupsSection, setGroupsSection] = useState(localStorage.getItem('groups_default_section') ? localStorage.getItem('groups_default_section') : 'top')
     const getGroupsSection = (section) => {
         setGroupsSection(section);
@@ -54,20 +56,20 @@ export default function Groups({ auth_user = null, groups = null, top_groups = n
                         </section>
                         {/* My Groups */}
                         <section className={`${groupsSection === 'my-groups' ? 'block' : 'hidden'}`} id='my-groups'>
-                            
+
                             {auth_user.groups && auth_user.groups.length > 0 ? (
                                 <div>
                                     <div className='flex items-center justify-between p-2'>
-                                    <h2 className='font-bold text-3xl'>Manage groups</h2>
-                                    <IconButton onClick={handleCreateGroup} className='flex items-center gap-1 px-3'>
-                                        <FaPlus />
-                                        <span>Create</span>
-                                    </IconButton>
-                                </div>
-                                {auth_user.groups.map((group, id) => (
-                                    <Link key={id} href={`/g/${group.name}`}>
-                                        <GroupCard className='transition duration-200 hover:bg-[var(--hover-light)]' disableFollowButton={true} key={id} group={group} />
-                                    </Link>
+                                        <h2 className='font-bold text-3xl'>Manage groups</h2>
+                                        <IconButton onClick={handleCreateGroup} className='flex items-center gap-1 px-3'>
+                                            <FaPlus />
+                                            <span>Create</span>
+                                        </IconButton>
+                                    </div>
+                                    {auth_user.groups.map((group, id) => (
+                                        <Link key={id} href={`/g/${group.name}`}>
+                                            <GroupCard className='transition duration-200 hover:bg-[var(--hover-light)]' disableFollowButton={true} key={id} group={group} />
+                                        </Link>
                                     ))}
                                 </div>
                             ) : (
@@ -85,13 +87,10 @@ export default function Groups({ auth_user = null, groups = null, top_groups = n
                         </section>
                     </div>
                 </section>
-                <section className='lg:min-w-[350px] px-6 py-12 '>
-                    <div className='w-[260px] hidden lg:block'>
-                        <div className='fixed'>
-                            <SearchInput placeholder="Search" />
-                        </div>
-                    </div>
-                </section>
+                <RightNavbar>
+                    <SearchInput placeholder="Search" />
+                    <MyGroups groups={auth_user.groups} />
+                </RightNavbar>
             </MainLayout>
         </>
     );

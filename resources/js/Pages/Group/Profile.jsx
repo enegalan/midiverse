@@ -27,7 +27,7 @@ export default function Profile({ auth_user = null, group = null }) {
     }
     const renderGroupMidis = () => {
         if (group.midis.length === 0) return;
-        return group.midis.map((midi) => <MidiCard group={group} midi={midi}/>);
+        return group.midis.map((midi) => <MidiCard group={group} midi={midi} />);
     };
     const renderGroupConcerts = () => {
         if (group.concerts.length === 0) return;
@@ -100,13 +100,10 @@ export default function Profile({ auth_user = null, group = null }) {
                     </section>
 
                 </div>
-                <section className="lg:min-w-[350px] px-6 py-12 ">
-                    <div className="w-[260px] hidden lg:block">
-                        <div className="fixed">
-                            <SearchInput placeholder="Search" />
-                        </div>
-                    </div>
-                </section>
+                <RightNavbar>
+                    <SearchInput placeholder="Search" />
+                    <MyGroups groups={auth_user.groups} />
+                </RightNavbar>
             </MainLayout>
         </>
     );

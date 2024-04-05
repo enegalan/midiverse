@@ -22,12 +22,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', function () {
         $user = auth()->user();
         app()->call([UserController::class, 'getRoles'], compact('user'));
+        app()->call([UserController::class, 'getGroups'], compact('user'));
         return Inertia::render('Index', compact('user'));
     })->name('home');
     
     Route::get('/explore', function () {
         $user = $auth_user = auth()->user();
         app()->call([UserController::class, 'getRoles'], compact('user'));
+        app()->call([UserController::class, 'getGroups'], compact('user'));
         $top_users = app()->call([UserController::class,'getTopUsers']);
         $all_users = app()->call([UserController::class,'getAllUsers']);
         $all_groups = app()->call( [GroupController::class ,'getAll']);
@@ -37,18 +39,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/concerts', function () {
         $user = auth()->user();
         app()->call([UserController::class, 'getRoles'], compact('user'));
+        app()->call([UserController::class, 'getGroups'], compact('user'));
         return Inertia::render('Concerts', compact('user'));
     })->name('concerts');
     
     Route::get('/playground', function () {
         $user = auth()->user();
         app()->call([UserController::class, 'getRoles'], compact('user'));
+        app()->call([UserController::class, 'getGroups'], compact('user'));
         return Inertia::render('Playground', compact('user'));
     })->name('playground');
     
     Route::get('/messages', function () {
         $user = auth()->user();
         app()->call([UserController::class, 'getRoles'], compact('user'));
+        app()->call([UserController::class, 'getGroups'], compact('user'));
         return Inertia::render('Messages', compact('user'));
     })->name('messages');
 

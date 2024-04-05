@@ -6,12 +6,15 @@ import FollowsPosts from "@/Components/Sections/FollowsPosts";
 import RecentPosts from "@/Components/Sections/RecentPosts";
 import { SearchInput } from "@/Components/Inputs";
 import ForYouAndFollowingNavbar from "@/Components/Navbars/ForYouAndFollowingNavbar";
+import MyGroups from '@/Components/Navbars/Components/MyGroups';
+import RightNavbar from '@/Components/Navbars/RightNavbar';
 
 export default function Index({ user = null }) {
     const [isForYouActive, setForYouActive] = useState(true);
     const getHomeSectionStatus = (status) => {
         setForYouActive(status === 'for_you');
     };
+    console.log(user);
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
@@ -33,13 +36,10 @@ export default function Index({ user = null }) {
                         </div>
                     </div>
                 </section>
-                <section className="lg:min-w-[350px] px-6 py-12 ">
-                    <div className="w-[260px] hidden lg:block">
-                        <div className="fixed">
-                            <SearchInput placeholder="Search" />
-                        </div>
-                    </div>
-                </section>
+                <RightNavbar>
+                    <SearchInput placeholder="Search" />
+                    <MyGroups groups={user.groups} />
+                </RightNavbar>
             </MainLayout>
         </>
     );

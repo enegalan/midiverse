@@ -53,13 +53,10 @@ export default function Follows({ auth_user = null, type = '', group = null }) {
                         </div>
                     </section>
                 </div>
-                <section className="lg:min-w-[350px] px-6 py-12 ">
-                    <div className="w-[260px] hidden lg:block">
-                        <div className="fixed">
-                            <SearchInput placeholder="Search" />
-                        </div>
-                    </div>
-                </section>
+                <RightNavbar>
+                    <SearchInput placeholder="Search" />
+                    <MyGroups groups={auth.groups} />
+                </RightNavbar>
             </MainLayout>
         </>
     );

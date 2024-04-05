@@ -4,7 +4,7 @@ import { BackButton } from "../../../Buttons";
 export default function ProfileTopNavbar({ group = null }) {
     return (
         <>
-            <nav className='sticky flex items-center top-0 z-50 w-full backdrop-blur-md border-b border-gray-200/50'>
+            <nav className='sticky flex items-center top-0 z-50 w-full backdrop-blur-md border-b border-r border-gray-200/50'>
                 <div className='bg-white/85 flex gap-6 items-center w-full'>
                     <BackButton />
                     <div className='flex flex-col hover:cursor-pointer'>

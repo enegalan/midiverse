@@ -180,6 +180,7 @@ class GroupController extends Controller
         $type = 'members';
         $group = Group::where('name', $name)->firstOrFail();
         $this->getMembers($group);
+        app()->call([UserController::class, 'getGroups'], ['user' => $auth_user]);
         return Inertia::render('Group/Follows', compact('auth_user','type','group'));
     }
 }
