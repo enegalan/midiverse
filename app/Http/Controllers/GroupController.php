@@ -46,7 +46,7 @@ class GroupController extends Controller
     public function isFollowing($name) {
         if (auth()->check()) {
             $group = Group::where('name', $name)->first();
-            $isGroupMember = $this->isGroupUserMember(auth()->user());
+            $isGroupMember = $this->isGroupUserMember(auth()->user(), $group);
             if ($group && !$isGroupMember) {
                 $isFollowing = \DB::table('group_followers')
                     ->where('group_id', $group->id)
@@ -54,7 +54,7 @@ class GroupController extends Controller
                     ->exists();
                 return response()->json(['status' => $isFollowing]);
             } else {
-                return response()->json(['status' => null]);
+                return response()->json(['status' => null, 'message' => $isGroupMember]);
             }
         } else {
             return response()->json(['status' => false]);
@@ -64,13 +64,13 @@ class GroupController extends Controller
         return Group::all();
     }
 
-    public static function isGroupUserMember($user) {
-        return \DB::table('group_members')->where('user_id', $user['id'])->exists();
+    public static function isGroupUserMember($user, $group) {
+        return \DB::table('group_members')->where('user_id', $user['id'])->where('group_id', $group['id'])->exists();
     }
 
     public function toggleFollow($name) {
         $group = Group::where('name', $name)->first();
-        $isGroupMember = $this->isGroupUserMember(auth()->user());
+        $isGroupMember = $this->isGroupUserMember(auth()->user(), $group);
         if (auth()->check() &&  $group && !$isGroupMember) {
             $authUser = auth()->user();
             $isFollowing = $authUser->group_followings->contains($group);
