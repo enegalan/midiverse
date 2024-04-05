@@ -60,9 +60,10 @@ return new class extends Migration
 
         Schema::create('groups', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('name')->nullable(false);
+            $table->string('name')->nullable(false)->unique();
             $table->string('description')->nullable(true);
             $table->string('logo')->nullable(true);
+            $table->string('banner')->nullable(true);
             $table->boolean('visibility')->default(0);
             $table->timestamps();
         });

@@ -216,15 +216,27 @@ BackButton.propTypes = {
     iconClass: PropTypes.string,
 };
 
-const FollowButton = ({ user = null, onClick = () => { }, href = '' }) => {
-    const [isUserFollowing, setUserFollowing] = useState(false);
+const FollowButton = ({
+    user = null,
+    group = null,
+    onClick = () => { },
+    href = '',
+    userFollow = true,
+    groupFollow = false
+}) => {
+    const [isFollowing, setFollowing] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
 
     const handleFollow = async () => {
         onClick();
         try {
-            const response = await axios.post(`/user/follow/${user.username}`);
-            setUserFollowing(response.data.status);
+            if (userFollow && user) {
+                var response = await axios.post(`/user/follow/${user.username}`);
+                setFollowing(response.data.status);
+            } else if (groupFollow && group) {
+                var response = await axios.post(`/group/follow/${group.name}`)
+                setFollowing(response.data.status);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -233,8 +245,13 @@ const FollowButton = ({ user = null, onClick = () => { }, href = '' }) => {
     useEffect(() => {
         const checkFollowingStatus = async () => {
             try {
-                const response = await axios.get(`/user/following/${user.username}`);
-                setUserFollowing(response.data.status);
+                if (userFollow && user) {
+                    const response = await axios.get(`/user/following/${user.username}`);
+                    setFollowing(response.data.status);
+                } else if (groupFollow && group) {
+                    const response = await axios.get(`/group/following/${group.name}`)
+                    setFollowing(response.data.status);
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -243,7 +260,7 @@ const FollowButton = ({ user = null, onClick = () => { }, href = '' }) => {
     }, [user]);
 
     let text = 'Follow';
-    if (isUserFollowing) {
+    if (isFollowing) {
         text = isHovering ? 'Unfollow' : 'Following';
     }
 
@@ -253,9 +270,9 @@ const FollowButton = ({ user = null, onClick = () => { }, href = '' }) => {
             onMouseLeave={() => setIsHovering(false)}
             onClick={handleFollow}
             href={href}
-            className={`min-w-[110px] text-center min-h-[25px] border-1 ${isUserFollowing && isHovering ? 'bg-[var(--hover-like-red)] border-[var(--pink)] text-[var(--red)] py-[0.56rem]' : isUserFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'} font-bold py-2 px-4 text-sm rounded-full transition `}
+            className={`min-w-[110px] text-center min-h-[25px] border-1 ${isFollowing && isHovering ? 'bg-[var(--hover-like-red)] border-[var(--pink)] text-[var(--red)] py-[0.56rem]' : isFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'} font-bold py-2 px-4 text-sm rounded-full transition `}
         >
-            <span className={`${isUserFollowing && isHovering ? '' : ''}`}>{text}</span>
+            <span className={`${isFollowing && isHovering ? '' : ''}`}>{text}</span>
         </Link>
     );
 };

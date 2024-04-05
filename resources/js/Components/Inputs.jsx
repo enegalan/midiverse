@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import '../../css/Inputs.css';
 import { InputText } from "primereact/inputtext";
 import { Password } from 'primereact/password';
+import { InputTextarea } from "primereact/inputtextarea";
+import { func } from "prop-types";
 
 
 const SearchInput = ({ placeholder = '', action = null }) => {
@@ -46,11 +48,13 @@ SearchInput.propTypes = {
     placeholder: PropTypes.string,
 };
 
-const DragAndDropBox = () => {
+const DragAndDropBox = ({ id = '', title = 'Drag and drop your files here', subtitle = '(or click to select)', multiple = false, onChange = () => {}, previewImage = '' }) => {
+    const [preview, setPreview] = useState(previewImage);
+
     useEffect(() => {
-        const dropzone = document.getElementById('dropzone');
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
+        const dropzone = document.getElementById(id + '-dropzone');
+        const fileInput = document.getElementById(id + '-fileInput');
+        const fileList = document.getElementById(id + '-fileList');
 
         /* When the user is dragging a file over the box */
         const dragOver = (e) => {
@@ -68,13 +72,14 @@ const DragAndDropBox = () => {
             e.preventDefault();
             dropzone.classList.remove('border-blue-500', 'border-2');
             dropzone.classList.add('border-gray-300', 'border-2');
-
             const files = e.dataTransfer.files;
+            if (!multiple) handleFile(files[0]); return;
             handleFiles(files);
         }
         /* When the user try uploading file(s) */
         const change = (e) => {
             const files = e.target.files;
+            if (!multiple) handleFile(files[0]); return;
             handleFiles(files);
         }
 
@@ -90,11 +95,19 @@ const DragAndDropBox = () => {
                 listItem.textContent = `${file.name} (${formatBytes(file.size)})`;
                 fileList.appendChild(listItem);
             }
-
-            // TODO: Send the files to the server
-            var formData = new FormData();
-            formData.append("file", files[0]);
-            router.post('/preview', formData);
+            setPreview(files[0]);
+            onChange(files);
+        }
+        function handleFile(file) {
+            fileList.innerHTML = '';
+            const listItem = document.createElement('div');
+            listItem.textContent = `${file.name} (${formatBytes(file.size)})`;
+            fileList.appendChild(listItem);
+            setPreview(file);
+            onChange(file);
+            // var formData = new FormData();
+            // formData.append("file", file);
+            // router.post('/preview', formData);
         }
 
         function formatBytes(bytes) {
@@ -104,24 +117,33 @@ const DragAndDropBox = () => {
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
-    }, []);
+    }, [id, onChange, multiple]);
 
     return (
-        <div className="w-full max-w-[1000px] p-9 bg-white rounded-lg shadow-lg">
-            <h1 className="text-center text-2xl sm:text-2xl font-semibold mb-4 text-gray-800">File Drop and Upload</h1>
-            <div className="bg-gray-100 p-8 text-center rounded-lg border-dashed border-2 border-gray-300 hover:border-blue-500 transition duration-300 ease-in-out" id="dropzone">
-                <label htmlFor="fileInput" className="cursor-pointer flex flex-col items-center space-y-2">
+        <div className="w-full max-w-[1000px]">
+            <div className="bg-gray-100 p-8 text-center rounded-lg border-dashed border-2 border-gray-300 hover:border-blue-500 transition duration-300 ease-in-out" id={`${id}-dropzone`}>
+                <label htmlFor={`${id}-fileInput`} className="cursor-pointer flex flex-col items-center space-y-2">
                     <svg className="w-16 h-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    <span className="text-gray-600">Drag and drop your files here</span>
-                    <span className="text-gray-500 text-sm">(or click to select)</span>
+                    <span className="text-gray-600">{title}</span>
+                    <span className="text-gray-500 text-sm">{subtitle}</span>
                 </label>
-                <input type="file" id="fileInput" accept=".stl" className="hidden" multiple />
+                <input type="file" id={`${id}-fileInput`} accept=".png,.jpg,.jpeg,.svg,.aviff" className="hidden" multiple={multiple} />
             </div>
-            <div className="mt-6 text-center" id="fileList"></div>
+            {preview && preview !== '' ? (
+                <div className='flex justify-center '>
+                    {/* Display preview here */}
+                    <img src={URL.createObjectURL(preview)} alt="Preview" className="p-2 w-32 rounded-full border h-auto mt-4" />
+                </div>
+            ) : (<></>)}
+            <div className="mt-4 text-center" id={`${id}-fileList`}></div>
         </div>
     );
+}
+// Copy of DragAndDropBox due to create group not works reuse just one component
+const DragAndDropBox2 = ({ id = '', title = 'Drag and drop your files here', subtitle = '(or click to select)', multiple = false, onChange = () => {}, previewImage = '' }) => {
+    return <DragAndDropBox id={id} title={title} subtitle={subtitle} multiple={multiple} onChange={onChange} previewImage={previewImage} />
 }
 
 const TextInput = ({ name = "", placeholder = "", width = "full", type = "text", icon = "", image = "", value = "", minLength = "", maxLength = "", id = "" }) => {
@@ -157,19 +179,16 @@ TextInput.propTypes = {
 
 
 
-const TextAreaInput = ({ placeholder = "", rows = 20, cols = 20 }) => {
-    const [inputValue, setInputValue] = useState("");
-
+const TextAreaInput = ({ placeholder = '', rows = 5, cols = 20, id = '', className = '', maxHeight = '200px', minHeight = '100px', minLength = '', maxLength = '', onChange = () => { } }) => {
     const handleInputChange = (e) => {
-        setInputValue(e.target.value);
+        getValue(e.target.value);
     }
 
-    const hasContentClass = inputValue ? 'has-content' : '';
-
     return (
-        <div className="relative mt-2 z-20">
-            <textarea cols={cols} rows={rows} className={`textAreaInput ${hasContentClass}`} onChange={handleInputChange} placeholder={placeholder} />
-        </div>
+        <span className="p-float-label">
+            <InputTextarea minLength={minLength} maxLength={maxLength} id={id} cols={cols} rows={rows} className={`${className} border max-h-[${maxHeight}] min-h-[${minHeight}]`} onChange={onChange} />
+            <label htmlFor={id}>{placeholder}</label>
+        </span>
     );
 }
 TextAreaInput.propTypes = {
@@ -233,7 +252,7 @@ const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) 
     );
 };
 
-const Dropdown = ({ options = [{}], id = '', onChange = () => {}, placeholder = null }) => {
+const Dropdown = ({ options = [{}], id = '', onChange = () => { }, placeholder = null }) => {
     return (
         <select onChange={onChange} id={id} className="min-w-[80px] text-[var(--grey)] border rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-3 p-2.5">
             {placeholder !== null ? (
@@ -251,7 +270,7 @@ const Dropdown = ({ options = [{}], id = '', onChange = () => {}, placeholder = 
     );
 }
 
-const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, autoFocus = false, keyfilter = '', onChange = () => {}}) => {
+const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, autoFocus = false, keyfilter = '', onChange = () => { } }) => {
     if (type === 'text') {
         return (
             <span className="p-float-label">
@@ -269,4 +288,4 @@ const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disab
     }
 }
 
-export { SearchInput, DragAndDropBox, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput };
+export { SearchInput, DragAndDropBox, DragAndDropBox2, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput };

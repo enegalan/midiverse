@@ -308,7 +308,6 @@ export class UI {
 				{ "href": "/messages", "text": "Messages", "icon": "envelope", "ref": "messages", },
 				{ "href": "/", "text": "Bookmarks", "icon": "bookmark", "ref": "bookmarks", },
 				{ "href": "/profile", "text": "Profile", "icon": "user", "ref": "profile", },
-				{ "href": "/", "text": "Settings", "icon": "cog", "ref": "settings", }
 			];
 
 			navItems.forEach(item => {

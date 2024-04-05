@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GroupController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +62,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Store Midi
     Route::post('/midi/create', [UserController::class,'storeMidi'])->name('store.midi');
+    
+    // Groups
+    Route::get('/groups', [UserController::class,'renderGroups'])->name('render.groups');
+    Route::post('/group/create', [GroupController::class,'store'])->name('groups.store');
 });
 Route::get('/', function () {
     if (Auth::check()) {
@@ -71,6 +76,8 @@ Route::get('/', function () {
 // Get Data Routes
 Route::get('/user/email/exists/', [UserController::class,'existsByEmail'])->name('user.exists.email');
 Route::get('/user/following/{username}', [UserController::class, 'isFollowing'])->name('user.is.following');
+Route::get('/group/name/exists/', [GroupController::class, 'existsByName'])->name('group.exists.name');
+Route::get('/group/following/{name}', [GroupController::class, 'isFollowing'])->name('group.exists.name');
 
 // Follow
 Route::post('/user/follow/{username}', [UserController::class,'toggleFollow'])->name('user.follow');

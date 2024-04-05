@@ -5,7 +5,7 @@ import { FloatLabelInput } from '@/Components/Inputs';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from '@inertiajs/react';
-import { closeModal, openModal } from '@/Functions';
+import { closeModal, openModal, validateEmail } from '@/Functions';
 import { Dropdown } from '@/Components/Inputs';
 import LoginModal from './LoginModal';
 import { router } from '@inertiajs/react';
@@ -113,6 +113,8 @@ export default function RegisterModal() {
             if (userExists == 'false') {
                 goNextStep();
             } else {
+                setEmailError('This email is already in use');
+                setNextStepButtonDisabled(true);
                 // TODO: Error toast
             }
         }).catch(error => {
@@ -136,10 +138,6 @@ export default function RegisterModal() {
     }
     const goNextStep = () => {
         setStep('password');
-    }
-    const validateEmail = (email) => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
     }
     const onAuth = () => {
         closeModal('register-modal')

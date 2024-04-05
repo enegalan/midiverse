@@ -13,8 +13,9 @@ class Group extends Model {
     protected $fillable = [
         'name',
         'description',
-        'avatar',
         'visibility',
+        'logo',
+        'banner'
     ];
 
     public function members() {

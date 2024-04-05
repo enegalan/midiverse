@@ -23,8 +23,8 @@ import { FaBookmark } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 
-import { IoSettingsOutline } from "react-icons/io5";
-import { IoSettingsSharp } from "react-icons/io5";
+import { HiOutlineUserGroup } from "react-icons/hi2";
+import { HiUserGroup } from "react-icons/hi2";
 
 import { MdOutlinePiano } from "react-icons/md";
 
@@ -87,15 +87,6 @@ const Navbar = ({
         };
     }, [isLogoutModal]);
 
-    const handleLogout = (e) => {
-        console.log('hello');
-        try {
-            axios.get('/logout')
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
     const menuLinks = [
         {
             title: 'Home',
@@ -120,6 +111,14 @@ const Navbar = ({
             ref: 'concerts',
             icon: <IoMusicalNotesOutline className={`text-[${iconWidth}]`} />,
             activeIcon: <IoMusicalNotes className={`text-[${iconWidth}]`} />,
+        },
+        {
+            title: 'Groups',
+            href: '/groups',
+            id: 'groups',
+            ref: 'groups',
+            icon: <HiOutlineUserGroup className={`text-[26px] ml-[2px]`} />,
+            activeIcon: <HiUserGroup className={`text-[26px] ml-[2px]`} />,
         },
         {
             title: 'Notifications',
@@ -153,14 +152,6 @@ const Navbar = ({
             icon: <FaRegUser className={`text-[22px] ml-[2px]`} />,
             activeIcon: <FaUser className={`text-[22px] ml-[2px]`} />,
         },
-        {
-            title: 'Settings',
-            href: '/',
-            id: 'settings',
-            ref: 'settings',
-            icon: <IoSettingsOutline className={`text-[24px] ml-[2px]`} />,
-            activeIcon: <IoSettingsSharp className={`text-[24px] ml-[2px]`} />,
-        },
     ];
 
     const mobileMainLinks = [
@@ -193,49 +184,6 @@ const Navbar = ({
             href: '/messages',
             id: 'm-messages',
             ref: 'messages',
-            icon: '',
-            activeIcon: '',
-        },
-    ];
-
-    const mobileLinks = [
-        {
-            title: 'Profile',
-            href: '/u/' + user.username,
-            id: 'm-profile',
-            ref: 'profile',
-            icon: '',
-            activeIcon: '',
-        },
-        {
-            title: 'Concerts',
-            href: '/',
-            id: 'm-concerts',
-            ref: 'concerts',
-            icon: '',
-            activeIcon: '',
-        },
-        {
-            title: 'Bookmarks',
-            href: '/',
-            id: 'm-bookmarks',
-            ref: 'bookmarks',
-            icon: '',
-            activeIcon: '',
-        },
-        {
-            title: 'Settings',
-            href: '/',
-            id: 'm-settings',
-            ref: 'settings',
-            icon: '',
-            activeIcon: '',
-        },
-        {
-            title: 'Log out',
-            href: '/',
-            id: 'm-logout',
-            ref: 'logout',
             icon: '',
             activeIcon: '',
         },
@@ -306,13 +254,14 @@ const Navbar = ({
                             </span>
                         )}
                         {isLogoutModal ? (
-                            <section className='dropdown absolute top-3 left-0'>
-                                <div className='absolute -top-20 left-4 min-w-[150px] bg-white rounded-lg shadow py-2'>
+                            <section className='dropdown absolute top-12 left-0'>
+                                <div className='absolute -top-40 left-4 min-w-[150px] bg-white rounded-lg shadow py-2'>
                                     <div className='flex flex-col gap-2'>
+                                        <Link href={''} className='font-bold px-4 py-2 hover:bg-[var(--hover-light)]'>Settings</Link>
                                         <Link href={route('logout')} className='font-bold px-4 py-2 hover:bg-[var(--hover-light)]'>Log out</Link>
                                     </div>
                                 </div>
-                                <div className="absolute -top-6 left-6 w-5 flex justify-center overflow-hidden">
+                                <div className="absolute top-[-3.5rem] left-6 w-5 flex justify-center overflow-hidden">
                                     <div className="shadow h-3 w-3 bg-white -rotate-45 transform origin-top-left"></div>
                                 </div>
                             </section>

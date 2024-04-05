@@ -13,4 +13,9 @@ function closeModal (id) {
     document.querySelector('#' + id)?.remove();
 }
 
-export { openModal, closeModal };
+function validateEmail (email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+export { openModal, closeModal, validateEmail };

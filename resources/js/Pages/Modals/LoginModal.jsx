@@ -7,7 +7,7 @@ import axios from 'axios';
 import Separator from '@/Components/Separator';
 import { Link } from '@inertiajs/react';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { closeModal, openModal } from '@/Functions';
+import { closeModal, openModal, validateEmail } from '@/Functions';
 import RegisterModal from './RegisterModal';
 import { router } from '@inertiajs/react';
 
@@ -42,7 +42,6 @@ export default function LoginModal() {
             params: { email: email }
         }).then(res => {
             var userExists = res.data.status
-            console.log(userExists)
             if (userExists == 'true') {
                 goNextStep();
             } else {
@@ -54,10 +53,6 @@ export default function LoginModal() {
     }
     const goNextStep = () => {
         setStep('password');
-    }
-    const validateEmail = (email) => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
     }
     const onAuth = () => {
         closeModal('login-modal')

@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserMidi;
+use App\Models\Group;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
@@ -324,6 +325,15 @@ class UserController extends Controller
         return array('You are not logged in.');
     }
 
+    public static function getGroups(&$user)
+    {
+        if (auth()->check()) {
+            $groups = $user->groups->pluck('name')->toArray();
+            return $groups;
+        }
+        return array('You are not logged in.');
+    }
+
     public function restore($id)
     {
         $user = User::withTrashed()->find($id);
@@ -437,6 +447,7 @@ class UserController extends Controller
         return $followers;
     }
 
+    // TODO: Must define a way to store Midi from Piano-code and send it as an url .midi file so it can be stored in DB.
     public static function storeMidi (Request $request) {
         $midi = json_decode($request->input('midi'), true);
         UserMidi::create([
@@ -446,6 +457,16 @@ class UserController extends Controller
             'description' => $midi['description'],
             'duration' => $midi['duration'],
         ]);
+    }
+
+    public static function renderGroups() {
+        $auth_user = auth()->user();
+        $groups = Group::all();
+        app()->call([self::class, 'getRoles'], ['user' => $auth_user]);
+        app()->call([self::class, 'getGroups'], ['user' => $auth_user]);
+        $top_groups = app()->call([GroupController::class,'getTopGroups']);
+        // Get the top groups with more followers
+        return Inertia::render('Groups', compact('auth_user', 'groups', 'top_groups'));
     }
 
 }
