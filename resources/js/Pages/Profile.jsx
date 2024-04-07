@@ -14,6 +14,7 @@ import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
 
 export default function Profile({ auth_user = null, user = null }) {
+    console.log(auth_user)
     var isAuthUserProfile = false;
     if (auth_user['username'] === user['username']) {
         isAuthUserProfile = true;
@@ -75,7 +76,7 @@ export default function Profile({ auth_user = null, user = null }) {
                                         <AuthButton className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
                                     ) : (
                                         <div className='flex items-center gap-2'>
-                                            <IconButton className='text-2xl' >
+                                            <IconButton className='text-2xl hover:bg-[var(--hover-light)]' >
                                                 <AiOutlineMessage />
                                             </IconButton>
                                             <FollowButton user={user} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />

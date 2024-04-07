@@ -27,7 +27,7 @@ class Group extends Model {
     }
 
     public function roles() {
-        return $this->belongsToMany(Role::class, 'group_roles');
+        return $this->belongsToMany(Role::class, 'group_roles')->withPivot(['user_id']);
     }
 
     public function concerts() {

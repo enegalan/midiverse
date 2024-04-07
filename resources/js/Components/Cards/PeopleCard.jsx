@@ -1,9 +1,9 @@
 import { FollowButton } from "@/Components/Buttons";
 import { Link } from "@inertiajs/react";
 
-export default function PeopleCard({ auth_user = {}, user = {}, className = '' }) {
+export default function PeopleCard({ auth_user = {}, user = {}, className = '', disableFollowButton = false }) {
     var isAuthUser = false;
-    if (auth_user['username'] == user['username']) {
+    if (auth_user['username'] == user['username'] || disableFollowButton) {
         isAuthUser = true;
     }
     return (
@@ -14,8 +14,8 @@ export default function PeopleCard({ auth_user = {}, user = {}, className = '' }
             <div className='flex flex-col w-full'>
                 <div className="flex flex-row justify-between">
                     <div className='flex flex-col items-start'>
-                        <Link href={`/u/${user.username}`} className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline hover:cursor-pointer'>{user.name + ' ' + user.lastname}</Link>
-                        <Link href={`/u/${user.username}`} className='text-sm text-gray-400'><label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + user.username}</label></Link>
+                        <span href={`/u/${user.username}`} className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline hover:cursor-pointer'>{user.name + ' ' + user.lastname}</span>
+                        <span href={`/u/${user.username}`} className='text-sm text-gray-400'><label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + user.username}</label></span>
                     </div>
                     <div>
                         {isAuthUser === false ? (<FollowButton user={user} id={user.id} />) : (<></>)}

@@ -14,7 +14,6 @@ export default function Index({ user = null }) {
     const getHomeSectionStatus = (status) => {
         setForYouActive(status === 'for_you');
     };
-    console.log(user);
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>

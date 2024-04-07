@@ -22,6 +22,20 @@ use Inertia\Response;
 class UserController extends Controller
 {
     private $productPerPagination = 15;
+
+    public static function loadUserData (&$user) {
+        app()->call([self::class, 'getRoles'], compact('user'));
+        app()->call([self::class, 'getPosts'], compact('user'));
+        app()->call([self::class, 'getFollowers'], compact('user'));
+        app()->call([self::class, 'getFollowings'], compact('user'));
+        app()->call([self::class, 'getUserPostsGivenLikes'], compact('user'));
+        app()->call([self::class, 'getUserPostsReceivedLikes'], compact('user'));
+        app()->call([self::class, 'getUserConcertsGivenLikes'], compact('user'));
+        app()->call([self::class, 'getUserConcertsReceivedLikes'], compact('user'));
+        app()->call([self::class, 'getUserMidis'], compact('user'));
+        app()->call([self::class, 'getConcerts'], compact('user'));
+        app()->call([self::class, 'getGroups'], compact('user'));
+    }
     /**
      * Display the user's profile form.
      */
@@ -191,27 +205,18 @@ class UserController extends Controller
         if (!$user) {
             return redirect()->route('home');
         }
+        $auth_user = auth()->user();
         $this->getProfileData($user);
-        return Inertia::render('Profile', ['auth_user' => auth()->user(), 'user' => $user]);
+        $this->getProfileData($auth_user);
+        return Inertia::render('Profile', ['auth_user' => $auth_user, 'user' => $user]);
     }
 
-    public static function getProfileData(&$user)
+    public function getProfileData(&$user)
     {
         if ($user['username'] === auth()->user()->username) {
             $user = auth()->user();
         }
-        $user->load('roles', 'posts', 'followings', 'followers', 'midis');
-        app()->call([self::class, 'getRoles'], compact('user'));
-        app()->call([self::class, 'getPosts'], compact('user'));
-        app()->call([self::class, 'getFollowers'], compact('user'));
-        app()->call([self::class, 'getFollowings'], compact('user'));
-        app()->call([self::class, 'getUserPostsGivenLikes'], compact('user'));
-        app()->call([self::class, 'getUserPostsReceivedLikes'], compact('user'));
-        app()->call([self::class, 'getUserConcertsGivenLikes'], compact('user'));
-        app()->call([self::class, 'getUserConcertsReceivedLikes'], compact('user'));
-        app()->call([self::class, 'getUserMidis'], compact('user'));
-        app()->call([self::class, 'getConcerts'], compact('user'));
-        app()->call([self::class, 'getGroups'], compact('user'));
+        $this->loadUserData($user);
     }
 
     public static function getRoles(&$user)
@@ -329,9 +334,11 @@ class UserController extends Controller
     public static function getUserMidis(&$user)
     {
         if (auth()->check()) {
-            $midis = $user->midis->pluck('midi')->toArray();
-            $user->midis = $midis;
-            return $midis;
+            if ($user->midis) {
+                $midis = $user->midis->pluck('midi')->toArray();
+                $user->midis = $midis;
+                return $midis;
+            }
         }
         return array('You are not logged in.');
     }
@@ -430,6 +437,8 @@ class UserController extends Controller
         $type = 'following';
         $followers = $this->getUserFollowers($user);
         $followings = $this->getUserFollowings($user);
+        $this->loadUserData($user);
+        $this->loadUserData($auth_user);
         return Inertia::render('Follows', compact('auth_user', 'user', 'type', 'followers', 'followings'));
     }
 
@@ -443,6 +452,8 @@ class UserController extends Controller
         $type = 'followers';
         $followers = $this->getUserFollowers($user);
         $followings = $this->getUserFollowings($user);
+        $this->loadUserData($user);
+        $this->loadUserData($auth_user);
         return Inertia::render('Follows', compact('auth_user', 'user', 'type', 'followers', 'followings'));
     }
 
@@ -470,14 +481,11 @@ class UserController extends Controller
         ]);
     }
 
-    public static function renderGroups() {
+    public function renderGroups() {
         $auth_user = auth()->user();
         $groups = Group::all();
-        app()->call([self::class, 'getRoles'], ['user' => $auth_user]);
-        app()->call([self::class, 'getGroups'], ['user' => $auth_user]);
-        app()->call([UserController::class, 'getGroups'], ['user' => $auth_user]);
+        $this->loadUserData($auth_user);
         $top_groups = app()->call([GroupController::class,'getTopGroups']);
-        // Get the top groups with more followers
         return Inertia::render('Groups', compact('auth_user', 'groups', 'top_groups'));
     }
 

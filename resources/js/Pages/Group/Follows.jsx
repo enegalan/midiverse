@@ -1,14 +1,10 @@
 import MainLayout from "@/Layouts/mainLayout";
 import { SearchInput } from "@/Components/Inputs";
 import FollowsTopNavbar from "@/Components/Navbars/Profile/Group/FollowsTopNavbar";
-import ProfileBottomNavbar from "@/Components/Navbars/Profile/ProfileBottomNavbar";
-import { AuthButton, FollowButton } from "@/Components/Buttons";
 import { useState, useEffect } from "react";
-import { IoCalendarOutline } from "react-icons/io5";
-import PostCard from "@/Components/Cards/PostCard";
-import { IconButton } from "@/Components/Buttons";
-import { AiOutlineMessage } from "react-icons/ai";
 import PeopleCard from "@/Components/Cards/PeopleCard";
+import RightNavbar from "@/Components/Navbars/RightNavbar";
+import MyGroups from "@/Components/Navbars/Components/MyGroups";
 
 export default function Follows({ auth_user = null, type = '', group = null }) {
     const [followsSection, setFollowsSection] = useState(type);
@@ -55,7 +51,7 @@ export default function Follows({ auth_user = null, type = '', group = null }) {
                 </div>
                 <RightNavbar>
                     <SearchInput placeholder="Search" />
-                    <MyGroups groups={auth.groups} />
+                    <MyGroups groups={auth_user.groups} />
                 </RightNavbar>
             </MainLayout>
         </>

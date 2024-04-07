@@ -11,6 +11,11 @@ import { AiOutlineMessage } from "react-icons/ai";
 import { Link } from "@inertiajs/react";
 import MidiCard from "@/Components/Cards/MidiCard";
 import ConcertCard from "@/Components/Cards/ConcertCard";
+import RightNavbar from "@/Components/Navbars/RightNavbar";
+import MyGroups from "@/Components/Navbars/Components/MyGroups";
+import { TiUserAddOutline } from "react-icons/ti";
+import { openModal } from "@/Functions";
+import AddGroupMember from "../Modals/Group/AddGroupMember";
 
 export default function Profile({ auth_user = null, group = null }) {
     var isAuthUserProfile = false;
@@ -33,6 +38,9 @@ export default function Profile({ auth_user = null, group = null }) {
         if (group.concerts.length === 0) return;
         return group.concerts.map((concert) => <ConcertCard concert={concert} group={group} />);
     }
+    const handleAddMembers = () => {
+        openModal('add-group-members', <AddGroupMember auth_user={auth_user} group={group} />)
+    }
     return (
         <>
             <MainLayout user={auth_user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
@@ -53,10 +61,15 @@ export default function Profile({ auth_user = null, group = null }) {
                             <div id="profile-content" className='flex flex-col relative'>
                                 <div className='mx-4 absolute -top-8 right-0 lg:-top-14'>
                                     {isAuthUserProfile ? (
-                                        <AuthButton className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
+                                        <div className='flex gap-2'>
+                                            <IconButton onClick={handleAddMembers} className='text-2xl hover:bg-[var(--hover-light)]' >
+                                                <TiUserAddOutline />
+                                            </IconButton>
+                                            <AuthButton className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
+                                        </div>
                                     ) : (
                                         <div className='flex items-center gap-2'>
-                                            <IconButton className='text-2xl' >
+                                            <IconButton className='text-2xl hover:bg-[var(--hover-light)]' >
                                                 <AiOutlineMessage />
                                             </IconButton>
                                             <FollowButton group={group} userFollow={false} groupFollow={true} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />

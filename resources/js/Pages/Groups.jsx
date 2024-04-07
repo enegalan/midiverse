@@ -61,7 +61,7 @@ export default function Groups({ auth_user = null, groups = null, top_groups = n
                                 <div>
                                     <div className='flex items-center justify-between p-2'>
                                         <h2 className='font-bold text-3xl'>Manage groups</h2>
-                                        <IconButton onClick={handleCreateGroup} className='flex items-center gap-1 px-3'>
+                                        <IconButton onClick={handleCreateGroup} className='flex items-center gap-1 px-3 hover:bg-[var(--hover-light)]'>
                                             <FaPlus />
                                             <span>Create</span>
                                         </IconButton>
@@ -76,7 +76,7 @@ export default function Groups({ auth_user = null, groups = null, top_groups = n
                                 <div className='flex flex-col gap-3 p-6'>
                                     <div className='flex items-center justify-between'>
                                         <h2 className='font-bold text-3xl'>Looks empty here...</h2>
-                                        <IconButton onClick={handleCreateGroup} className='flex items-center gap-1 px-3'>
+                                        <IconButton onClick={handleCreateGroup} className='flex items-center gap-1 px-3 hover:bg-[var(--hover-light)]'>
                                             <FaPlus />
                                             <span>Create</span>
                                         </IconButton>

@@ -1,12 +1,7 @@
 import MainLayout from "@/Layouts/mainLayout";
 import { SearchInput } from "@/Components/Inputs";
 import FollowsTopNavbar from "@/Components/Navbars/FollowsTopNavbar";
-import ProfileBottomNavbar from "@/Components/Navbars/Profile/ProfileBottomNavbar";
-import { AuthButton, FollowButton } from "@/Components/Buttons";
 import { useState, useEffect } from "react";
-import { IoCalendarOutline } from "react-icons/io5";
-import PostCard from "@/Components/Cards/PostCard";
-import { IconButton } from "@/Components/Buttons";
 import { AiOutlineMessage } from "react-icons/ai";
 import PeopleCard from "@/Components/Cards/PeopleCard";
 import RightNavbar from "@/Components/Navbars/RightNavbar";

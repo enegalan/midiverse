@@ -19,14 +19,14 @@ export default function MyGroups({ groups = null }) {
                 <div className='flex flex-col gap-1 divide-y items-center w-full'>
                     {groups.length > 0 ? (
                         <div className='w-full flex flex-col gap-3'>
-                            <IconButton onClick={handleCreateGroup} className='flex mx-2 bg-white/50 justify-center items-center gap-1 px-3'>
+                            <IconButton onClick={handleCreateGroup} className='flex mx-2 bg-white/50 hover:bg-[var(--hover-light)] justify-center items-center gap-1 px-3'>
                                 <FaPlus />
                                 <span>Create</span>
                             </IconButton>
                             {groups.map((group, index) => {
                                 return (
                                     <Link href={`/g/${group.name}`} className={`w-full transition duration-300 hover:bg-[var(--hover-light)]`} key={index}>
-                                        <GroupCard group={group} />
+                                        <GroupCard disableFollowButton={true} group={group} />
                                     </Link>
                                 );
                             })}
@@ -35,7 +35,7 @@ export default function MyGroups({ groups = null }) {
                         : (
                             <div className='flex flex-col gap-2'>
                                 <p>Create your first group and share your music.</p>
-                                <IconButton onClick={handleCreateGroup} className='flex items-center gap-1 px-3'>
+                                <IconButton onClick={handleCreateGroup} className='flex items-center gap-1 px-3 hover:bg-[var(--hover-light)]'>
                                     <FaPlus />
                                     <span>Create</span>
                                 </IconButton>

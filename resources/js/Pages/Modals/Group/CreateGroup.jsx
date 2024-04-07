@@ -61,7 +61,6 @@ export default function CreateGroup() {
             params: { name: name }
         }).then(res => {
             var groupExists = res.data.status
-            console.log(groupExists)
             if (groupExists == 'false') {
                 goNextStep();
             } else {

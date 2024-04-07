@@ -265,15 +265,14 @@ const FollowButton = ({
     }
 
     return (
-        <Link
+        <button
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             onClick={handleFollow}
-            href={href}
             className={`${isFollowing === null ? 'hidden' : ''} min-w-[110px] text-center min-h-[25px] border-1 ${isFollowing && isHovering ? 'bg-[var(--hover-like-red)] border-[var(--pink)] text-[var(--red)] py-[0.56rem]' : isFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'} font-bold py-2 px-4 text-sm rounded-full transition `}
         >
             <span>{text}</span>
-        </Link>
+        </button>
     );
 };
 
@@ -320,15 +319,16 @@ const GoogleLoginButton = ({ onAuth = () => { }, onAuthError = (e) => { } }) => 
     );
 }
 
-const CloseButton = ({ onClick }) => {
+const CloseButton = ({ onClick = () => {}, className = '', ...props }) => {
     return (
         <button
+            {...props}
             onClick={onClick}
-            className="my-2 hover:cursor-pointer p-2 rounded-full transition duration-300 hover:bg-gray-200 focus:outline-none focus:bg-gray-300"
+            className={`${className} my-2 hover:cursor-pointer p-2 rounded-full transition duration-300 hover:bg-gray-200 focus:outline-none focus:bg-gray-300`}
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-6 w-6 pointer-events-none"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -346,11 +346,23 @@ const CloseButton = ({ onClick }) => {
 
 const IconButton = ({ children, className = '', href = '', onClick = () => { } }) => {
     return (
-        <Link onClick={onClick} href={href} className={`${className} p-2 rounded-full border transition duration-200 hover:bg-[var(--hover-light)]`} >
+        <Link onClick={onClick} href={href} className={`${className} p-2 rounded-full border transition duration-200`} >
             {children}
         </Link>
     );
 }
 
+const Checkbox = ({ className = '', ...props }) => {
+    return (
+        <input
+            {...props}
+            type='checkbox'
+            className={
+                'rounded border-gray-300 text-[var(--main-blue)] shadow-sm focus:ring-indigo-500 ' +
+                className
+            }
+        />
+    );
+}
 
-export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton, AuthButton, GoogleLoginButton, CloseButton, IconButton };
+export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton, AuthButton, GoogleLoginButton, CloseButton, IconButton, Checkbox };
