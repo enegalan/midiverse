@@ -12,18 +12,20 @@ import { router } from '@inertiajs/react';
 import { Dropdown } from '@/Components/Inputs';
 import { TextAreaInput, DragAndDropBox, DragAndDropBox2 } from '@/Components/Inputs';
 
-export default function CreateGroup() {
-    const [name, setName] = useState('')
+export default function EditGroup( { auth_user = {}, group = {} } ) {
+    console.log(group)
+    console.log('auth_user', auth_user)
+    const [name, setName] = useState(group.name)
     const [nameError, setNameError] = useState('')
 
-    const [visibility, setVisibility] = useState(0)
-    const [description, setDescription] = useState('')
-    const [groupLogo, setGroupLogo] = useState(null);
-    const [groupBanner, setGroupBanner] = useState(null);
+    const [visibility, setVisibility] = useState(group.visibility)
+    const [description, setDescription] = useState(group.description)
+    const [groupLogo, setGroupLogo] = useState(group.logo);
+    const [groupBanner, setGroupBanner] = useState(group.banner);
 
-    const [nextStepButtonDisabled, setNextStepButtonDisabled] = useState(true)
-    const [nextStepButtonDisabled2, setNextStepButtonDisabled2] = useState(true)
-    const [createButtonDisabled, setCreateButtonDisabled] = useState(true)
+    const [nextStepButtonDisabled, setNextStepButtonDisabled] = useState(false)
+    const [nextStepButtonDisabled2, setNextStepButtonDisabled2] = useState(false)
+    const [editButtonDisabled, setEditButtonDisabled] = useState(false)
 
     const [step, setStep] = useState('step1') // step1 or logo or banner
 
@@ -47,7 +49,7 @@ export default function CreateGroup() {
     }
     const onGroupBannerChange = (banner) => {
         setGroupBanner(banner);
-        setCreateButtonDisabled(false);
+        setEditButtonDisabled(false);
     }
 
     const handleNextButton = (e) => {
@@ -61,6 +63,11 @@ export default function CreateGroup() {
             params: { name: name }
         }).then(res => {
             var groupExists = res.data.status
+            for (let group of auth_user.groups) {
+                if (group.name == name) {
+                    groupExists = 'false';
+                }
+            }
             if (groupExists == 'false') {
                 goNextStep();
             } else {
@@ -83,13 +90,13 @@ export default function CreateGroup() {
         setStep('banner');
     }
     const onAuth = () => {
-        closeModal('create-group-modal')
+        closeModal('edit-group-modal')
     }
     const postSuccess = () => {
         onAuth();
-        router.get('groups')
+        router.get('/g/'+group.name)
     }
-    const handleCreate = async () => {
+    const handleSave = async () => {
         const formData = new FormData();
         formData.append('name', name.trim());
         formData.append('description', description);
@@ -97,7 +104,7 @@ export default function CreateGroup() {
         formData.append('logo', groupLogo);
         formData.append('banner', groupBanner);
         try {
-            await axios.post('/group/create', formData)
+            await axios.post('/group/edit/'+group.id, formData)
             postSuccess();
         } catch (error) {
             console.error(error)
@@ -114,12 +121,12 @@ export default function CreateGroup() {
         },
     ];
     return (
-        <BaseModal id='create-group-modal'>
+        <BaseModal id='edit-group-modal'>
             {step === 'step1' ? (
                 <div>
                     <div className="flex justify-between pb-6 md:pb-8 rounded-t w-full">
                         <h3 className="text-left text-3xl font-semibold text-gray-900">
-                            Create a group
+                            Edit {group.name} group
                         </h3>
                     </div>
                     <div className='flex flex-col gap-6'>
@@ -139,7 +146,7 @@ export default function CreateGroup() {
                         </h3>
                     </div>
                     <div className='flex flex-col gap-7 my-2'>
-                        <DragAndDropBox id='group-logo' title='Drag and drop the group logo file here' onChange={onGroupLogoChange} />
+                        <DragAndDropBox id='group-logo' title='Drag and drop the group logo file here' previewImage={group.logo} onChange={onGroupLogoChange} />
                     </div>
                     <AuthButton disabled={nextStepButtonDisabled2} className={`${nextStepButtonDisabled2 ? 'bg-[var(--disabled)] hover:bg-[var(--disabled)] hover:cursor-default' : ''} mt-5 text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)]`} onClick={handleNextButton2} text='Next' />                        
                 </section>
@@ -152,9 +159,9 @@ export default function CreateGroup() {
                         </h3>
                     </div>
                     <div className='flex flex-col gap-7 my-2'>
-                        <DragAndDropBox2 id='group-banner' title='Drag and drop the group banner file here' onChange={onGroupBannerChange} />
+                        <DragAndDropBox2 id='group-banner' title='Drag and drop the group banner file here' previewImage={groupBanner} onChange={onGroupBannerChange} />
                     </div>
-                    <AuthButton disabled={createButtonDisabled} className={`${createButtonDisabled ? 'bg-[var(--disabled)] hover:bg-[var(--disabled)] hover:cursor-default' : ''} select-none text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)]`} onClick={handleCreate} text='Create group' />
+                    <AuthButton disabled={editButtonDisabled} className={`${editButtonDisabled ? 'bg-[var(--disabled)] hover:bg-[var(--disabled)] hover:cursor-default' : ''} select-none text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)]`} onClick={handleSave} text='Save' />
                 </section>
             ) : (<></>)}
         </BaseModal>

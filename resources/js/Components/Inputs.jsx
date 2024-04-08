@@ -49,8 +49,7 @@ SearchInput.propTypes = {
 };
 
 const DragAndDropBox = ({ id = '', title = 'Drag and drop your files here', subtitle = '(or click to select)', multiple = false, onChange = () => {}, previewImage = '' }) => {
-    const [preview, setPreview] = useState(previewImage);
-
+    const [preview, setPreview] = useState('');
     useEffect(() => {
         const dropzone = document.getElementById(id + '-dropzone');
         const fileInput = document.getElementById(id + '-fileInput');
@@ -131,10 +130,10 @@ const DragAndDropBox = ({ id = '', title = 'Drag and drop your files here', subt
                 </label>
                 <input type="file" id={`${id}-fileInput`} accept=".png,.jpg,.jpeg,.svg,.aviff" className="hidden" multiple={multiple} />
             </div>
-            {preview && preview !== '' ? (
+            {preview && preview !== '' || previewImage && previewImage !== '' ? (
                 <div className='flex justify-center '>
                     {/* Display preview here */}
-                    <img src={URL.createObjectURL(preview)} alt="Preview" className="p-2 w-32 rounded-full border h-auto mt-4" />
+                    <img src={previewImage === '' ? URL.createObjectURL(preview) : previewImage} alt="Preview" className="p-2 w-32 rounded-full border h-auto mt-4" />
                 </div>
             ) : (<></>)}
             <div className="mt-4 text-center" id={`${id}-fileList`}></div>

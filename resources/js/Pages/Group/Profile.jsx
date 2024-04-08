@@ -16,6 +16,11 @@ import MyGroups from "@/Components/Navbars/Components/MyGroups";
 import { TiUserAddOutline } from "react-icons/ti";
 import { openModal } from "@/Functions";
 import AddGroupMember from "../Modals/Group/AddGroupMember";
+import { BsThreeDots } from "react-icons/bs";
+import { MdOutlineEdit } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
+import EditGroup from "../Modals/Group/EditGroup";
+import DeleteGroup from "../Modals/Group/DeleteGroup";
 
 export default function Profile({ auth_user = null, group = null }) {
     var isAuthUserProfile = false;
@@ -27,6 +32,7 @@ export default function Profile({ auth_user = null, group = null }) {
     const year = dateTime.getFullYear();
     const joined = month + ' ' + year;
     const [profileSection, setProfileSection] = useState(localStorage.getItem('group_profile_default_section') ? localStorage.getItem('group_profile_default_section') : 'midi');
+    const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const getProfileSection = (sectionRef) => {
         setProfileSection(sectionRef);
     }
@@ -41,6 +47,34 @@ export default function Profile({ auth_user = null, group = null }) {
     const handleAddMembers = () => {
         openModal('add-group-members', <AddGroupMember auth_user={auth_user} group={group} />)
     }
+    const handleMoreOptions = (e) => {
+        e.preventDefault();
+        setMoreOptionsVisible(!moreOptionsVisible);
+    }
+    const handleEditGroup = () => {
+        openModal('edit-group-modal', <EditGroup auth_user={auth_user} group={group}/>)
+    }
+    const handleDeleteGroup = () => {
+        openModal('delete-group-modal', <DeleteGroup group={group}/>)
+    }
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const dropdownElements = document.querySelectorAll(".dropdown");
+            let outsideClick = true;
+            for (let dropdown of dropdownElements) {
+                if (dropdown.contains(event.target)) {
+                    outsideClick = false;
+                }
+            }
+            if (outsideClick) {
+                setMoreOptionsVisible(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [moreOptionsVisible]);
     return (
         <>
             <MainLayout user={auth_user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
@@ -62,6 +96,30 @@ export default function Profile({ auth_user = null, group = null }) {
                                 <div className='mx-4 absolute -top-8 right-0 lg:-top-14'>
                                     {isAuthUserProfile ? (
                                         <div className='flex gap-2'>
+                                            <div className='flex relative'>
+                                                <IconButton onClick={handleMoreOptions} className='text-2xl hover:bg-[var(--hover-light)]' >
+                                                    <BsThreeDots />
+                                                </IconButton>
+                                                {moreOptionsVisible && (
+                                                    <section className='dropdown absolute top-10 -left-20'>
+                                                        <div className='absolute -top-40 left-0 min-w-[160px] bg-white rounded-lg shadow py-2'>
+                                                            <div className='flex flex-col gap-2'>
+                                                                <Link onClick={handleEditGroup} className='flex items-center gap-2 px-4 py-2 hover:bg-[var(--hover-light)]'>
+                                                                    <MdOutlineEdit />
+                                                                    <span className='text-md'>Edit group</span>
+                                                                </Link>
+                                                                <Link onClick={handleDeleteGroup} className='flex items-center gap-2 px-4 py-2 hover:bg-[var(--hover-red)] text-[var(--red)]'>
+                                                                    <MdDeleteOutline />
+                                                                    <span className='text-md'>Delete group</span>
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+                                                        <div className="absolute top-[-3.5rem] left-[5.5rem] w-5 flex justify-center overflow-hidden">
+                                                            <div className="shadow h-3 w-3 bg-white -rotate-45 transform origin-top-left"></div>
+                                                        </div>
+                                                    </section>
+                                                )}
+                                            </div>
                                             <IconButton onClick={handleAddMembers} className='text-2xl hover:bg-[var(--hover-light)]' >
                                                 <TiUserAddOutline />
                                             </IconButton>

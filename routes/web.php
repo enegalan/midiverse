@@ -75,6 +75,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Groups
     Route::get('/groups', [UserController::class,'renderGroups'])->name('render.groups');
     Route::post('/group/create', [GroupController::class,'store'])->name('groups.store');
+    Route::post('/group/edit/{name}', [GroupController::class,'update'])->name('groups.update');
+    Route::delete('/group/delete/{name}', [GroupController::class,'delete'])->name('group.delete');
     Route::get('/g/{name}', [GroupController::class,'getProfile'])->name('group.profile');
 });
 Route::get('/', function () {
