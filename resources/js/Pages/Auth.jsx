@@ -28,7 +28,7 @@ export default function Auth() {
                         <form className='mt-2 flex flex-col' action="">
                             <GoogleLoginButton />
                             <Separator />
-                            <AuthButton onClick={handleRegister} className='w-full text-center text-white bg-[var(--main-blue)] hover:bg-[var(--blue)]' text='Create account' />
+                            <AuthButton onClick={handleRegister} className='w-full text-center text-white bg-[var(--main-blue)] hover:bg-[var(--hover-blue)]' text='Create account' />
                         </form>
                         <form className='mt-16 flex flex-col gap-3' action=''>
                             <h3 className='font-bold text-lg'>Already have an account?</h3>
