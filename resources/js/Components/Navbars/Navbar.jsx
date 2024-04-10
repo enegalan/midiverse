@@ -1,6 +1,4 @@
-import logoWhite from "../../../../public/logoWhite.svg";
 import logoBlack from "../../../../public/logoBlack.svg";
-import Dropdown from "@/Components/Dropdown";
 
 /* Icons */
 import { GoHome } from "react-icons/go";
@@ -30,13 +28,13 @@ import { MdOutlinePiano } from "react-icons/md";
 
 import { BsThreeDots } from "react-icons/bs";
 
-
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 
 import { Link } from "@inertiajs/react";
 
 import { Avatar } from "primereact/avatar";
+
+import { logout } from "@/Functions";
 
 const Navbar = ({
     user = null,
@@ -188,6 +186,9 @@ const Navbar = ({
             activeIcon: '',
         },
     ];
+    const handleLogout = () => {
+        logout();
+    }
 
     return (
         <>
@@ -258,7 +259,7 @@ const Navbar = ({
                                 <div className='absolute -top-40 left-4 min-w-[150px] bg-white rounded-lg shadow py-2'>
                                     <div className='flex flex-col gap-2'>
                                         <Link href={''} className='font-bold px-4 py-2 hover:bg-[var(--hover-light)]'>Settings</Link>
-                                        <Link href={route('logout')} className='font-bold px-4 py-2 hover:bg-[var(--hover-light)]'>Log out</Link>
+                                        <Link onClick={handleLogout} className='font-bold px-4 py-2 hover:bg-[var(--hover-light)]'>Log out</Link>
                                     </div>
                                 </div>
                                 <div className="absolute top-[-3.5rem] left-6 w-5 flex justify-center overflow-hidden">

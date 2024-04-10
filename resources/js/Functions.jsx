@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
-
+import axios from 'axios';
+import { googleLogout } from '@react-oauth/google';
 
 function openModal(id, modal) {
     const modalContainer = document.createElement('div');
@@ -18,4 +19,9 @@ function validateEmail (email) {
     return re.test(email);
 }
 
-export { openModal, closeModal, validateEmail };
+function logout () {
+    googleLogout();
+    axios.get(route('logout'));
+}
+
+export { openModal, closeModal, validateEmail, logout };
