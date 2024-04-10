@@ -33,7 +33,7 @@ export default function MyGroups({ groups = null }) {
                         </div>
                     )
                         : (
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-2 px-4'>
                                 <p>Create your first group and share your music.</p>
                                 <IconButton onClick={handleCreateGroup} className='flex items-center gap-1 px-3 hover:bg-[var(--hover-light)]'>
                                     <FaPlus />
