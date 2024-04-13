@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Group;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserMidi;
-use App\Models\Group;
+use App\Models\Post;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +23,8 @@ class UserController extends Controller
 {
     private $productPerPagination = 15;
 
-    public static function loadUserData (&$user) {
+    public static function loadUserData(&$user)
+    {
         app()->call([self::class, 'getRoles'], compact('user'));
         app()->call([self::class, 'getPosts'], compact('user'));
         app()->call([self::class, 'getFollowers'], compact('user'));
@@ -231,7 +232,22 @@ class UserController extends Controller
     public static function getPosts(&$user)
     {
         if (auth()->check()) {
-            $posts = $user->posts->pluck('name')->toArray();
+            $posts = $user->posts->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'user' => [
+                        'avatar' => $post->user->avatar,
+                        'name' => $post->user->name,
+                        'lastname' => $post->user->lastname,
+                        'username' => $post->user->username,
+                    ],
+                    'content' => $post->content,
+                    'date' => $post->created_at->toDateString(),
+                    'comments' => $post->comments->count(),
+                    'likes' => $post->likes->count(),
+                ];
+            });
+
             return $posts;
         }
         return array('You are not logged in.');
@@ -388,11 +404,12 @@ class UserController extends Controller
             }
             return response()->json(['status' => $status]);
         } else {
-            return response()->json(['status'=> 'false']);
+            return response()->json(['status' => 'false']);
         }
     }
 
-    public function isFollowing($username) {
+    public function isFollowing($username)
+    {
         if (auth()->check() && $username != auth()->user()->username) {
             $user = User::where('username', $username)->first();
             $authUserId = auth()->id();
@@ -406,28 +423,31 @@ class UserController extends Controller
             // Devolver una respuesta JSON indicando si el usuario está siguiendo al usuario objetivo
             return response()->json(['status' => $isFollowing]);
         } else {
-            return response()->json(['status'=> 'false']);
+            return response()->json(['status' => 'false']);
         }
     }
 
-    public static function getTopUsers () {
+    public static function getTopUsers()
+    {
         $limit = 10;
         $topUsers = DB::table('user_followers')
-        ->select('user_id', DB::raw('COUNT(*) as follower_count'))
-        ->groupBy('user_id')
-        ->orderBy('follower_count','desc')
-        ->limit($limit)->get();
-        
+            ->select('user_id', DB::raw('COUNT(*) as follower_count'))
+            ->groupBy('user_id')
+            ->orderBy('follower_count', 'desc')
+            ->limit($limit)->get();
+
         $users = User::whereIn('id', $topUsers->pluck('user_id'))->get();
         return $users;
     }
 
-    public static function getAllUsers () {
+    public static function getAllUsers()
+    {
         $users = User::all();
         return $users;
     }
 
-    public function renderUserFollowings ($username) {
+    public function renderUserFollowings($username)
+    {
         if ($username === auth()->user()->username) {
             $user = auth()->user();
         } else {
@@ -442,7 +462,8 @@ class UserController extends Controller
         return Inertia::render('Follows', compact('auth_user', 'user', 'type', 'followers', 'followings'));
     }
 
-    public function renderUserFollowers ($username) {
+    public function renderUserFollowers($username)
+    {
         if ($username === auth()->user()->username) {
             $user = auth()->user();
         } else {
@@ -457,20 +478,23 @@ class UserController extends Controller
         return Inertia::render('Follows', compact('auth_user', 'user', 'type', 'followers', 'followings'));
     }
 
-    private function getUserFollowings ($user) {
+    public static function getUserFollowings($user)
+    {
         $followingsIds = DB::table('user_followers')->where('follower_id', $user->id)->get();
         $followings = User::whereIn('id', $followingsIds->pluck('user_id'))->get();
         return $followings;
     }
-    
-    private function getUserFollowers ($user) {
+
+    private function getUserFollowers($user)
+    {
         $followersIds = DB::table('user_followers')->where('user_id', $user->id)->get();
         $followers = User::whereIn('id', $followersIds->pluck('follower_id'))->get();
         return $followers;
     }
 
     // TODO: Must define a way to store Midi from Piano-code and send it as an url .midi file so it can be stored in DB.
-    public static function storeMidi (Request $request) {
+    public static function storeMidi(Request $request)
+    {
         $midi = json_decode($request->input('midi'), true);
         UserMidi::create([
             'user_id' => auth()->user()->id,
@@ -481,12 +505,40 @@ class UserController extends Controller
         ]);
     }
 
-    public function renderGroups() {
+    public function renderGroups()
+    {
         $auth_user = auth()->user();
         $groups = Group::all();
         $this->loadUserData($auth_user);
-        $top_groups = app()->call([GroupController::class,'getTopGroups']);
+        $top_groups = app()->call([GroupController::class, 'getTopGroups']);
         return Inertia::render('Groups', compact('auth_user', 'groups', 'top_groups'));
+    }
+
+    public static function getFollowsPosts(&$follows_posts)
+    {
+        $users_follows = app()->call([self::class, 'getUserFollowings'], ['user' => auth()->user()]);
+        $follows_posts = [];
+        foreach ($users_follows as $user_follow) {
+            $user_posts = Post::where('user_id', $user_follow['id'])->orderBy('created_at', 'desc')->get();
+            $user_posts->load('user');
+            foreach ($user_posts as $post) {
+                $follow_post = [
+                    'id' => $post->id,
+                    'user' => [
+                        'avatar' => $post->user->avatar,
+                        'name' => $post->user->name,
+                        'lastname' => $post->user->lastname,
+                        'username' => $post->user->username,
+                    ],
+                    'content' => $post->content,
+                    'date' => $post->created_at->toDateString(),
+                    'comments' => $post->comments->count(),
+                    'likes' => $post->likes->count(),
+                ];
+                array_push($follows_posts, $follow_post);
+            }
+        }
+        return $follows_posts;
     }
 
 }

@@ -15,39 +15,6 @@ import MyGroups from '@/Components/Navbars/Components/MyGroups';
 export default function Explore({ auth_user = null, user = null, top_users = [], all_users = [], posts = [], concerts = [], all_groups = [] }) {
     const [exploreSection, setExploreSection] = useState(localStorage.getItem('explore_default_section') ? localStorage.getItem('explore_default_section') : 'top')
 
-
-    posts = [
-        {
-            id: 1,
-            user: {
-                name: 'Eneko',
-                lastname: 'Galan',
-                username: 'egalan',
-                avatar: 'https://pbs.twimg.com/profile_images/1727305364549279744/CAUlxYmC_x96.jpg',
-            },
-            date: 'Mar 22',
-            content: 'Test following content of a post. ASDASDASDASDASDASDSADASCXZXCZXCXZCXCZASFGDSKFOASKDASODKASODK',
-            comments: [],
-            likes: [],
-            href: '',
-        },
-        {
-            id: 2,
-            user: {
-                name: 'Eneko',
-                lastname: 'Galan',
-                username: 'egalan',
-                avatar: 'https://pbs.twimg.com/profile_images/1727305364549279744/CAUlxYmC_x96.jpg',
-            },
-            date: 'Mar 22',
-            content: 'Test content of a post. ASDASDASDASDASDASDSADASCXZXCZXCXZCXCZASFGDSKFOASKDASODKASODK',
-            comments: [],
-            likes: [],
-            href: '',
-        },
-        // Additional posts if needed
-    ];
-
     concerts = [
         {
             id: 1,

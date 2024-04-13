@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
@@ -19,49 +21,19 @@ use Inertia\Inertia;
  */
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/home', function () {
-        $user = auth()->user();
-        app()->call([UserController::class, 'getRoles'], compact('user'));
-        app()->call([UserController::class, 'getGroups'], compact('user'));
-        return Inertia::render('Index', compact('user'));
-    })->name('home');
+    Route::get('/home', [MainController::class, 'home'])->name('home');
     
-    Route::get('/explore', function () {
-        $user = $auth_user = auth()->user();
-        app()->call([UserController::class, 'getRoles'], compact('user'));
-        app()->call([UserController::class, 'getGroups'], compact('user'));
-        $top_users = app()->call([UserController::class,'getTopUsers']);
-        $all_users = app()->call([UserController::class,'getAllUsers']);
-        $all_groups = app()->call( [GroupController::class ,'getAll']);
-        return Inertia::render('Explore', compact('auth_user', 'top_users', 'all_users', 'all_groups'));
-    })->name('explore');
+    Route::get('/explore', [MainController::class, 'explore'])->name('explore');
     
-    Route::get('/concerts', function () {
-        $user = auth()->user();
-        app()->call([UserController::class, 'getRoles'], compact('user'));
-        app()->call([UserController::class, 'getGroups'], compact('user'));
-        return Inertia::render('Concerts', compact('user'));
-    })->name('concerts');
+    Route::get('/concerts', [MainController::class, 'concerts'])->name('concerts');
     
-    Route::get('/playground', function () {
-        $user = auth()->user();
-        app()->call([UserController::class, 'getRoles'], compact('user'));
-        app()->call([UserController::class, 'getGroups'], compact('user'));
-        return Inertia::render('Playground', compact('user'));
-    })->name('playground');
+    Route::get('/playground', [MainController::class, 'playground'])->name('playground');
     
-    Route::get('/messages', function () {
-        $user = auth()->user();
-        app()->call([UserController::class, 'getRoles'], compact('user'));
-        app()->call([UserController::class, 'getGroups'], compact('user'));
-        return Inertia::render('Messages', compact('user'));
-    })->name('messages');
+    Route::get('/messages', [MainController::class, 'messages'])->name('messages');
 
     Route::get('/u/{username}', [UserController::class, 'getProfile'])->name('profile');
 
-    Route::get('/profile', function () {
-        return redirect('/u/' . auth()->user()->username);
-    });
+    Route::get('/profile', [MainController::class, 'profileRedirect']);
 
     // Follows
     Route::get('/u/{username}/following', [UserController::class,'renderUserFollowings'])->name('render.user.following');
@@ -78,12 +50,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/group/edit/{name}', [GroupController::class,'update'])->name('groups.update');
     Route::delete('/group/delete/{name}', [GroupController::class,'delete'])->name('group.delete');
     Route::get('/g/{name}', [GroupController::class,'getProfile'])->name('group.profile');
+
+    // Posts
+    Route::post('/post/create', [PostController::class,'store'])->name('post.create');
 });
-Route::get('/', function () {
-    if (Auth::check()) {
-        return Redirect::route('home');
-    }
-});
+Route::get('/', [MainController::class, 'rootRedirect']);
 
 // Get Data Routes
 Route::get('/user/email/exists/', [UserController::class,'existsByEmail'])->name('user.exists.email');

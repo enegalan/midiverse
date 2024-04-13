@@ -14,7 +14,6 @@ import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
 
 export default function Profile({ auth_user = null, user = null }) {
-    console.log(auth_user)
     var isAuthUserProfile = false;
     if (auth_user['username'] === user['username']) {
         isAuthUserProfile = true;
@@ -35,7 +34,12 @@ export default function Profile({ auth_user = null, user = null }) {
     }
     const renderUserPosts = () => {
         if (user.posts.length === 0) return;
-        return user.posts.map((post) => <PostCard key={post.id} post={post} />);
+    
+        const sortedPosts = user.posts.sort((a, b) => {
+            return new Date(b.created_at) - new Date(a.created_at);
+        });
+    
+        return sortedPosts.map((post) => <PostCard key={post.id} post={post} />);
     };
     const renderUserMidis = () => {
         if (user.midis.length === 0) return;

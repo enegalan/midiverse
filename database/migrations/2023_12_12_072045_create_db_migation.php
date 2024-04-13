@@ -139,7 +139,7 @@ return new class extends Migration
             $table->id()->autoIncrement();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('content')->nullable(false);
-            $table->foreignId('user_midi_id')->references('id')->on('user_midis')->onDelete('cascade');
+            $table->foreignId('user_midi_id')->nullable(true)->references('id')->on('user_midis')->onDelete('cascade');
             $table->timestamps();
         });
 

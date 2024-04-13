@@ -93,6 +93,14 @@ svg:focus {
   outline: none;
 }
 
+.icon-stroke-bold, .icon-stroke-bold > * {
+  stroke-width: 0.5;
+}
+
+.icon-stroke-bolder, .icon-stroke-bolder > * {
+  stroke-width: 2.1;
+}
+
 /*Playground fix styles*/
 @media (min-width: 1024px) {
   .flex-lg-hidden {
