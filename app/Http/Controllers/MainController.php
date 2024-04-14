@@ -19,8 +19,7 @@ class MainController extends Controller
     }
     public static function home () {
         $user = auth()->user();
-        app()->call([UserController::class, 'getRoles'], compact('user'));
-        app()->call([UserController::class, 'getGroups'], compact('user'));
+        app()->call([UserController::class,'loadUserData'], compact('user'));
         $recent_posts = [];
         $follows_posts = [];
         $recent_posts = app()->call([self::class, 'getRecentPosts'], compact('recent_posts'));
@@ -30,8 +29,7 @@ class MainController extends Controller
 
     public static function explore () {
         $user = $auth_user = auth()->user();
-        app()->call([UserController::class, 'getRoles'], compact('user'));
-        app()->call([UserController::class, 'getGroups'], compact('user'));
+        app()->call([UserController::class,'loadUserData'], compact('user'));
         $posts = [];
         $posts = app()->call([self::class, 'getTopPosts'], compact('posts'));
         $top_users = app()->call([UserController::class,'getTopUsers']);
@@ -42,22 +40,19 @@ class MainController extends Controller
 
     public static function concerts () {
         $user = auth()->user();
-        app()->call([UserController::class, 'getRoles'], compact('user'));
-        app()->call([UserController::class, 'getGroups'], compact('user'));
+        app()->call([UserController::class,'loadUserData'], compact('user'));
         return Inertia::render('Concerts', compact('user'));
     }
 
     public static function playground () {
         $user = auth()->user();
-        app()->call([UserController::class, 'getRoles'], compact('user'));
-        app()->call([UserController::class, 'getGroups'], compact('user'));
+        app()->call([UserController::class,'loadUserData'], compact('user'));
         return Inertia::render('Playground', compact('user'));
     }
 
     public static function messages () {
         $user = auth()->user();
-        app()->call([UserController::class, 'getRoles'], compact('user'));
-        app()->call([UserController::class, 'getGroups'], compact('user'));
+        app()->call([UserController::class,'loadUserData'], compact('user'));
         return Inertia::render('Messages', compact('user'));
     }
 
@@ -78,8 +73,10 @@ class MainController extends Controller
                 ],
                 'content' => $post->content,
                 'date' => $post->created_at->toDateString(),
-                'comments' => $post->comments->count(),
-                'likes' => $post->likes->count(),
+                'comments' => $post->comments,
+                'comments_count' => $post->comments->count(),
+                'likes' => $post->likes,
+                'likes_count' => $post->likes->count(),
             ];
         });
         return $recent_posts;
@@ -89,12 +86,13 @@ class MainController extends Controller
         $posts = Post::orderBy('created_at','desc')->get();
         $topPosts = [];
         foreach ($posts as $post) {
-            $likeCount = \DB::table('post_likes')->where('post_id', $post->id)->count();
+            $likes = \DB::table('post_likes')->where('post_id', $post->id)->get();
             // Assign the like count to the post object
-            $post->like_count = $likeCount;
-            $post->load('user');
+            $post->like_count = $likes->count();
+            $post->likes = $likes;
+            $post->load('user', 'comments');
             // Store the post in the array if it has likes
-            if ($likeCount > 0) {
+            if ($likes->count() > 0) {
                 $topPosts[] = $post;
             }
         }
