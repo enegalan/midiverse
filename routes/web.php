@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Posts
     Route::post('/post/create', [PostController::class,'store'])->name('post.create');
+    Route::post('/post/like/{id}', [PostController::class, 'like'])->name('post.like');
 });
 Route::get('/', [MainController::class, 'rootRedirect']);
 
