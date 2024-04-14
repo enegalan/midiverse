@@ -38,11 +38,11 @@ export default function Index({ user = null, recent_posts = [], follows_posts = 
                         </div>
                         {/* Recent Users' posts */}
                         <div className={`${isForYouActive ? 'block' : 'hidden'}`}>
-                            <RecentPosts posts={sortedRecentPosts} />
+                            <RecentPosts auth_user={user} posts={sortedRecentPosts} />
                         </div>
                         {/* Follows posts */}
                         <div className={`${!isForYouActive ? 'block' : 'hidden'}`}>
-                            <FollowsPosts posts={sortedFollowsPosts} />
+                            <FollowsPosts auth_user={user} posts={sortedFollowsPosts} />
                         </div>
                     </div>
                 </section>

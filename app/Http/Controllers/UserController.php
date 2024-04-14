@@ -283,14 +283,10 @@ class UserController extends Controller
     public static function getUserPostsGivenLikes(&$user)
     {
         if (auth()->check()) {
-            $postIds = $user->posts->pluck('id')->toArray();
+            $postIds = Post::all()->pluck('id')->toArray();
             $postLikesGiven = DB::table('post_likes')
-                ->whereIn('post_id', $postIds)
-                ->pluck('user_id')
-                ->toArray();
-
+                ->whereIn('post_id', $postIds)->where('user_id', $user->id)->get()->toArray();
             $user->post_given_likes = $postLikesGiven;
-
             return $postLikesGiven;
         }
         return array('You are not logged in.');
@@ -532,8 +528,11 @@ class UserController extends Controller
                     ],
                     'content' => $post->content,
                     'date' => $post->created_at->toDateString(),
-                    'comments' => $post->comments->count(),
-                    'likes' => $post->likes->count(),
+                    'comments' => $post->comments,
+                    'comments_count' => $post->comments->count(),
+                    'likes' => $post->likes,
+                    'likes_count' => $post->likes->count(),
+                    
                 ];
                 array_push($follows_posts, $follow_post);
             }

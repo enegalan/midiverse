@@ -1,10 +1,10 @@
-import Post from '@/Components/Cards/PostCard';
+import PostCard from '@/Components/Cards/PostCard';
 
-export default function RecentPosts({ posts = []}) {
+export default function RecentPosts({ auth_user = null, posts = []}) {
     return (
         <section className='pt-16 w-full'>
             {posts.map((post, index) => (
-                <Post post={post} key={index} />
+                <PostCard auth_user={auth_user} post={post} key={index} />
             ))}
         </section>
     );

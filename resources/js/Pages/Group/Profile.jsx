@@ -5,7 +5,6 @@ import ProfileBottomNavbar from "@/Components/Navbars/Profile/Group/ProfileBotto
 import { AuthButton, FollowButton } from "@/Components/Buttons";
 import { useState, useEffect } from "react";
 import { IoCalendarOutline } from "react-icons/io5";
-import PostCard from "@/Components/Cards/PostCard";
 import { IconButton } from "@/Components/Buttons";
 import { AiOutlineMessage } from "react-icons/ai";
 import { Link } from "@inertiajs/react";

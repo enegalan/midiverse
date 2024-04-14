@@ -72,7 +72,7 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
                             </section>
                             <section className='w-full'>
                                 {posts.map((post) => (
-                                    <PostCard key={post.id} post={post} />
+                                    <PostCard key={post.id} auth_user={auth_user} post={post} />
                                 ))}
                             </section>
                             {

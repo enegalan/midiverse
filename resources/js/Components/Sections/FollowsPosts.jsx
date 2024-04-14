@@ -1,10 +1,10 @@
-import Post from '@/Components/Cards/PostCard';
+import PostCard from '@/Components/Cards/PostCard';
 
-export default function FollowsPosts({ posts = [] }) {
+export default function FollowsPosts({ auth_user = null, posts = [] }) {
     return (
         <section className='w-full'>
             {posts.map((post, index) => (
-                <Post key={index} post={post} />
+                <PostCard auth_user={auth_user} key={index} post={post} />
             ))}
         </section>
     );

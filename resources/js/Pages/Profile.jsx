@@ -39,7 +39,7 @@ export default function Profile({ auth_user = null, user = null }) {
             return new Date(b.created_at) - new Date(a.created_at);
         });
     
-        return sortedPosts.map((post) => <PostCard key={post.id} post={post} />);
+        return sortedPosts.map((post) => <PostCard auth_user={auth_user} key={post.id} post={post} />);
     };
     const renderUserMidis = () => {
         if (user.midis.length === 0) return;
