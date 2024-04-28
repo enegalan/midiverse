@@ -8,7 +8,6 @@ import { Password } from 'primereact/password';
 import { InputTextarea } from "primereact/inputtextarea";
 import { func } from "prop-types";
 
-
 const SearchInput = ({ placeholder = '', action = null }) => {
     const { data, setData, post, processing, errors } = useForm({
         query: '',
@@ -140,10 +139,6 @@ const DragAndDropBox = ({ id = '', title = 'Drag and drop your files here', subt
         </div>
     );
 }
-// Copy of DragAndDropBox due to create group not works reuse just one component
-const DragAndDropBox2 = ({ id = '', title = 'Drag and drop your files here', subtitle = '(or click to select)', multiple = false, onChange = () => {}, previewImage = '' }) => {
-    return <DragAndDropBox id={id} title={title} subtitle={subtitle} multiple={multiple} onChange={onChange} previewImage={previewImage} />
-}
 
 const TextInput = ({ name = "", placeholder = "", width = "full", type = "text", icon = "", image = "", value = "", minLength = "", maxLength = "", id = "" }) => {
     const [inputValue, setInputValue] = useState(value);
@@ -176,8 +171,6 @@ TextInput.propTypes = {
     maxLength: PropTypes.string,
 };
 
-
-
 const TextAreaInput = ({ placeholder = '', rows = 5, cols = 20, id = '', className = '', maxHeight = '200px', minHeight = '100px', minLength = '', maxLength = '', onChange = () => { } }) => {
     const handleInputChange = (e) => {
         getValue(e.target.value);
@@ -199,11 +192,9 @@ TextAreaInput.propTypes = {
 const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState([]);
-
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
-
     const handleCheckboxChange = (option) => {
         setSelectedOptions((prevSelectedOptions) => {
             if (prevSelectedOptions.includes(option.id)) {
@@ -213,7 +204,6 @@ const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) 
             }
         });
     };
-
     return (
         <div className="relative inline-block text-left flex-1">
             <div>
@@ -228,7 +218,6 @@ const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) 
                     Selected: {selectedOptions && selectedOptions.length}
                 </button>
             </div>
-
             {isOpen && (
                 <div className="origin-top-right mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                     <div className="py-1">
@@ -254,10 +243,8 @@ const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) 
 const Dropdown = ({ options = [{}], id = '', onChange = () => { }, placeholder = null }) => {
     return (
         <select onChange={onChange} id={id} className="min-w-[80px] text-[var(--grey)] border rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-3 p-2.5">
-            {placeholder !== null ? (
+            {placeholder !== null && (
                 <option key={`${id}-placeholder`}>{placeholder}</option>
-            ) : (
-                <></>
             )}
             {options.map((option, index) => {
                 const { label, value } = option;
@@ -287,4 +274,4 @@ const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disab
     }
 }
 
-export { SearchInput, DragAndDropBox, DragAndDropBox2, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput };
+export { SearchInput, DragAndDropBox, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput };

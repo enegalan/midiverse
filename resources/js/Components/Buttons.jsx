@@ -9,6 +9,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { router } from '@inertiajs/react';
+import { FaCheck } from "react-icons/fa6";
 
 const GlowButton = ({ value = "", href = "#", backgroundColor = "#09041e", textColor = "white", image = "", imageClass = "", icon = "" }) => {
     const buttonRef = useRef(null);
@@ -353,17 +354,108 @@ const IconButton = ({ children, className = '', href = '', onClick = () => { } }
     );
 }
 
-const Checkbox = ({ className = '', ...props }) => {
+const Checkbox = ({ className = '', checked = false, disabled = false, ...props }) => {
     return (
         <input
             {...props}
+            disabled={disabled}
             type='checkbox'
+            checked={checked}
             className={
-                'rounded border-gray-300 text-[var(--main-blue)] shadow-sm focus:ring-indigo-500 ' +
-                className
+                `rounded ${disabled ? 'border-gray-300' : 'border-gray-500'} border-2 w-5 h-5 text-[var(--main-blue)] shadow-sm focus:ring-transparent hover:cursor-pointer ${className}`
             }
         />
     );
 }
 
-export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton, AuthButton, GoogleLoginButton, CloseButton, IconButton, Checkbox };
+const ColorOptions = ({ colors = [{}] }) => {
+    // TODO: Get User color preference, not the an static default color (the first one in this case)
+    const [activeColor, setActiveColor] = useState(colors[0].value)
+    const handleColor = (e) => {
+        e.preventDefault();
+        const newColor = e.target.getAttribute('value');
+        setActiveColor(newColor)
+        // TODO: Make necessary logic to apply color to application
+    }
+    return (
+        <div className='flex w-full justify-between'>
+            {colors.map((color, index) => {
+                return (
+                    <div onClick={handleColor} key={index} value={color.value} className={`w-12 h-12 rounded-full text-white text-lg flex items-center justify-center transition duration-300 hover:cursor-pointer hover:bg-[${color.hover}]`}>
+                        <div className={`bg-[${color.value}] pointer-events-none w-10 h-10 rounded-full p-2 flex items-center justify-center`}>
+                            {activeColor == color.value && (
+                                <span className='pointer-events-none'>
+                                    <FaCheck />
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
+const BackgroundOptions = ({ backgrounds = [] }) => {
+    const [backgroundColor, setBackgroundColor] = useState(backgrounds[0].value);
+
+    const handleBackground = (e, backgroundValue, index) => {
+        setBackgroundColor(backgroundValue);
+        const radioId = `background-option-${index}`;
+        const radio = document.getElementById(radioId);
+        if (radio) {
+            radio.checked = true;
+            document.querySelectorAll('.div-background-option').forEach(bgOption => {
+                if (bgOption.classList.contains('border-2')) {
+                    bgOption.classList.remove('border-2');
+                }
+                if (bgOption.classList.contains('border-[var(--main-blue)]')) {
+                    bgOption.classList.remove('border-[var(--main-blue)]');
+                }
+            })
+            e.currentTarget.classList.add('border-2', 'border-[var(--main-blue)]');
+        }
+        // TODO: Make necessary logic to apply color to application
+    };
+
+    return (
+        <div className='flex w-full justify-between items-center'>
+            {backgrounds.map((background, index) => (
+                <div
+                    key={index}
+                    id={`div-background-${index}`}
+                    onClick={(e) => handleBackground(e, background.value, index)}
+                    className={`div-background-option rounded border text-[${background.textColor}] text-lg flex py-5 px-2 w-44 items-center justify-around transition duration-300 hover:cursor-pointer bg-[${background.value}]`}
+                >
+                    <RadioButton
+                        value={background.value}
+                        name={'background-options'}
+                        id={`background-option-${index}`}
+                    />
+                    <span className='mr-4 font-bold text-sm pointer-events-none'>{background.name}</span>
+                </div>
+            ))}
+        </div>
+    );
+};
+// TODO: improve it, in general.
+const RadioButton = ({ name, value, id, checked = null, onClick = () => {} }) => {
+    const handleRadio = (e) => {
+        onClick(e);
+    };
+    return (
+        <div className='flex flex-col'>
+            <input 
+                value={value} 
+                onChange={handleRadio} 
+                className='w-5 h-5 border-2 bg-transparent border-[var(--hover-light)] focus:ring-transparent' 
+                type="radio" 
+                name={name}
+                checked={checked}
+                id={id} 
+            />
+        </div>
+    );
+};
+
+export { GlowButton, GlowSubmitButton, BouncingButton, Button, SubmitButton, BackButton, FollowButton, AuthButton, GoogleLoginButton, CloseButton, IconButton, Checkbox, ColorOptions, BackgroundOptions, RadioButton };

@@ -258,7 +258,7 @@ const Navbar = ({
                             <section className='dropdown absolute top-12 left-0'>
                                 <div className='absolute -top-40 left-4 min-w-[150px] bg-white rounded-lg shadow py-2'>
                                     <div className='flex flex-col gap-2'>
-                                        <Link href={''} className='font-bold px-4 py-2 hover:bg-[var(--hover-light)]'>Settings</Link>
+                                        <Link href='/settings' className='font-bold px-4 py-2 hover:bg-[var(--hover-light)]'>Settings</Link>
                                         <Link onClick={handleLogout} className='font-bold px-4 py-2 hover:bg-[var(--hover-light)]'>Log out</Link>
                                     </div>
                                 </div>

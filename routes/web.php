@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
@@ -54,17 +55,38 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Posts
     Route::post('/post/create', [PostController::class,'store'])->name('post.create');
     Route::post('/post/like/{id}', [PostController::class, 'like'])->name('post.like');
+
+    // Settings
+    Route::get('/settings', [SettingsController::class, 'accountRedirect'])->name('settings.redirect.account');
+    Route::get('/settings/account', [SettingsController::class, 'account'])->name('settings.account');
+    Route::get('/settings/account/password', [SettingsController::class, 'accountPassword'])->name('settings.account.password');
+    Route::get('/settings/account/deactivate', [SettingsController::class, 'accountDeactivate'])->name('settings.account.deactivate');
+    Route::get('/settings/privacity', [SettingsController::class, 'privacity'])->name('settings.privacity');
+    Route::get('/settings/privacity/audience_and_media', [SettingsController::class, 'audienceAndMedia'])->name('settings.privacity.audienceandmedia');
+    Route::get('/settings/privacity/mute_and_block', [SettingsController::class, 'muteAndBlock'])->name('settings.privacity.muteandblock');
+    Route::get('/settings/notifications', [SettingsController::class, 'notifications'])->name('settings.notifications');
+    Route::get('/settings/notifications/push', [SettingsController::class, 'pushNotifications'])->name('settings.notifications.push');
+    Route::get('/settings/notifications/email', [SettingsController::class, 'emailNotifications'])->name('settings.notifications.email');
+    Route::get('/settings/accessibility_display_and_languages', [SettingsController::class, 'accessibilityDisplayAndLanguages'])->name('settings.accessibility_display_and_languages');
+    Route::get('/settings/accessibility_display_and_languages/accessibility', [SettingsController::class, 'accessibility'])->name('settings.accessibility_display_and_languages.accessibility');
+    Route::get('/settings/accessibility_display_and_languages/display', [SettingsController::class, 'display'])->name('settings.accessibility_display_and_languages.display');
+    Route::get('/settings/accessibility_display_and_languages/languages', [SettingsController::class, 'languages'])->name('settings.accessibility_display_and_languages.languages');
+    Route::get('/settings/accessibility_display_and_languages/language', [SettingsController::class, 'language'])->name('settings.accessibility_display_and_languages.language');
+    
+
+    // Get Data Routes
+    Route::get('/user/email/exists/', [UserController::class,'existsByEmail'])->name('user.exists.email');
+    Route::get('/user/following/{username}', [UserController::class, 'isFollowing'])->name('user.is.following');
+    Route::post('/user/password/verify', [UserController::class, 'verifyPassword'])->name('user.verify.password');
+    Route::post('/user/auth/type', [UserController::class, 'getAuthType'])->name('user.auth.type');
+    Route::get('/group/name/exists/', [GroupController::class, 'existsByName'])->name('group.exists.name');
+    Route::get('/group/following/{name}', [GroupController::class, 'isFollowing'])->name('group.exists.name');
+    
+    // Follow
+    Route::post('/user/follow/{username}', [UserController::class,'toggleFollow'])->name('user.follow');
+    Route::post('/group/follow/{name}', [GroupController::class,'toggleFollow'])->name('group.follow');
 });
 Route::get('/', [MainController::class, 'rootRedirect']);
 
-// Get Data Routes
-Route::get('/user/email/exists/', [UserController::class,'existsByEmail'])->name('user.exists.email');
-Route::get('/user/following/{username}', [UserController::class, 'isFollowing'])->name('user.is.following');
-Route::get('/group/name/exists/', [GroupController::class, 'existsByName'])->name('group.exists.name');
-Route::get('/group/following/{name}', [GroupController::class, 'isFollowing'])->name('group.exists.name');
-
-// Follow
-Route::post('/user/follow/{username}', [UserController::class,'toggleFollow'])->name('user.follow');
-Route::post('/group/follow/{name}', [GroupController::class,'toggleFollow'])->name('group.follow');
 
 require __DIR__ . '/auth.php';

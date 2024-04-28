@@ -2,6 +2,7 @@
     --dark: #0d162c;
     --dark-gray: #1c1c1c;
     --main-blue: #0a4de8;
+    --oled: black;
     --blue: #2563eb;
     --light-blue: #a2c0f8;
     --white: #FFFFFF;
@@ -9,12 +10,19 @@
     --grey: #636363;
     --red: #f4212e;
     --pink: #fdc9ce;
+    --purple: #be15ca;
+    --orange: #eaa824;
+    --green: #23ad10;
     --like-red: #eb2564;
     --disabled: #818080;
     --hover-light: #d7d7d745;
     --hover-black: #151515d5;
-    --hover-blue: #2c9ce6;
+    --hover-blue: #2c9ce660;
     --hover-lightblue: #b1d8f276;
     --hover-like-red: #ff96c29c;
     --hover-red: #f4212e33;
+    --hover-pink: #f4aae733;
+    --hover-purple: #b13add33;
+    --hover-orange: #eaa8245a;
+    --hover-green: #22ad104b;
 }

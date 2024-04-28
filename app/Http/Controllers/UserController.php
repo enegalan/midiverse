@@ -36,6 +36,7 @@ class UserController extends Controller
         app()->call([self::class, 'getUserMidis'], compact('user'));
         app()->call([self::class, 'getConcerts'], compact('user'));
         app()->call([self::class, 'getGroups'], compact('user'));
+        app()->call([self::class, 'getAuthType'], compact('user'));
     }
     /**
      * Display the user's profile form.
@@ -538,6 +539,28 @@ class UserController extends Controller
             }
         }
         return $follows_posts;
+    }
+
+    public static function verifyPassword(Request $request) : bool {
+        $password = $request->input('password');
+        if ($password) {
+            $user = Auth::user();
+            if (password_verify($password, $user['password'])) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public static function getAuthType(&$user){
+        $type = 'manual';
+        $user->auth_type = $type;
+        $user2 = User::find($user['id']);
+        if ($user2 && $user2['password'] == null) {
+            $type = 'google';
+            $user->auth_type = $type;
+        }
     }
 
 }
