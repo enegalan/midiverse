@@ -239,6 +239,10 @@ const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) 
         </div>
     );
 };
+// Copy of DragAndDropBox due to create group not works reuse just one component
+const DragAndDropBox2 = ({ id = '', title = 'Drag and drop your files here', subtitle = '(or click to select)', multiple = false, onChange = () => {}, previewImage = '' }) => {
+    return <DragAndDropBox id={id} title={title} subtitle={subtitle} multiple={multiple} onChange={onChange} previewImage={previewImage} />
+}
 
 const Dropdown = ({ options = [{}], id = '', onChange = () => { }, placeholder = null }) => {
     return (
@@ -274,4 +278,4 @@ const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disab
     }
 }
 
-export { SearchInput, DragAndDropBox, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput };
+export { SearchInput, DragAndDropBox, DragAndDropBox2, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput };
