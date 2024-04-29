@@ -140,22 +140,19 @@ const DragAndDropBox = ({ id = '', title = 'Drag and drop your files here', subt
     );
 }
 
-const TextInput = ({ name = "", placeholder = "", width = "full", type = "text", icon = "", image = "", value = "", minLength = "", maxLength = "", id = "" }) => {
+const TextInput = ({ name = '', labelClassName = '', placeholder = '', width = 'full', type = 'text', icon = '', image = '', value = '', minLength = '', maxLength = '', id = '', className = '' }) => {
     const [inputValue, setInputValue] = useState(value);
-
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
     }
-
     const hasContentClass = inputValue ? 'has-content' : '';
-
     return (
-        <div className="relative mt-2 z-20">
-            <input id={id} maxLength={maxLength} minLength={minLength} name={name} className={`textInput ${width} ${hasContentClass}`} onChange={handleInputChange} type={type} placeholder="" value={inputValue} />
-            {icon && <div className="flex w-[35px] h-full items-center absolute top-0"><i className={`${icon}`}></i></div>}
-            {image && <img className="w-[20px] h-[20px]" src={`${image}`} alt="icon" />}
-            {(icon || image) && <label>{placeholder}</label>}
-            <span className="textInput-focus-bg"></span>
+        <div className='relative mt-2 z-20'>
+            <input id={id} maxLength={maxLength} minLength={minLength} name={name} className={`textInput ${className} ${width} ${hasContentClass}`} onChange={handleInputChange} type={type} placeholder={icon || image ? '' : placeholder} value={inputValue} />
+            {icon && <div className='flex w-[35px] h-full items-center absolute top-0'><i className={`${icon}`}></i></div>}
+            {image && <img className='w-[20px] h-[20px]' src={`${image}`} alt='icon' />}
+            {(icon || image) && <label className={labelClassName}>{placeholder}</label>}
+            <span className='textInput-focus-bg'></span>
         </div>
     );
 }
@@ -260,22 +257,30 @@ const Dropdown = ({ options = [{}], id = '', onChange = () => { }, placeholder =
     );
 }
 
-const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, autoFocus = false, keyfilter = '', onChange = () => { } }) => {
-    if (type === 'text') {
+const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, autoFocus = false, keyfilter = '', onChange = () => { }, name = '', }) => {
+    if (type === 'password') {
         return (
-            <span className="p-float-label">
-                <InputText keyfilter={keyfilter} autoFocus={autoFocus} disabled={disabled} id={id} value={value} onChange={onChange} className={`${className} rounded-md`} />
+            <span className="p-float-label w-full">
+                <Password name={name} keyfilter={keyfilter} toggleMask feedback={false} className='w-full' autoFocus={autoFocus} inputId={id} disabled={disabled} value={value} onChange={onChange} inputClassName={`${className} rounded-md`} />
                 <label htmlFor={id}>{text}</label>
             </span>
         );
-    } else if (type === 'password') {
+    } else {
         return (
-            <span className="p-float-label w-full">
-                <Password keyfilter={keyfilter} toggleMask feedback={false} className='w-full' autoFocus={autoFocus} inputId={id} disabled={disabled} value={value} onChange={onChange} inputClassName={`${className} rounded-md`} />
+            <span className="p-float-label">
+                <InputText name={name} type={type} keyfilter={keyfilter} autoFocus={autoFocus} disabled={disabled} id={id} value={value} onChange={onChange} className={`${className} rounded-md`} />
                 <label htmlFor={id}>{text}</label>
             </span>
         );
     }
 }
 
-export { SearchInput, DragAndDropBox, DragAndDropBox2, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput };
+const InputError = ({ message, className = '', ...props }) => {
+    return message ? (
+        <p {...props} className={'text-sm text-red-600 ' + className}>
+            {message}
+        </p>
+    ) : null;
+}
+
+export { SearchInput, DragAndDropBox, DragAndDropBox2, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput, InputError };

@@ -61,9 +61,6 @@ export default function LoginModal() {
         closeModal('login-modal')
         openModal('register-modal', <RegisterModal />)
     }
-    const handleForgotPassword = () => {
-
-    }
     const postSuccess = () => {
         onAuth();
         router.get('/home')
@@ -99,7 +96,7 @@ export default function LoginModal() {
                         <FloatLabelInput keyfilter='email' className={`${emailError ? 'p-invalid' : ''} w-full`} id='email-login' text='Email' value={email} onChange={onEmailChange} />
                         {emailError && <div className="text-red-500">{emailError}</div>}
                         <AuthButton className={`mt-5 text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)]`} onClick={handleNextButton} text='Next' />
-                        <AuthButton className='mt-5 text-center border w-full bg-[var(--white)] text-black hover:bg-[var(--hover-lightblue)]' onClick={handleForgotPassword} text='Forgot password?' />
+                        <AuthButton className='mt-5 text-center border w-full bg-[var(--white)] text-black hover:bg-[var(--hover-lightblue)]' href='/forgot-password' text='Forgot password?' />
                         <div className='mt-14'>
                             <p className='text-gray-500'>Don't have an account? <Link onClick={openRegisterModal} className='text-[var(--main-blue)] hover:underline'>Sign up</Link></p>
                         </div>
@@ -116,7 +113,7 @@ export default function LoginModal() {
                     <div className='flex flex-col gap-7 my-2'>
                         <FloatLabelInput disabled={true} className='w-full' id='disabled-email-login' text='Email' value={email} />
                         <FloatLabelInput type='password' className='w-full' id='password-login' text='Password' value={password} onChange={onPasswordChange} />
-                        <Link onClick={handleForgotPassword} className='w-max text-[0.7rem] -mt-6 ml-1 p-0 text-[var(--main-blue)] hover:underline'>Forgot your password?</Link>
+                        <Link onClick='/forgot-password' className='w-max text-[0.7rem] -mt-6 ml-1 p-0 text-[var(--main-blue)] hover:underline'>Forgot your password?</Link>
                         <div className='flex flex-col gap-6'>
                             <AuthButton disabled={loginButtonDisabled} className={`${loginButtonDisabled ? 'bg-[var(--disabled)] hover:bg-[var(--disabled)] hover:cursor-default' : ''} select-none text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)]`} onClick={handleLogin} text='Log in' />
                             <p className='text-gray-500'>Don't have an account? <Link onClick={openRegisterModal} className='text-[var(--main-blue)] hover:underline'>Sign up</Link></p>

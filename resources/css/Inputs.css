@@ -1,7 +1,6 @@
 /*TextInput*/
 .textInput {
     position: relative;
-    color: #d4d4d4;
     width: 100%;
     box-sizing: border-box;
     letter-spacing: 1px;
@@ -15,7 +14,6 @@
 
 .textAreaInput {
     position: relative;
-    color: #d4d4d4;
     width: 100%;
     box-sizing: border-box;
     letter-spacing: 1px;
@@ -52,13 +50,11 @@
     background-color: var(--main-blue);
 }
 
-
 .textInput~label {
     position: absolute;
     left: 14px;
     width: 100%;
     top: 10px;
-    color: #c9c9c9;
     transition: 0.3s;
     z-index: -1;
     letter-spacing: 0.5px;
@@ -68,7 +64,6 @@
     position: absolute;
     width: 100%;
     top: 10px;
-    color: #c9c9c9;
     transition: 0.3s;
     z-index: -1;
     letter-spacing: 0.5px;
@@ -80,7 +75,6 @@
     padding-left: 45px;
     width: 100%;
     padding-top: 9px;
-    color: #6b6b6b;
     transition: 0.3s;
     z-index: -1;
     letter-spacing: 0.5px;
@@ -168,7 +162,6 @@
     left: 45px;
     width: 100%;
     top: 10px;
-    color: #aaa;
     transition: 0.3s;
     z-index: -1;
     letter-spacing: 0.5px;
@@ -181,6 +174,5 @@
     top: -18px;
     left: 0;
     font-size: 12px;
-    color: var(--white);
     transition: 0.3s;
 }

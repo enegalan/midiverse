@@ -75,10 +75,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
 
     // Get Data Routes
-    Route::get('/user/email/exists/', [UserController::class,'existsByEmail'])->name('user.exists.email');
     Route::get('/user/following/{username}', [UserController::class, 'isFollowing'])->name('user.is.following');
     Route::post('/user/password/verify', [UserController::class, 'verifyPassword'])->name('user.verify.password');
-    Route::post('/user/auth/type', [UserController::class, 'getAuthType'])->name('user.auth.type');
     Route::get('/group/name/exists/', [GroupController::class, 'existsByName'])->name('group.exists.name');
     Route::get('/group/following/{name}', [GroupController::class, 'isFollowing'])->name('group.exists.name');
     
@@ -88,5 +86,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 Route::get('/', [MainController::class, 'rootRedirect']);
 
+// Public Data Routes
+Route::get('/user/email/exists/', [UserController::class,'existsByEmail'])->name('user.exists.email');
+Route::post('/user/auth/type', [UserController::class, 'getAuthType'])->name('user.auth.type');
 
 require __DIR__ . '/auth.php';
