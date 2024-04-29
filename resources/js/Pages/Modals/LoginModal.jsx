@@ -96,7 +96,7 @@ export default function LoginModal() {
                         <FloatLabelInput keyfilter='email' className={`${emailError ? 'p-invalid' : ''} w-full`} id='email-login' text='Email' value={email} onChange={onEmailChange} />
                         {emailError && <div className="text-red-500">{emailError}</div>}
                         <AuthButton className={`mt-5 text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)]`} onClick={handleNextButton} text='Next' />
-                        <AuthButton className='mt-5 text-center border w-full bg-[var(--white)] text-black hover:bg-[var(--hover-lightblue)]' href='/forgot-password' text='Forgot password?' />
+                        <AuthButton className='mt-5 text-center border w-full bg-[var(--white)] text-black hover:bg-[var(--hover-lightblue)]' onClick={closeModal('login-modal')} href='/forgot-password' text='Forgot password?' />
                         <div className='mt-14'>
                             <p className='text-gray-500'>Don't have an account? <Link onClick={openRegisterModal} className='text-[var(--main-blue)] hover:underline'>Sign up</Link></p>
                         </div>
