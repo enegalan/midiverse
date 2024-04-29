@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\UserMidi;
 use App\Models\Post;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -152,14 +153,16 @@ class UserController extends Controller
             $user = User::where('email', $googleUser['email'])->where('sub', $googleUser['sub'])->first();
             if ($user) {
                 $this->startSessionAndLogin($user);
-                return response()->json(['message' => 'Google authentication successful'], 200);
+                $request->session()->regenerate();
+                return redirect()->intended(RouteServiceProvider::HOME);
             }
         } elseif ($request->has('user')) {
             $user = json_decode($request->input('user'), true)[0];
             $userFromDB = User::where('email', $user['email'])->first();
             if ($userFromDB && password_verify($user['password'], $userFromDB->password)) {
                 $this->startSessionAndLogin($userFromDB);
-                return response()->json(['message' => 'Authentication successful'], 200);
+                $request->session()->regenerate();
+                return redirect()->intended(RouteServiceProvider::HOME);
             }
         }
         return response()->json(['message' => 'Authentication failed'], 401);
