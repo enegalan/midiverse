@@ -12,7 +12,7 @@ import { Link } from "@inertiajs/react";
 import MidiCard from "@/Components/Cards/MidiCard";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
-import { openModal, getUserInitials } from "@/Functions";
+import { openModal, getUserInitials, formatDateAtForProfiles } from "@/Functions";
 import EditProfileModal from "./Modals/EditProfileModal";
 
 export default function Profile({ auth_user = null, user = null }) {
@@ -22,11 +22,7 @@ export default function Profile({ auth_user = null, user = null }) {
     }
     var userInitials = getUserInitials(user);
     const userFullName = user.name + (user.lastname !== '' && user.lastname !== null ? ' ' + user.lastname : '');
-    const dateTime = new Date(user.email_verified_at)
-    const dateLocale = 'en-US'; // TODO: set to 'default' for production
-    const month = dateTime.toLocaleString(dateLocale, { month: 'long' });
-    const year = dateTime.getFullYear();
-    const joined = month + ' ' + year;
+    const joined = formatDateAtForProfiles(user.email_verified_at);
     const [profileSection, setProfileSection] = useState('posts');
     const getProfileSection = (sectionRef) => {
         setProfileSection(sectionRef);

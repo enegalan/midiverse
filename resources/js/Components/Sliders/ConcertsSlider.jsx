@@ -102,7 +102,7 @@ export default function ConcertsSlider({ slides = [], maxSlides = 10}) {
     ];
     slides = slides.slice(0, maxSlides);
     return (
-        <div className='max-w-[64vw] md:max-w-[76vw] lg:max-w-[53vw] xl:max-w-[44vw] 2xl:max-w-[50vw] px-1'>
+        <>
             <Swiper
             spaceBetween={20}
             slidesPerView={3}
@@ -115,7 +115,7 @@ export default function ConcertsSlider({ slides = [], maxSlides = 10}) {
             modules={[FreeMode]}
             >
                 {slides.map((slide, index) => (
-                    <SwiperSlide key={index}>
+                    <SwiperSlide className='h-[95px]' key={index}>
                         <div className='relative'>
                             <Link href={slide.href}>
                                 <img className='rounded-lg w-52' src={slide.image} alt={`Slide ${index}`} />
@@ -124,16 +124,16 @@ export default function ConcertsSlider({ slides = [], maxSlides = 10}) {
                         </div>
                     </SwiperSlide>
                 ))}
-                    <SwiperSlide key='lastConcertSlide'>
+                    <SwiperSlide className='h-[95px]' key='lastConcertSlide'>
                         <div className='relative'>
-                            <Link className='' href={''}>
-                                <div className='px-1 py-[1.68rem] rounded-lg bg-[var(--light-grey)] flex justify-center'>
+                            <Link className='' href={'/concerts'}>
+                                <div className='px-1 py-[1.68rem] rounded-lg bg-[var(--light-grey)] flex justify-center items-center transition duration-300 hover:bg-[var(--hover-light)]'>
                                     <span className='text-black text-sm'>View more</span>
                                 </div>
                             </Link>
                         </div>
                     </SwiperSlide>
             </Swiper>
-        </div>
+        </>
     );
 };

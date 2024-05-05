@@ -591,7 +591,7 @@ class UserController extends Controller
                 $data['birthdate'] = $birthdate;
             }
             $user->updateOrFail($data);
-            return response()->json(array('status' => 'Profile successfully updated', 'description' => $description, 'request' => $request->all(), 'data' => $data));
+            return response()->json(array('status' => 'Profile successfully updated'));
         } else {
             return response()->json(array('status' => 'Name is required'));
         }

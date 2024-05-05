@@ -13,7 +13,7 @@ import ConcertCard from "@/Components/Cards/ConcertCard";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
 import { TiUserAddOutline } from "react-icons/ti";
-import { openModal } from "@/Functions";
+import { openModal, formatDateAtForProfiles } from "@/Functions";
 import AddGroupMember from "../Modals/Group/AddGroupMember";
 import { BsThreeDots } from "react-icons/bs";
 import { MdOutlineEdit } from "react-icons/md";
@@ -25,11 +25,7 @@ export default function Profile({ auth_user = null, group = null }) {
     var isAuthUserProfile = false;
     isAuthUserProfile = auth_user.is_group_user_member;
     var groupInitial = group.name[0].toUpperCase();
-    const dateTime = new Date(group.created_at)
-    const dateLocale = 'en-US'; // TODO: set to 'default' for production
-    const month = dateTime.toLocaleString(dateLocale, { month: 'long' });
-    const year = dateTime.getFullYear();
-    const joined = month + ' ' + year;
+    const joined = formatDateAtForProfiles(group.created_at);
     const [profileSection, setProfileSection] = useState(localStorage.getItem('group_profile_default_section') ? localStorage.getItem('group_profile_default_section') : 'midi');
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const getProfileSection = (sectionRef) => {
@@ -122,7 +118,7 @@ export default function Profile({ auth_user = null, group = null }) {
                                             <IconButton onClick={handleAddMembers} className='text-2xl hover:bg-[var(--hover-light)]' >
                                                 <TiUserAddOutline />
                                             </IconButton>
-                                            <AuthButton className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
+                                            <AuthButton className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Planificate concert" />
                                         </div>
                                     ) : (
                                         <div className='flex items-center gap-2'>

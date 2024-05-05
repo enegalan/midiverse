@@ -73,7 +73,6 @@ function getMonthDays(month, year) {
             value: day.toString(),
         });
     }
-    console.log(daysArray);
     return daysArray;
 }
 
@@ -90,5 +89,14 @@ function getYearsFromYearsAgo(yearsAgo = 120) {
     return yearsArray;
 }
 
+function formatDateAtForProfiles(createdAt) {
+    const dateTime = new Date(createdAt);
+    const dateLocale = 'en-US'; // TODO: set to 'default' for production
+    const month = dateTime.toLocaleString(dateLocale, { month: 'long' });
+    const year = dateTime.getFullYear();
+    const joined = month + ' ' + year;
+    return joined;
+}
 
-export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo };
+
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles };
