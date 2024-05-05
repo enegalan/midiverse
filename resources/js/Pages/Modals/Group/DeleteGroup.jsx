@@ -1,16 +1,8 @@
 
 import BaseDialog from '../BaseDialog';
 import { AuthButton } from '@/Components/Buttons';
-import { FloatLabelInput } from '@/Components/Inputs';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from '@inertiajs/react';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { closeModal, openModal } from '@/Functions';
-import RegisterModal from '../RegisterModal';
-import { router } from '@inertiajs/react';
-import { Dropdown } from '@/Components/Inputs';
-import { TextAreaInput, DragAndDropBox, DragAndDropBox2 } from '@/Components/Inputs';
+import { closeModal } from '@/Functions';
 
 export default function DeleteGroup({ group = {} }) {
     const handleDelete = () => {

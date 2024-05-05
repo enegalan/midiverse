@@ -34,7 +34,7 @@ import { Link } from "@inertiajs/react";
 
 import { Avatar } from "primereact/avatar";
 
-import { logout } from "@/Functions";
+import { logout, getUserInitials } from "@/Functions";
 
 const Navbar = ({
     user = null,
@@ -44,10 +44,7 @@ const Navbar = ({
 
     if (user && user.hasOwnProperty('roles')) isAdmin = user.roles.some(role => role.name === 'admin');
 
-    var userInitials = user.name[0].toUpperCase();
-    if (user.hasOwnProperty('lastname') && user.lastname && user.lastname.length > 0) {
-        userInitials += user.lastname[0].toUpperCase();
-    }
+    var userInitials = getUserInitials(user);
 
     const [webRef, setWebRef] = useState(localStorage.getItem('web-ref') ? localStorage.getItem('web-ref') : 'home');
 

@@ -168,14 +168,10 @@ TextInput.propTypes = {
     maxLength: PropTypes.string,
 };
 
-const TextAreaInput = ({ placeholder = '', rows = 5, cols = 20, id = '', className = '', maxHeight = '200px', minHeight = '100px', minLength = '', maxLength = '', onChange = () => { } }) => {
-    const handleInputChange = (e) => {
-        getValue(e.target.value);
-    }
-
+const TextAreaInput = ({ placeholder = '', rows = 5, cols = 20, id = '', className = '', maxHeight = '200px', minHeight = '100px', minLength = '', maxLength = '', onChange = () => { }, value = '' }) => {
     return (
         <span className="p-float-label">
-            <InputTextarea minLength={minLength} maxLength={maxLength} id={id} cols={cols} rows={rows} className={`${className} border max-h-[${maxHeight}] min-h-[${minHeight}]`} onChange={onChange} />
+            <InputTextarea value={value} minLength={minLength} maxLength={maxLength} id={id} cols={cols} rows={rows} className={`${className} border max-h-[${maxHeight}] min-h-[${minHeight}]`} onChange={onChange} />
             <label htmlFor={id}>{placeholder}</label>
         </span>
     );
@@ -241,9 +237,9 @@ const DragAndDropBox2 = ({ id = '', title = 'Drag and drop your files here', sub
     return <DragAndDropBox id={id} title={title} subtitle={subtitle} multiple={multiple} onChange={onChange} previewImage={previewImage} />
 }
 
-const Dropdown = ({ options = [{}], id = '', onChange = () => { }, placeholder = null }) => {
+const Dropdown = ({ options = [{}], id = '', onChange = () => { }, placeholder = null, value = '' }) => {
     return (
-        <select onChange={onChange} id={id} className="min-w-[80px] text-[var(--grey)] border rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-3 p-2.5">
+        <select value={value} onChange={onChange} id={id} className="min-w-[80px] text-[var(--grey)] border rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-3 p-2.5">
             {placeholder !== null && (
                 <option key={`${id}-placeholder`}>{placeholder}</option>
             )}
@@ -257,18 +253,18 @@ const Dropdown = ({ options = [{}], id = '', onChange = () => { }, placeholder =
     );
 }
 
-const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, autoFocus = false, keyfilter = '', onChange = () => { }, name = '', }) => {
+const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, autoFocus = false, keyfilter = '', onChange = () => { }, name = '', invalid = false }) => {
     if (type === 'password') {
         return (
             <span className="p-float-label w-full">
-                <Password name={name} keyfilter={keyfilter} toggleMask feedback={false} className='w-full' autoFocus={autoFocus} inputId={id} disabled={disabled} value={value} onChange={onChange} inputClassName={`${className} rounded-md`} />
+                <Password invalid={invalid} name={name} keyfilter={keyfilter} toggleMask feedback={false} className='w-full' autoFocus={autoFocus} inputId={id} disabled={disabled} value={value} onChange={onChange} inputClassName={`${className} rounded-md`} />
                 <label htmlFor={id}>{text}</label>
             </span>
         );
     } else {
         return (
             <span className="p-float-label">
-                <InputText name={name} type={type} keyfilter={keyfilter} autoFocus={autoFocus} disabled={disabled} id={id} value={value} onChange={onChange} className={`${className} rounded-md`} />
+                <InputText invalid={invalid} name={name} type={type} keyfilter={keyfilter} autoFocus={autoFocus} disabled={disabled} id={id} value={value} onChange={onChange} className={`${className} rounded-md`} />
                 <label htmlFor={id}>{text}</label>
             </span>
         );

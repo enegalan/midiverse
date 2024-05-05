@@ -12,16 +12,15 @@ import { Link } from "@inertiajs/react";
 import MidiCard from "@/Components/Cards/MidiCard";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
+import { openModal, getUserInitials } from "@/Functions";
+import EditProfileModal from "./Modals/EditProfileModal";
 
 export default function Profile({ auth_user = null, user = null }) {
     var isAuthUserProfile = false;
     if (auth_user['username'] === user['username']) {
         isAuthUserProfile = true;
     }
-    var userInitials = user.name[0].toUpperCase();
-    if (user.hasOwnProperty('lastname') && user.lastname && user.lastname.length > 0) {
-        userInitials += user.lastname[0].toUpperCase();
-    }
+    var userInitials = getUserInitials(user);
     const userFullName = user.name + (user.lastname !== '' && user.lastname !== null ? ' ' + user.lastname : '');
     const dateTime = new Date(user.email_verified_at)
     const dateLocale = 'en-US'; // TODO: set to 'default' for production
@@ -56,7 +55,10 @@ export default function Profile({ auth_user = null, user = null }) {
         // TODO: When Concerts feature is for implement:
         // Implement the logic for rendering:
     }
-
+    const handleEditProfile = (e) => {
+        e.preventDefault();
+        openModal('edit-profile', <EditProfileModal user={auth_user} />)
+    }
     return (
         <>
             <MainLayout user={auth_user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
@@ -64,20 +66,20 @@ export default function Profile({ auth_user = null, user = null }) {
                     <ProfileTopNavbar user={user} />
                     <section className="pb-16 border-r relative flex-1">
                         <div className="w-full h-full">
-                            <div id="profile-header">
+                            <section id="profile-header">
                                 <div className={`min-h-[200px] w-full ${user.banner === null ? 'bg-[var(--hover-lightblue)]' : ''}`} id="banner">
-                                    {user.banner !== null ? (<img src={user.banner} alt="Banner" />) : (<></>)}
+                                    {user.banner !== null && (<img src={user.banner} alt="Banner" />)}
                                 </div>
                                 <div className={`-mt-[50px] lg:-mt-[75px] ml-5`} id="avatar">
                                     <div className='min-h-[6rem] xl:min-h-[9rem] border-4 border-white rounded-full w-fit flex justify-center items-center'>
                                         <img className='rounded-full h-auto w-24 lg:w-36' src={user.avatar !== null ? user.avatar : userInitials} alt="Avatar" />
                                     </div>
                                 </div>
-                            </div>
+                            </section>
                             <div id="profile-content" className='flex flex-col relative'>
                                 <div className='mx-4 absolute -top-8 right-0 lg:-top-14'>
                                     {isAuthUserProfile ? (
-                                        <AuthButton className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
+                                        <AuthButton onClick={handleEditProfile} className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
                                     ) : (
                                         <div className='flex items-center gap-2'>
                                             <IconButton className='text-2xl hover:bg-[var(--hover-light)]' >
@@ -91,6 +93,11 @@ export default function Profile({ auth_user = null, user = null }) {
                                     <h1 className='text-xl font-bold'>{userFullName}</h1>
                                     <h4 className='text-sm text-[var(--grey)]'>@{user.username}</h4>
                                 </div>
+                                {user.description && (
+                                    <div className='mt-3'>
+                                        <p className='text-sm px-4'>{user.description}</p>
+                                    </div>
+                                )}
                                 <div className='mx-4 mt-3'>
                                     <div className='flex items-center gap-1 text-[var(--grey)]'>
                                         <IoCalendarOutline />

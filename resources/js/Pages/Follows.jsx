@@ -8,11 +8,6 @@ import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
 
 export default function Follows({ auth_user = null, user = null, type = '', followings = null, followers = null }) {
-    // var userInitials = user.name[0].toUpperCase();
-    // if (user.hasOwnProperty('lastname') && user.lastname && user.lastname.length > 0) {
-    //     userInitials += user.lastname[0].toUpperCase();
-    // }
-    // const userFullName = user.name + (user.lastname !== '' && user.lastname !== null ? ' ' + user.lastname : '');
 
     const [followsSection, setFollowsSection] = useState('posts');
     const getFollowsSection = (sectionRef) => {

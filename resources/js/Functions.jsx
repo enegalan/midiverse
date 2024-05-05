@@ -2,16 +2,20 @@ import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import axios from 'axios';
 import { googleLogout } from '@react-oauth/google';
+import { format } from 'date-fns';
 
 function openModal(id, modal) {
     const modalContainer = document.createElement('div');
-    document.querySelector('body').appendChild(modalContainer);
+    modalContainer.id = id;
+    document.body.appendChild(modalContainer);
     const modalRoot = createRoot(modalContainer);
     modalRoot.render(modal);
+    document.body.style.overflow = 'hidden';
 }
 
 function closeModal (id) {
     document.querySelector('#' + id)?.remove();
+    document.body.style.overflow = 'auto';
 }
 
 function validateEmail (email) {
@@ -24,4 +28,67 @@ function logout () {
     axios.get(route('logout'));
 }
 
-export { openModal, closeModal, validateEmail, logout };
+function getUserInitials (user) {
+    if (!user) return;
+    var userInitials = user.name[0].toUpperCase();
+    if (user.hasOwnProperty('lastname') && user.lastname && user.lastname.length > 0) {
+        userInitials += user.lastname[0].toUpperCase();
+    }
+    return userInitials;
+}
+
+function formatDate(dateString, dateFormat) {
+    const date = new Date(dateString);
+    return format(date, dateFormat);
+}
+
+function getAllMonths() {
+    // TO-IMPROVE: When Translations are implemented make the necessary logic to return the months with the user lang
+    const months = [
+        { label: 'January', value: '01' },
+        { label: 'February', value: '02' },
+        { label: 'March', value: '03' },
+        { label: 'April', value: '04' },
+        { label: 'May', value: '05' },
+        { label: 'June', value: '06' },
+        { label: 'July', value: '07' },
+        { label: 'August', value: '08' },
+        { label: 'September', value: '09' },
+        { label: 'October', value: '10' },
+        { label: 'November', value: '11' },
+        { label: 'December', value: '12' }
+    ];
+    return months;
+}
+
+function getMonthDays(month, year) {
+    if (!month) return;
+    if (!year) return;
+    // Get the last day of the month
+    const lastDay = new Date(year, month, 0).getDate();
+    const daysArray = [];
+    for (let day = 1; day <= lastDay; day++) {
+        daysArray.push({
+            label: day.toString(),
+            value: day.toString(),
+        });
+    }
+    console.log(daysArray);
+    return daysArray;
+}
+
+function getYearsFromYearsAgo(yearsAgo = 120) {
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - yearsAgo;
+    const yearsArray = [];
+    for (let year = startYear; year <= currentYear; year++) {
+        yearsArray.push({
+            label: year,
+            value: year,
+        });
+    }
+    return yearsArray;
+}
+
+
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo };

@@ -34,7 +34,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/u/{username}', [UserController::class, 'getProfile'])->name('profile');
 
+    // Profile
     Route::get('/profile', [MainController::class, 'profileRedirect']);
+    Route::post('/user/profile/update', [UserController::class, 'updateAuthUserProfile'])->name('user.update.profile');
 
     // Follows
     Route::get('/u/{username}/following', [UserController::class,'renderUserFollowings'])->name('render.user.following');
@@ -80,6 +82,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/group/name/exists/', [GroupController::class, 'existsByName'])->name('group.exists.name');
     Route::get('/group/following/{name}', [GroupController::class, 'isFollowing'])->name('group.exists.name');
     
+
     // Follow
     Route::post('/user/follow/{username}', [UserController::class,'toggleFollow'])->name('user.follow');
     Route::post('/group/follow/{name}', [GroupController::class,'toggleFollow'])->name('group.follow');

@@ -566,4 +566,35 @@ class UserController extends Controller
         }
     }
 
+    public static function updateAuthUserProfile(Request $request) {
+        $auth_user = auth()->user();
+        $user = User::findOrFail($auth_user->id);
+        $name = $request->input('name');
+        $lastname = $request->input('lastname');
+        $description = $request->input('description');
+        $birthdate = $request->input('birthdate');
+        if ($name) {
+            $data = array();
+            if ($name) {
+                $data['name'] = $name;
+            }
+            $data['lastname'] = null;
+            if ($lastname) {
+                $data['lastname'] = $lastname;
+            }
+            $data['description'] = null;
+            if ($description) {
+                $data['description'] = $description;
+            }
+            $data['birthdate'] = null;
+            if ($birthdate) {
+                $data['birthdate'] = $birthdate;
+            }
+            $user->updateOrFail($data);
+            return response()->json(array('status' => 'Profile successfully updated', 'description' => $description, 'request' => $request->all(), 'data' => $data));
+        } else {
+            return response()->json(array('status' => 'Name is required'));
+        }
+    }
+
 }

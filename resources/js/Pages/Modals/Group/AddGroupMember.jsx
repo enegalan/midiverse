@@ -15,9 +15,6 @@ import PeopleCard from '@/Components/Cards/PeopleCard';
 import InviteFriends from './InviteFriends';
 
 export default function AddGroupMember({ auth_user = null, group = {} }) {
-    console.log(group);
-    console.log(group.roles[0].pivot.user_id);
-    console.log(auth_user);
     const [inviteDropdownVisible, setInviteDropdownVisible] = useState(false);
     useEffect(() => {
         const handleClickOutside = (event) => {
