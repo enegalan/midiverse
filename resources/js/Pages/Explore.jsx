@@ -105,8 +105,8 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
 
                         <section className={`${exploreSection === 'groups' ? 'block' : 'hidden'}`} id='groups'>
                             {all_groups.map((group, index) => (
-                                <Link key={index} href={`/g/${group.name}`}>
-                                    <GroupCard auth_user={auth_user} group={group} />
+                                <Link  key={index} href={`/g/${group.name}`}>
+                                    <GroupCard className='transition duration-300 hover:bg-[var(--hover-light)]' auth_user={auth_user} group={group} />
                                 </Link>
                             ))}
                         </section>

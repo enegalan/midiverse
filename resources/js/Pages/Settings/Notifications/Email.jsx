@@ -62,7 +62,7 @@ export default function Email({ user = null }) {
                             <h2 className='font-bold text-xl'>Email notifications</h2>
                         </div>
                         <div className='px-8 mt-6' onClick={handleEmailToggle}>
-                            <div className='flex justify-between items-center'>
+                            <div className='pointer-events-none flex justify-between items-center'>
                                 <h2>Email notifications</h2>
                                 <InputSwitch checked={emailEnabled} onClick={handleEmailToggle} />
                             </div>

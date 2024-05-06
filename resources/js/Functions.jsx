@@ -98,5 +98,12 @@ function formatDateAtForProfiles(createdAt) {
     return joined;
 }
 
+function isUserFollowing(auth_user, user) {
+    for (let follower of auth_user.followings) {
+        if (follower.id == user.id) return true; break;
+    }
+    return false;
+}
 
-export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles };
+
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing };

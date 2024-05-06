@@ -62,14 +62,17 @@ class MainController extends Controller
 
     public static function getRecentPosts (&$recent_posts) {
         $recent_posts = Post::orderBy('created_at','desc')->get();
-        $recent_posts = $recent_posts->map(function ($post) {
+        $recent_posts = $recent_posts->sortByDesc('created_at')->map(function ($post) {
+            $post->load('user');
             return [
                 'id' => $post->id,
                 'user' => [
+                    'id' => $post->user->id,
                     'avatar' => $post->user->avatar,
                     'name' => $post->user->name,
                     'lastname' => $post->user->lastname,
                     'username' => $post->user->username,
+                    'private_posts' => $post->user->private_posts,
                 ],
                 'content' => $post->content,
                 'date' => $post->created_at->toDateString(),
@@ -79,7 +82,14 @@ class MainController extends Controller
                 'likes_count' => $post->likes->count(),
             ];
         });
-        return $recent_posts;
+        $filteredRecentPosts = array();
+        foreach ($recent_posts as &$recent_post) {
+            $validatedPost = app()->call([self::class, 'validatePosts'], array('private_posts' => $recent_post['user']['private_posts'], 'user' => $recent_post['user']));
+            if ($validatedPost) {
+                $filteredRecentPosts[] = $recent_post;
+            }
+        }
+        return $filteredRecentPosts;
     }
 
     public static function getTopPosts (&$posts) {
@@ -91,8 +101,9 @@ class MainController extends Controller
             $post->like_count = $likes->count();
             $post->likes = $likes;
             $post->load('user', 'comments');
-            // Store the post in the array if it has likes
-            if ($likes->count() > 0) {
+            $validatedPost = app()->call([self::class, 'validatePosts'], array('private_posts' => $post->user->private_posts, 'user' => $post->user));
+            // Store the post in the array if it has likes and it is validated
+            if ($likes->count() > 0 && $validatedPost) {
                 $topPosts[] = $post;
             }
         }
@@ -102,5 +113,23 @@ class MainController extends Controller
             });  
         }
         return $topPosts;
+    }
+
+    public static function validatePosts($private_posts = 0, $user) {
+        $isUserObj = is_object($user);
+        $userId = null;
+        $userId = $isUserObj ? $user->id : $user['id'];
+        $userUsername = $isUserObj ? $user->username : $user['username'];
+        $isAuthUserFollowingJson = app()->call([UserController::class, 'isFollowing'], array('username' => $userUsername));
+        $isAuthUserFollowing = json_decode($isAuthUserFollowingJson, true);
+        // If user has not private posts OR
+        // If post user is auth user OR
+        // If auth user is following post user
+        if ($private_posts == 0 || 
+        $userId == auth()->user()->id || 
+        $isAuthUserFollowing['status'] == true) {
+            return true;
+        }
+        return false;
     }
 }

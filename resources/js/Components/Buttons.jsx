@@ -354,13 +354,12 @@ const IconButton = ({ children, className = '', href = '', onClick = () => { } }
     );
 }
 
-const Checkbox = ({ className = '', checked = false, disabled = false, ...props }) => {
+const Checkbox = ({ className = '',  disabled = false, ...props }) => {
     return (
         <input
             {...props}
             disabled={disabled}
             type='checkbox'
-            checked={checked}
             className={
                 `rounded ${disabled ? 'border-gray-300' : 'border-gray-500'} border-2 w-5 h-5 text-[var(--main-blue)] shadow-sm focus:ring-transparent hover:cursor-pointer ${className}`
             }

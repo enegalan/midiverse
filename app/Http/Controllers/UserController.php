@@ -408,7 +408,7 @@ class UserController extends Controller
         }
     }
 
-    public function isFollowing($username)
+    public static function isFollowing($username)
     {
         if (auth()->check() && $username != auth()->user()->username) {
             $user = User::where('username', $username)->first();
@@ -421,9 +421,9 @@ class UserController extends Controller
                 ->exists();
 
             // Devolver una respuesta JSON indicando si el usuario está siguiendo al usuario objetivo
-            return response()->json(['status' => $isFollowing]);
+            return response()->json(['status' => $isFollowing])->getContent();
         } else {
-            return response()->json(['status' => 'false']);
+            return response()->json(['status' => 'false'])->getContent();
         }
     }
 
@@ -536,7 +536,6 @@ class UserController extends Controller
                     'comments_count' => $post->comments->count(),
                     'likes' => $post->likes,
                     'likes_count' => $post->likes->count(),
-                    
                 ];
                 array_push($follows_posts, $follow_post);
             }
@@ -595,6 +594,12 @@ class UserController extends Controller
         } else {
             return response()->json(array('status' => 'Name is required'));
         }
+    }
+
+    public static function setSessionPrivate() {
+        $user = User::findOrFail(auth()->user()->id);
+        $user->private = !$user->private;
+        $user->save();
     }
 
 }

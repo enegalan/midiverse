@@ -12,7 +12,7 @@ import { Link } from "@inertiajs/react";
 import MidiCard from "@/Components/Cards/MidiCard";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
-import { openModal, getUserInitials, formatDateAtForProfiles } from "@/Functions";
+import { openModal, getUserInitials, formatDateAtForProfiles, isUserFollowing } from "@/Functions";
 import EditProfileModal from "./Modals/EditProfileModal";
 
 export default function Profile({ auth_user = null, user = null }) {
@@ -23,6 +23,8 @@ export default function Profile({ auth_user = null, user = null }) {
     var userInitials = getUserInitials(user);
     const userFullName = user.name + (user.lastname !== '' && user.lastname !== null ? ' ' + user.lastname : '');
     const joined = formatDateAtForProfiles(user.email_verified_at);
+    var userFollowing = isUserFollowing(auth_user, user);
+    var userProfileDisabledDuePrivate = user.private == 0 && !isAuthUserProfile && !userFollowing;
     const [profileSection, setProfileSection] = useState('posts');
     const getProfileSection = (sectionRef) => {
         setProfileSection(sectionRef);
@@ -81,7 +83,7 @@ export default function Profile({ auth_user = null, user = null }) {
                                             <IconButton className='text-2xl hover:bg-[var(--hover-light)]' >
                                                 <AiOutlineMessage />
                                             </IconButton>
-                                            <FollowButton user={user} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />
+                                            <FollowButton onClick={() => {window.location.reload()}} user={user} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />
                                         </div>
                                     )}
                                 </div>
@@ -107,12 +109,17 @@ export default function Profile({ auth_user = null, user = null }) {
                                     </Link>
                                     <Link href={`/u/${user.username}/followers`} className='text-sm hover:underline'>
                                         <span className='font-bold'>{user.followers.length}</span>
-                                        <span href={''} className='text-[var(--grey)]'> Followers</span>
+                                        <span className='text-[var(--grey)]'> Followers</span>
                                     </Link>
                                 </div>
-                                <ProfileBottomNavbar getProfileSection={getProfileSection} />
+                                <ProfileBottomNavbar disabled={userProfileDisabledDuePrivate} getProfileSection={getProfileSection} />
                                 <section id="profile-sections">
-                                    {profileSection === 'posts' ? (
+                                    {userProfileDisabledDuePrivate ? (
+                                    <section className='flex flex-col justify-center items-center mt-16'>
+                                        <h3 className='font-bold text-xl'>This account is private</h3>
+                                        <span>Follow this account to see posts and media</span>
+                                    </section>) : 
+                                    profileSection === 'posts' ? (
                                         <section>
                                             {renderUserPosts()}
                                         </section>
@@ -128,8 +135,7 @@ export default function Profile({ auth_user = null, user = null }) {
                                         <section>
                                             {renderUserLikes()}
                                         </section>
-                                    ) : (<></>)
-                                    }
+                                    ) : (<></>)}
                                 </section>
                             </div>
                         </div>

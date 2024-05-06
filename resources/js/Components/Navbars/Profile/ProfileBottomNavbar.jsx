@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { BackButton } from "../../Buttons";
 
-export default function ProfileBottomNavbar({ getProfileSection = () => {} }) {
+export default function ProfileBottomNavbar({ disabled = false, getProfileSection = () => {} }) {
     const [defaultProfileSection, setDefaultProfileSection] = useState(localStorage.getItem('profile_default_section') ? localStorage.getItem('profile_default_section') : 'posts')
     const buttonStyle = 'flex flex-col w-1/2 items-center hover:bg-gray-200 transition';
     useEffect(() => {
@@ -16,6 +15,7 @@ export default function ProfileBottomNavbar({ getProfileSection = () => {} }) {
         }
     }, []);
     const handleButtonClick = (e) => {
+        if (disabled) return;
         const sectionRef = e.target.getAttribute('data-ref');
         localStorage.setItem('profile_default_section', sectionRef);
         getProfileSection(sectionRef);

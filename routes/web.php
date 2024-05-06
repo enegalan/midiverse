@@ -58,17 +58,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/post/create', [PostController::class,'store'])->name('post.create');
     Route::post('/post/like/{id}', [PostController::class, 'like'])->name('post.like');
 
-    // Settings
+    /* 
+        Settings
+    */
     Route::get('/settings', [SettingsController::class, 'accountRedirect'])->name('settings.redirect.account');
+    // Account
     Route::get('/settings/account', [SettingsController::class, 'account'])->name('settings.account');
     Route::get('/settings/account/password', [SettingsController::class, 'accountPassword'])->name('settings.account.password');
     Route::get('/settings/account/deactivate', [SettingsController::class, 'accountDeactivate'])->name('settings.account.deactivate');
+    // Privacity
     Route::get('/settings/privacity', [SettingsController::class, 'privacity'])->name('settings.privacity');
     Route::get('/settings/privacity/audience_and_media', [SettingsController::class, 'audienceAndMedia'])->name('settings.privacity.audienceandmedia');
     Route::get('/settings/privacity/mute_and_block', [SettingsController::class, 'muteAndBlock'])->name('settings.privacity.muteandblock');
+    // Notifications
     Route::get('/settings/notifications', [SettingsController::class, 'notifications'])->name('settings.notifications');
     Route::get('/settings/notifications/push', [SettingsController::class, 'pushNotifications'])->name('settings.notifications.push');
     Route::get('/settings/notifications/email', [SettingsController::class, 'emailNotifications'])->name('settings.notifications.email');
+    // Accessibility
     Route::get('/settings/accessibility_display_and_languages', [SettingsController::class, 'accessibilityDisplayAndLanguages'])->name('settings.accessibility_display_and_languages');
     Route::get('/settings/accessibility_display_and_languages/accessibility', [SettingsController::class, 'accessibility'])->name('settings.accessibility_display_and_languages.accessibility');
     Route::get('/settings/accessibility_display_and_languages/display', [SettingsController::class, 'display'])->name('settings.accessibility_display_and_languages.display');
@@ -86,6 +92,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Follow
     Route::post('/user/follow/{username}', [UserController::class,'toggleFollow'])->name('user.follow');
     Route::post('/group/follow/{name}', [GroupController::class,'toggleFollow'])->name('group.follow');
+
+    // Protect
+    Route::post('/user/set/private', [UserController::class, 'setSessionPrivate'])->name('user.set.private');
 });
 Route::get('/', [MainController::class, 'rootRedirect']);
 

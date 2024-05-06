@@ -37,7 +37,7 @@ export default function Push({ user = null }) {
                             <h2 className='font-bold text-xl'>Push notifications</h2>
                         </div>
                         <div className='px-8 mt-6' onClick={handlePushToggle}>
-                            <div className='flex justify-between items-center'>
+                            <div className='pointer-events-none flex justify-between items-center'>
                                 <h2>Push notifications</h2>
                                 <InputSwitch checked={pushEnabled} onClick={handlePushToggle} />
                             </div>
