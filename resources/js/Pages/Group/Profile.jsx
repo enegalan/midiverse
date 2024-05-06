@@ -13,7 +13,7 @@ import ConcertCard from "@/Components/Cards/ConcertCard";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
 import { TiUserAddOutline } from "react-icons/ti";
-import { openModal, formatDateAtForProfiles } from "@/Functions";
+import { openModal, formatDateAtForProfiles, userFollowsGroup } from "@/Functions";
 import AddGroupMember from "../Modals/Group/AddGroupMember";
 import { BsThreeDots } from "react-icons/bs";
 import { MdOutlineEdit } from "react-icons/md";
@@ -26,6 +26,8 @@ export default function Profile({ auth_user = null, group = null }) {
     isAuthUserProfile = auth_user.is_group_user_member;
     var groupInitial = group.name[0].toUpperCase();
     const joined = formatDateAtForProfiles(group.created_at);
+    var groupFollowing = userFollowsGroup(auth_user, group);
+    var groupProfileDisabledDuePrivate = group.visibility == 1 && !groupFollowing;
     const [profileSection, setProfileSection] = useState(localStorage.getItem('group_profile_default_section') ? localStorage.getItem('group_profile_default_section') : 'midi');
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const getProfileSection = (sectionRef) => {
@@ -47,10 +49,10 @@ export default function Profile({ auth_user = null, group = null }) {
         setMoreOptionsVisible(!moreOptionsVisible);
     }
     const handleEditGroup = () => {
-        openModal('edit-group-modal', <EditGroup auth_user={auth_user} group={group}/>)
+        openModal('edit-group-modal', <EditGroup auth_user={auth_user} group={group} />)
     }
     const handleDeleteGroup = () => {
-        openModal('delete-group-modal', <DeleteGroup group={group}/>)
+        openModal('delete-group-modal', <DeleteGroup group={group} />)
     }
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -125,7 +127,7 @@ export default function Profile({ auth_user = null, group = null }) {
                                             <IconButton className='text-2xl hover:bg-[var(--hover-light)]' >
                                                 <AiOutlineMessage />
                                             </IconButton>
-                                            <FollowButton group={group} userFollow={false} groupFollow={true} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />
+                                            <FollowButton onClick={() => {window.location.reload()}} group={group} userFollow={false} groupFollow={true} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />
                                         </div>
                                     )}
                                 </div>
@@ -150,7 +152,12 @@ export default function Profile({ auth_user = null, group = null }) {
                                 </div>
                                 <ProfileBottomNavbar getProfileSection={getProfileSection} />
                                 <section id="profile-sections">
-                                    {profileSection === 'midi' ? (
+                                    {groupProfileDisabledDuePrivate ? (
+                                        <section className='flex flex-col justify-center items-center mt-16'>
+                                            <h3 className='font-bold text-xl'>This group is private</h3>
+                                            <span>Follow this group to see posts and media</span>
+                                        </section>
+                                    ) : profileSection === 'midi' ? (
                                         <section>
                                             {renderGroupMidis()}
                                         </section>

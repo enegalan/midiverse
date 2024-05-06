@@ -24,18 +24,18 @@ export default function Profile({ auth_user = null, user = null }) {
     const userFullName = user.name + (user.lastname !== '' && user.lastname !== null ? ' ' + user.lastname : '');
     const joined = formatDateAtForProfiles(user.email_verified_at);
     var userFollowing = isUserFollowing(auth_user, user);
-    var userProfileDisabledDuePrivate = user.private == 0 && !isAuthUserProfile && !userFollowing;
+    var userProfileDisabledDuePrivate = user.private == 1 && !isAuthUserProfile && !userFollowing;
     const [profileSection, setProfileSection] = useState('posts');
     const getProfileSection = (sectionRef) => {
         setProfileSection(sectionRef);
     }
     const renderUserPosts = () => {
         if (user.posts.length === 0) return;
-    
+
         const sortedPosts = user.posts.sort((a, b) => {
             return new Date(b.created_at) - new Date(a.created_at);
         });
-    
+
         return sortedPosts.map((post) => <PostCard auth_user={auth_user} key={post.id} post={post} />);
     };
     const renderUserMidis = () => {
@@ -83,7 +83,7 @@ export default function Profile({ auth_user = null, user = null }) {
                                             <IconButton className='text-2xl hover:bg-[var(--hover-light)]' >
                                                 <AiOutlineMessage />
                                             </IconButton>
-                                            <FollowButton onClick={() => {window.location.reload()}} user={user} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />
+                                            <FollowButton onClick={() => { window.location.reload() }} user={user} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />
                                         </div>
                                     )}
                                 </div>
@@ -115,27 +115,28 @@ export default function Profile({ auth_user = null, user = null }) {
                                 <ProfileBottomNavbar disabled={userProfileDisabledDuePrivate} getProfileSection={getProfileSection} />
                                 <section id="profile-sections">
                                     {userProfileDisabledDuePrivate ? (
-                                    <section className='flex flex-col justify-center items-center mt-16'>
-                                        <h3 className='font-bold text-xl'>This account is private</h3>
-                                        <span>Follow this account to see posts and media</span>
-                                    </section>) : 
-                                    profileSection === 'posts' ? (
-                                        <section>
-                                            {renderUserPosts()}
+                                        <section className='flex flex-col justify-center items-center mt-16'>
+                                            <h3 className='font-bold text-xl'>This account is private</h3>
+                                            <span>Follow this account to see posts and media</span>
                                         </section>
-                                    ) : profileSection === 'midi' ? (
-                                        <section>
-                                            {renderUserMidis()}
-                                        </section>
-                                    ) : profileSection === 'concerts' ? (
-                                        <section>
-                                            {renderUserConcerts()}
-                                        </section>
-                                    ) : profileSection === 'likes' ? (
-                                        <section>
-                                            {renderUserLikes()}
-                                        </section>
-                                    ) : (<></>)}
+                                    ) :
+                                        profileSection === 'posts' ? (
+                                            <section>
+                                                {renderUserPosts()}
+                                            </section>
+                                        ) : profileSection === 'midi' ? (
+                                            <section>
+                                                {renderUserMidis()}
+                                            </section>
+                                        ) : profileSection === 'concerts' ? (
+                                            <section>
+                                                {renderUserConcerts()}
+                                            </section>
+                                        ) : profileSection === 'likes' ? (
+                                            <section>
+                                                {renderUserLikes()}
+                                            </section>
+                                        ) : (<></>)}
                                 </section>
                             </div>
                         </div>

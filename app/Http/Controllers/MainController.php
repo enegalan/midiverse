@@ -72,7 +72,7 @@ class MainController extends Controller
                     'name' => $post->user->name,
                     'lastname' => $post->user->lastname,
                     'username' => $post->user->username,
-                    'private_posts' => $post->user->private_posts,
+                    'private' => $post->user->private,
                 ],
                 'content' => $post->content,
                 'date' => $post->created_at->toDateString(),
@@ -84,7 +84,7 @@ class MainController extends Controller
         });
         $filteredRecentPosts = array();
         foreach ($recent_posts as &$recent_post) {
-            $validatedPost = app()->call([self::class, 'validatePosts'], array('private_posts' => $recent_post['user']['private_posts'], 'user' => $recent_post['user']));
+            $validatedPost = app()->call([self::class, 'validateUserPosts'], array('user' => $recent_post['user']));
             if ($validatedPost) {
                 $filteredRecentPosts[] = $recent_post;
             }
@@ -101,7 +101,7 @@ class MainController extends Controller
             $post->like_count = $likes->count();
             $post->likes = $likes;
             $post->load('user', 'comments');
-            $validatedPost = app()->call([self::class, 'validatePosts'], array('private_posts' => $post->user->private_posts, 'user' => $post->user));
+            $validatedPost = app()->call([self::class, 'validateUserPosts'], array('user' => $post->user));
             // Store the post in the array if it has likes and it is validated
             if ($likes->count() > 0 && $validatedPost) {
                 $topPosts[] = $post;
@@ -115,17 +115,18 @@ class MainController extends Controller
         return $topPosts;
     }
 
-    public static function validatePosts($private_posts = 0, $user) {
+    public static function validateUserPosts($user) {
         $isUserObj = is_object($user);
         $userId = null;
         $userId = $isUserObj ? $user->id : $user['id'];
         $userUsername = $isUserObj ? $user->username : $user['username'];
+        $userPrivate = $isUserObj ? $user->private : $user['private'];
         $isAuthUserFollowingJson = app()->call([UserController::class, 'isFollowing'], array('username' => $userUsername));
         $isAuthUserFollowing = json_decode($isAuthUserFollowingJson, true);
-        // If user has not private posts OR
+        // If user is public OR
         // If post user is auth user OR
         // If auth user is following post user
-        if ($private_posts == 0 || 
+        if ($userPrivate == 0 || 
         $userId == auth()->user()->id || 
         $isAuthUserFollowing['status'] == true) {
             return true;

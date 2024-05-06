@@ -105,5 +105,12 @@ function isUserFollowing(auth_user, user) {
     return false;
 }
 
+function userFollowsGroup(user, group) {
+    for (let follower of group.followers) {
+        if (follower.id == user.id) return true; break;
+    }
+    return false;
+}
 
-export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing };
+
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, userFollowsGroup };

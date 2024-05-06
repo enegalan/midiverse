@@ -4,22 +4,17 @@ import { AuthButton } from '@/Components/Buttons';
 import { FloatLabelInput } from '@/Components/Inputs';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from '@inertiajs/react';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { closeModal, openModal } from '@/Functions';
-import RegisterModal from '../RegisterModal';
+import { closeModal } from '@/Functions';
 import { router } from '@inertiajs/react';
 import { Dropdown } from '@/Components/Inputs';
 import { TextAreaInput, DragAndDropBox, DragAndDropBox2 } from '@/Components/Inputs';
 
 export default function EditGroup( { auth_user = {}, group = {} } ) {
-    console.log(group)
-    console.log('auth_user', auth_user)
     const [name, setName] = useState(group.name)
     const [nameError, setNameError] = useState('')
 
     const [visibility, setVisibility] = useState(group.visibility)
-    const [description, setDescription] = useState(group.description)
+    const [description, setDescription] = useState(group.description ?? '')
     const [groupLogo, setGroupLogo] = useState(group.logo);
     const [groupBanner, setGroupBanner] = useState(group.banner);
 
@@ -132,8 +127,8 @@ export default function EditGroup( { auth_user = {}, group = {} } ) {
                     <div className='flex flex-col gap-6'>
                         <FloatLabelInput className={`${nameError ? 'p-invalid' : ''} w-full`} id='name-group' text='Name' value={name} onChange={onNameChange} />
                         {nameError && <div className="text-red-500">{nameError}</div>}
-                        <Dropdown onChange={onVisibilityChange} options={visibilityOptions} />
-                        <TextAreaInput onChange={onDescriptionChange} cols={'21'} placeholder='Description (optional)' />
+                        <Dropdown value={visibility} onChange={onVisibilityChange} options={visibilityOptions} />
+                        <TextAreaInput value={description} onChange={onDescriptionChange} cols={'21'} placeholder='Description (optional)' />
                         <AuthButton disabled={nextStepButtonDisabled} className={`${nextStepButtonDisabled ? 'bg-[var(--disabled)] hover:bg-[var(--disabled)] hover:cursor-default' : ''} mt-5 text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)]`} onClick={handleNextButton} text='Next' />                        
                     </div>
                 </div>
