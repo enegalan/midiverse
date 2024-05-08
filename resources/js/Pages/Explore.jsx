@@ -54,6 +54,10 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
     const getExploreSection = (section) => {
         setExploreSection(section);
     };
+    const handleViewAll = () => {
+        setExploreSection('people')
+        localStorage.setItem('explore_default_section', 'people');
+    }
     return (
         <>
             <MainLayout user={auth_user} headerClassName='backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50' defaultBackgroundColor='transparent' defaultTextColor='var(--main-blue)' dynamicBackground={false}>
@@ -63,12 +67,12 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
                             <SearchInput placeholder='Search' />
                         </div>
                         {/* Explore navbar */}
-                        <ExploreNavbar getExploreSection={getExploreSection} />
+                        <ExploreNavbar refExploreSection={exploreSection} getExploreSection={getExploreSection} />
                         {/* Top */}
                         <section className={`${exploreSection === 'top' ? 'block' : 'hidden'}`} id='top'>
                             <section className='w-full'>
                                 <h1 className='font-bold text-xl pl-3 py-2'>People</h1>
-                                <PeopleSection auth_user={auth_user} users={top_users} viewAll={true} />
+                                <PeopleSection onClickViewAll={handleViewAll} auth_user={auth_user} users={top_users} viewAll={true} />
                             </section>
                             <section className='w-full'>
                                 {posts.map((post) => (

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-export default function ExploreNavbar({ getExploreSection = () => {} }) {
+export default function ExploreNavbar({ refExploreSection = null, getExploreSection = () => {} }) {
     const buttonStyle = 'flex flex-col w-1/2 items-center hover:bg-gray-200 transition';
 
-    const [defaultExploreSection, setDefaultExploreSection] = useState(localStorage.getItem('explore_default_section') ? localStorage.getItem('explore_default_section') : 'top')
+    const [defaultExploreSection, setDefaultExploreSection] = useState(refExploreSection ? refExploreSection : localStorage.getItem('explore_default_section') ? localStorage.getItem('explore_default_section') : 'top')
 
     useEffect(() => {
-        const defaultSection = localStorage.getItem('explore_default_section');
+        const defaultSection = refExploreSection ? refExploreSection : localStorage.getItem('explore_default_section');
         if (!defaultSection) {
             localStorage.setItem('explore_default_section', 'top');
             getExploreSection('top')
@@ -15,7 +15,7 @@ export default function ExploreNavbar({ getExploreSection = () => {} }) {
             setDefaultExploreSection(defaultSection);
             getExploreSection(defaultSection);
         }
-    }, []);
+    }, [refExploreSection]);
 
     const handleButtonClick = (e) => {
         const sectionRef = e.target.getAttribute('data-ref');
