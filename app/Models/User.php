@@ -12,7 +12,7 @@ use App\Models\Role;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements MustVerifyEmail {
-    use HasApiTokens, HasFactory, Notifiable, softDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'users';
 
@@ -105,12 +105,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->belongsToMany(Concert::class, 'user_concert_bookmarks');
     }
 
-    /**
-     * Get the email address that should be used for verification.
-     *
-     * @return string
-     */
-    public function getEmailForVerification() {
-        return $this->email;
+    public function notifications() {
+        return $this->hasMany(UserNotification::class);
     }
 }

@@ -29,6 +29,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/concerts', [MainController::class, 'concerts'])->name('concerts');
     
     Route::get('/playground', [MainController::class, 'playground'])->name('playground');
+
+    Route::get('/notifications', [MainController::class, 'notifications'])->name('notifications');
     
     Route::get('/messages', [MainController::class, 'messages'])->name('messages');
 

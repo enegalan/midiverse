@@ -37,4 +37,8 @@ class Group extends Model {
     public function midis() {
         return $this->belongsToMany(UserMidi::class, 'group_midis');
     }
+
+    public function notifications() {
+        return $this->hasMany(GroupNotification::class);
+    }
 }

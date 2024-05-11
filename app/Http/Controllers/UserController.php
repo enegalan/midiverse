@@ -38,6 +38,8 @@ class UserController extends Controller
         app()->call([self::class, 'getConcerts'], compact('user'));
         app()->call([self::class, 'getGroups'], compact('user'));
         app()->call([self::class, 'getAuthType'], compact('user'));
+        app()->call([NotificationController::class, 'getUnreadNotificationsCount'], compact('user'));
+        app()->call([NotificationController::class, 'getNotifications'], compact('user'));
     }
     /**
      * Display the user's profile form.

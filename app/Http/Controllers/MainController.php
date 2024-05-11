@@ -49,6 +49,12 @@ class MainController extends Controller
         app()->call([UserController::class,'loadUserData'], compact('user'));
         return Inertia::render('Playground', compact('user'));
     }
+    
+    public static function notifications () {
+        $user = auth()->user();
+        app()->call([UserController::class,'loadUserData'], compact('user'));
+        return Inertia::render('Notifications', compact('user'));
+    }
 
     public static function messages () {
         $user = auth()->user();

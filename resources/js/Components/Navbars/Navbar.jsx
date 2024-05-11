@@ -36,6 +36,8 @@ import { Avatar } from "primereact/avatar";
 
 import { logout, getUserInitials } from "@/Functions";
 
+import { BadgeProvider, NotificationBadge } from "../Badges";
+
 const Navbar = ({
     user = null,
     className = "",
@@ -82,6 +84,18 @@ const Navbar = ({
         };
     }, [isLogoutModal]);
 
+    var notificationLink =
+        <BadgeProvider>
+            <NotificationBadge value={user.unread_notifications} />
+            <IoMdNotificationsOutline className={`text-[${iconWidth}]`} />
+        </BadgeProvider>;
+
+    var notificationActiveLink =
+        <BadgeProvider>
+            <NotificationBadge value={user.unread_notifications} />
+            <IoMdNotifications className={`text-[${iconWidth}]`} />
+        </BadgeProvider>;
+
     const menuLinks = [
         {
             title: 'Home',
@@ -117,11 +131,11 @@ const Navbar = ({
         },
         {
             title: 'Notifications',
-            href: '/',
+            href: '/notifications',
             id: 'notifications',
             ref: 'notifications',
-            icon: <IoMdNotificationsOutline className={`text-[${iconWidth}]`} />,
-            activeIcon: <IoMdNotifications className={`text-[${iconWidth}]`} />,
+            icon: notificationLink,
+            activeIcon: notificationActiveLink,
         },
         {
             title: 'Messages',
