@@ -90,13 +90,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/group/name/exists/', [GroupController::class, 'existsByName'])->name('group.exists.name');
     Route::get('/group/following/{name}', [GroupController::class, 'isFollowing'])->name('group.exists.name');
     Route::post('/user/requested/follow/', [UserController::class, 'hasSentFollowRequest'])->name('user.sent.follow');
-
+    Route::post('/group/requested/follow', [GroupController::class, 'hasSentFollowRequest'])->name('group.sent.follow');
     // Follow
     Route::post('/user/follow/{username}', [UserController::class,'toggleFollow'])->name('user.follow');
     Route::post('/group/follow/{name}', [GroupController::class,'toggleFollow'])->name('group.follow');
     Route::post('/user/request/follow/accept', [UserController::class, 'acceptFollowRequest'])->name('user.accept.follow');
-    Route::post('/user/request/follow/delete', [UserController::class, 'deleteFollowRequest'])->name('user.delete.follow');
-
+    Route::post('/user/notification/delete', [UserController::class, 'deleteFollowRequest'])->name('user.delete.follow');
+    Route::post('/group/request/follow/accept', [GroupController::class, 'acceptFollowRequest'])->name('group.accept.follow');
+    Route::post('/group/notification/delete', [GroupController::class, 'deleteFollowRequest'])->name('group.delete.follow');
     // Protect
     Route::post('/user/set/private', [UserController::class, 'setSessionPrivate'])->name('user.set.private');
 });

@@ -28,7 +28,6 @@ const types = {
 };
 
 export default function NotificationCard({ notification = null }) {
-
     const handleProfileRedirect = (e) => {
         e.preventDefault();
         window.location.href = `/u/${notification?.from_user?.username}`;
@@ -38,16 +37,27 @@ export default function NotificationCard({ notification = null }) {
         e.preventDefault();
         const formData = new FormData();
         formData.append('id', notification.id);
-        axios.post('/user/request/follow/delete', formData)
-        .then(data => window.location.reload());
+        if (notification.group_id) {
+            axios.post('/group/notification/delete', formData)
+            .then(data => window.location.reload());
+        } else {
+            axios.post('/user/notification/delete', formData)
+            .then(data => window.location.reload());
+        }
     }
 
     const handleAcceptFollow = (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('user_id', notification.from_user_id);
-        axios.post('/user/request/follow/accept', formData)
-        .then(data => window.location.reload())
+        if (notification.group_id) {
+            formData.append('group_id', notification.group_id);
+            axios.post('/group/request/follow/accept', formData)
+            .then(data => window.location.reload())
+        } else if (notification.user_id) {
+            axios.post('/user/request/follow/accept', formData)
+            .then(data => window.location.reload())
+        }
     }
 
     return (

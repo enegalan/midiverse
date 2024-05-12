@@ -22,8 +22,8 @@ import EditGroup from "../Modals/Group/EditGroup";
 import DeleteGroup from "../Modals/Group/DeleteGroup";
 
 export default function Profile({ auth_user = null, group = null }) {
-    var isAuthUserProfile = false;
-    isAuthUserProfile = auth_user.is_group_user_member;
+    var isAuthUserGroupProfile = false;
+    isAuthUserGroupProfile = auth_user.is_group_user_member;
     var groupInitial = group.name[0].toUpperCase();
     const joined = formatDateAtForProfiles(group.created_at);
     var groupFollowing = userFollowsGroup(auth_user, group);
@@ -91,7 +91,7 @@ export default function Profile({ auth_user = null, group = null }) {
                             </div>
                             <div id="profile-content" className='flex flex-col relative'>
                                 <div className='mx-4 absolute -top-8 right-0 lg:-top-14'>
-                                    {isAuthUserProfile ? (
+                                    {isAuthUserGroupProfile ? (
                                         <div className='flex gap-2'>
                                             <div className='flex relative'>
                                                 <IconButton onClick={handleMoreOptions} className='text-2xl hover:bg-[var(--hover-light)]' >

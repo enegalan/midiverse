@@ -243,7 +243,15 @@ const FollowButton = ({
                 }
             } else if (groupFollow && group) {
                 var response = await axios.post(`/group/follow/${group.name}`)
-                setFollowing(response.data.status);
+                if (response.data.sent) {
+                    setFollowing('sent');
+                } else {
+                    if (isFollowing == 'sent') {
+                        setFollowing(false)
+                    } else {
+                        setFollowing(response.data.status);
+                    }
+                }
             }
         } catch (error) {
             console.error(error);
@@ -266,20 +274,27 @@ const FollowButton = ({
 
     useEffect(() => {
         // Check if user has already sent a follow request
+        const formData = new FormData();
         if (userFollow && user) {
-            const formData = new FormData();
             formData.append('user_id', user.id);
             axios.post('/user/requested/follow/', formData)
                 .then(data => {
                     setFollowing(data.data == 1 ? 'sent' : false);
                     if (data.data != 1) {
                         checkFollowingStatus();
-                    } else if (groupFollow && group) {
-                        // TODO: Group Follow Request
-                    }
+                    } 
                 });
+        } else if (groupFollow && group) {
+            formData.append('group_id', group.id);
+            axios.post('/group/requested/follow', formData)
+            .then(data => {
+                setFollowing(data.data == 1 ? 'sent' : false);
+                if (data.data != 1) {
+                    checkFollowingStatus();
+                }
+            })
         }
-    }, [user]);
+    }, [user, group]);
 
     let text = 'Follow';
     if (isFollowing != 'sent' && isFollowing) {
@@ -293,7 +308,7 @@ const FollowButton = ({
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             onClick={handleFollow}
-            className={`${isFollowing === null && 'hidden'} min-w-[110px] text-center min-h-[25px] border-1 ${isFollowing && isHovering ? 'bg-[var(--hover-like-red)] border-[var(--pink)] text-[var(--red)]' : isFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'} font-bold py-2 px-4 text-sm rounded-full transition `}
+            className={`min-w-[110px] text-center min-h-[25px] border-1 ${isFollowing && isHovering ? 'bg-[var(--hover-like-red)] border-[var(--pink)] text-[var(--red)]' : isFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'} font-bold py-2 px-4 text-sm rounded-full transition `}
         >
             <span>{text}</span>
         </button>

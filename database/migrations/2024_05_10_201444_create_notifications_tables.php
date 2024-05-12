@@ -39,7 +39,21 @@ return new class extends Migration
             $table->foreignId('group_id')->references('id')->on('groups');
             $table->foreignId('from_user_id')->references('id')->on('users');
             $table->string('message')->nullable(false);
-            $table->boolean('following_notification')->default(0);
+            $table->tinyInteger('type')->default(0);
+            /*
+            --------TYPES--------
+            Follow Requests => 0
+
+            Likes => 1
+            
+            Bookmarks => 2
+            
+            Comments => 3
+            
+            Rol Assigments => 4
+
+            Request Accepted => 5
+            */
             $table->boolean('viewed')->default(0);
             $table->timestamps();
         });

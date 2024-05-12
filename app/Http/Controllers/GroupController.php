@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\User;
+use App\Models\GroupNotification;
+use App\Models\UserNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -166,7 +169,23 @@ class GroupController extends Controller
                 $authUser->group_followings()->detach($group->id);
                 $status = false;
             } else {
-                $authUser->group_followings()->attach($group->id);
+                if ($group && $group->visibility == 1) {
+                    $followAlreadySent = GroupNotification::where('from_user_id', $authUser->id)->where('group_id', $group->id)->where('type', GroupNotification::NOTIFICATION_TYPE_FOLLOW)->exists();
+                    if (!$followAlreadySent) {
+                        // Send follow request
+                        GroupNotification::create([
+                            'group_id' => $group->id,
+                            'from_user_id' => $authUser->id,
+                            'message' => NotificationController::getMessageForGroupFollow($authUser->username, $group->name),
+                            'type' => GroupNotification::NOTIFICATION_TYPE_FOLLOW,
+                        ]);
+                        return response()->json(['status' => true, 'sent' => true]);
+                    } else {
+                        GroupNotification::where('from_user_id', $authUser->id)->where('group_id', $group->id)->where('type', GroupNotification::NOTIFICATION_TYPE_FOLLOW)->delete();
+                    }
+                } else {
+                    $authUser?->group_followings()->sync($group->id);
+                }
                 $status = true;
             }
             return response()->json(['status' => $status]);
@@ -276,5 +295,45 @@ class GroupController extends Controller
         $this->getMembers($group);
         app()->call([UserController::class, 'loadUserData'], ['user' => $auth_user]);
         return Inertia::render('Group/Follows', compact('auth_user', 'type', 'group'));
+    }
+
+    public static function hasSentFollowRequest(Request $request) {
+        $group_id = $request->input('group_id');
+        if ($group_id) {
+            $from_user_id = Auth::id();
+            return GroupNotification::where('group_id', '=', $group_id)->where('from_user_id', '=', $from_user_id)->where('type', '=', GroupNotification::NOTIFICATION_TYPE_FOLLOW)->exists();
+        }
+        return false;
+    }
+
+    public static function acceptFollowRequest(Request $request) {
+        $from_user_id = $request->input('user_id');
+        $group_id = $request->input('group_id');
+        if ($from_user_id && $group_id) {
+            $from_user = User::findOrFail($from_user_id);
+            $user_id = Auth::id();
+            $user = User::findOrFail($user_id);
+            $group = Group::findOrFail($group_id);
+            // Delete the from_user's follow request
+            GroupNotification::where('group_id', $group_id)->where('from_user_id', $from_user_id)->where('type', GroupNotification::NOTIFICATION_TYPE_FOLLOW)->delete();
+            // Send accepted follow request notification to from_user (who has requested the follow)
+            UserNotification::create([
+                'user_id' => $from_user_id,
+                'from_user_id' => $user_id,
+                'message' => NotificationController::getMessageForGroupFollowRequestAccepted($user->username, $group->name),
+                'type' => GroupNotification::NOTIFICATION_TYPE_REQUEST_ACCEPTED,
+            ]);
+            // Add from_user as group follower
+            $group->followers()->sync($from_user->id);
+            // Add group as from_user following
+            $from_user->group_followings()->sync($user->id);
+        }
+    }
+
+    public static function deleteFollowRequest(Request $request) {
+        $id = $request->input('id');
+        if ($id) {
+            UserNotification::findOrFail($id)->delete();
+        }
     }
 }

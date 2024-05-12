@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\UserMidi;
 use App\Models\Post;
 use App\Models\UserNotification;
+use App\Models\GroupNotification;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -402,7 +403,7 @@ class UserController extends Controller
             } else {
                 if ($user && $user->private == 1) {
                     // Verify if user has already sent a follow request
-                    $followAlreadySent = UserNotification::where('from_user_id', '=', $authUser->id)->where('user_id', '=', $user->id)->where('type', '=', 0)->exists();
+                    $followAlreadySent = UserNotification::where('from_user_id', '=', $authUser->id)->where('user_id', '=', $user->id)->where('type', '=', UserNotification::NOTIFICATION_TYPE_FOLLOW)->exists();
                     if (!$followAlreadySent) {
                         // Send follow request
                         UserNotification::create([
@@ -666,7 +667,25 @@ class UserController extends Controller
                 $notification->viewed = 1;
                 $notification->save();
             }
+            $group_ids = self::getUserGroupIds();
+            $notifications = GroupNotification::whereIn('group_id', $group_ids)->where('viewed', 0)->get();
+            foreach ($notifications as $notification) {
+                $notification->viewed = 1;
+                $notification->save();
+            }
         }
+    }
+
+    public static function getUserGroupIds(&$user = null) {
+        $user_group_ids = array();
+        if (!$user) $user = Auth::user();
+        foreach ($user->groups as $group) {
+            $user_group_ids[] = $group->id;
+        }
+        if ($user) {
+            $user->user_group_ids = $user_group_ids;
+        }
+        return $user_group_ids;
     }
 
 }
