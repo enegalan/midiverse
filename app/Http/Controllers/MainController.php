@@ -53,6 +53,7 @@ class MainController extends Controller
     public static function notifications () {
         $user = auth()->user();
         app()->call([UserController::class,'loadUserData'], compact('user'));
+        app()->call([UserController::class, 'setNotificationsViewed']);
         return Inertia::render('Notifications', compact('user'));
     }
 

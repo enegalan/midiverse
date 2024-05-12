@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\UserMidi;
 use App\Models\Post;
+use App\Models\UserNotification;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -22,8 +23,6 @@ use Inertia\Response;
 
 class UserController extends Controller
 {
-    private $productPerPagination = 15;
-
     public static function loadUserData(&$user)
     {
         app()->call([self::class, 'getRoles'], compact('user'));
@@ -401,7 +400,24 @@ class UserController extends Controller
                 $authUser->followings()->detach($user->id);
                 $status = false;
             } else {
-                $authUser->followings()->attach($user->id);
+                if ($user && $user->private == 1) {
+                    // Verify if user has already sent a follow request
+                    $followAlreadySent = UserNotification::where('from_user_id', '=', $authUser->id)->where('user_id', '=', $user->id)->where('type', '=', 0)->exists();
+                    if (!$followAlreadySent) {
+                        // Send follow request
+                        UserNotification::create([
+                            'user_id' => $user->id,
+                            'from_user_id' => $authUser->id,
+                            'message' => NotificationController::getMessageForFollow($authUser->username),
+                            'type' => UserNotification::NOTIFICATION_TYPE_FOLLOW,
+                        ]);
+                        return response()->json(['status' => true, 'sent' => true]);
+                    } else {
+                        UserNotification::where('from_user_id', '=', $authUser->id)->where('user_id', '=', $user->id)->where('type', '=', 0)->delete();
+                    }
+                } else {
+                    $user?->followings()->sync($user->id);
+                }
                 $status = true;
             }
             return response()->json(['status' => $status]);
@@ -602,6 +618,55 @@ class UserController extends Controller
         $user = User::findOrFail(auth()->user()->id);
         $user->private = !$user->private;
         $user->save();
+    }
+
+    public static function hasSentFollowRequest(Request $request) {
+        $user_id = $request->input('user_id');
+        if ($user_id) {
+            $from_user_id = Auth::id();
+            return UserNotification::where('user_id', '=', $user_id)->where('from_user_id', '=', $from_user_id)->where('type', '=', UserNotification::NOTIFICATION_TYPE_FOLLOW)->exists();
+        }
+        return false;
+    }
+
+    public static function acceptFollowRequest(Request $request) {
+        $from_user_id = $request->input('user_id');
+        if ($from_user_id) {
+            $from_user = User::findOrFail($from_user_id);
+            $user_id = Auth::id();
+            $user = User::findOrFail($user_id);
+            // Delete the from_user's follow request
+            UserNotification::where('user_id', '=', $user_id)->where('from_user_id', '=', $from_user_id)->where('type', '=', UserNotification::NOTIFICATION_TYPE_FOLLOW)->delete();
+            // Send accepted follow request notification to from_user (who has requested the follow)
+            UserNotification::create([
+                'user_id' => $from_user_id,
+                'from_user_id' => $user_id,
+                'message' => NotificationController::getMessageForFollowRequestAccepted($user->username),
+                'type' => UserNotification::NOTIFICATION_TYPE_REQUEST_ACCEPTED,
+            ]);
+            // Add from_user as user follower
+            $user->followers()->sync($from_user->id);
+            // Add user as from_user following
+            $from_user->followings()->sync($user->id);
+        }
+    }
+
+    public static function deleteFollowRequest(Request $request) {
+        $id = $request->input('id');
+        if ($id) {
+            UserNotification::findOrFail($id)->delete();
+        }
+    }
+
+    public static function setNotificationsViewed() {
+        $user_id = Auth::id();
+        if ($user_id) {
+            $notifications = UserNotification::where('user_id', $user_id)->where('viewed', 0)->get();
+            foreach ($notifications as $notification) {
+                $notification->viewed = 1;
+                $notification->save();
+            }
+        }
     }
 
 }

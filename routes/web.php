@@ -89,11 +89,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/user/password/verify', [UserController::class, 'verifyPassword'])->name('user.verify.password');
     Route::get('/group/name/exists/', [GroupController::class, 'existsByName'])->name('group.exists.name');
     Route::get('/group/following/{name}', [GroupController::class, 'isFollowing'])->name('group.exists.name');
-    
+    Route::post('/user/requested/follow/', [UserController::class, 'hasSentFollowRequest'])->name('user.sent.follow');
 
     // Follow
     Route::post('/user/follow/{username}', [UserController::class,'toggleFollow'])->name('user.follow');
     Route::post('/group/follow/{name}', [GroupController::class,'toggleFollow'])->name('group.follow');
+    Route::post('/user/request/follow/accept', [UserController::class, 'acceptFollowRequest'])->name('user.accept.follow');
+    Route::post('/user/request/follow/delete', [UserController::class, 'deleteFollowRequest'])->name('user.delete.follow');
 
     // Protect
     Route::post('/user/set/private', [UserController::class, 'setSessionPrivate'])->name('user.set.private');

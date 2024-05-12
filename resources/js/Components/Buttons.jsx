@@ -221,7 +221,6 @@ const FollowButton = ({
     user = null,
     group = null,
     onClick = () => { },
-    href = '',
     userFollow = true,
     groupFollow = false
 }) => {
@@ -233,7 +232,15 @@ const FollowButton = ({
         try {
             if (userFollow && user) {
                 var response = await axios.post(`/user/follow/${user.username}`);
-                setFollowing(response.data.status);
+                if (response.data.sent) {
+                    setFollowing('sent');
+                } else {
+                    if (isFollowing == 'sent') {
+                        setFollowing(false)
+                    } else {
+                        setFollowing(response.data.status);
+                    }
+                }
             } else if (groupFollow && group) {
                 var response = await axios.post(`/group/follow/${group.name}`)
                 setFollowing(response.data.status);
@@ -243,26 +250,42 @@ const FollowButton = ({
         }
     };
 
-    useEffect(() => {
-        const checkFollowingStatus = async () => {
-            try {
-                if (userFollow && user) {
-                    const response = await axios.get(`/user/following/${user.username}`);
-                    setFollowing(response.data.status);
-                } else if (groupFollow && group) {
-                    const response = await axios.get(`/group/following/${group.name}`)
-                    setFollowing(response.data.status);
-                }
-            } catch (error) {
-                console.error(error);
+    const checkFollowingStatus = async () => {
+        try {
+            if (userFollow && user) {
+                const response = await axios.get(`/user/following/${user.username}`);
+                setFollowing(response.data.status);
+            } else if (groupFollow && group) {
+                const response = await axios.get(`/group/following/${group.name}`)
+                setFollowing(response.data.status);
             }
-        };
-        checkFollowingStatus();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        // Check if user has already sent a follow request
+        if (userFollow && user) {
+            const formData = new FormData();
+            formData.append('user_id', user.id);
+            axios.post('/user/requested/follow/', formData)
+                .then(data => {
+                    setFollowing(data.data == 1 ? 'sent' : false);
+                    if (data.data != 1) {
+                        checkFollowingStatus();
+                    } else if (groupFollow && group) {
+                        // TODO: Group Follow Request
+                    }
+                });
+        }
     }, [user]);
 
     let text = 'Follow';
-    if (isFollowing) {
+    if (isFollowing != 'sent' && isFollowing) {
         text = isHovering ? 'Unfollow' : 'Following';
+    } else if (isFollowing == 'sent') {
+        text = 'Pending request';
     }
 
     return (
@@ -270,7 +293,7 @@ const FollowButton = ({
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             onClick={handleFollow}
-            className={`${isFollowing === null ? 'hidden' : ''} min-w-[110px] text-center min-h-[25px] border-1 ${isFollowing && isHovering ? 'bg-[var(--hover-like-red)] border-[var(--pink)] text-[var(--red)] py-[0.56rem]' : isFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'} font-bold py-2 px-4 text-sm rounded-full transition `}
+            className={`${isFollowing === null && 'hidden'} min-w-[110px] text-center min-h-[25px] border-1 ${isFollowing && isHovering ? 'bg-[var(--hover-like-red)] border-[var(--pink)] text-[var(--red)]' : isFollowing ? 'bg-white border text-black hover:text-[var(--red)] hover:bg-[var(--hover-red)]' : 'bg-black text-white hover:bg-[var(--hover-black)]'} font-bold py-2 px-4 text-sm rounded-full transition `}
         >
             <span>{text}</span>
         </button>
@@ -321,7 +344,7 @@ const GoogleLoginButton = ({ onAuth = () => { }, onAuthError = (e) => { } }) => 
     );
 }
 
-const CloseButton = ({ onClick = () => {}, className = '', ...props }) => {
+const CloseButton = ({ onClick = () => { }, className = '', ...props }) => {
     return (
         <button
             {...props}
@@ -354,7 +377,7 @@ const IconButton = ({ children, className = '', href = '', onClick = () => { } }
     );
 }
 
-const Checkbox = ({ className = '',  disabled = false, ...props }) => {
+const Checkbox = ({ className = '', disabled = false, ...props }) => {
     return (
         <input
             {...props}
@@ -438,20 +461,20 @@ const BackgroundOptions = ({ backgrounds = [] }) => {
     );
 };
 // TODO: improve it, in general.
-const RadioButton = ({ name, value, id, checked = null, onClick = () => {} }) => {
+const RadioButton = ({ name, value, id, checked = null, onClick = () => { } }) => {
     const handleRadio = (e) => {
         onClick(e);
     };
     return (
         <div className='flex flex-col'>
-            <input 
-                value={value} 
-                onChange={handleRadio} 
-                className='w-5 h-5 border-2 bg-transparent border-[var(--hover-light)] focus:ring-transparent' 
-                type="radio" 
+            <input
+                value={value}
+                onChange={handleRadio}
+                className='w-5 h-5 border-2 bg-transparent border-[var(--hover-light)] focus:ring-transparent'
+                type="radio"
                 name={name}
                 checked={checked}
-                id={id} 
+                id={id}
             />
         </div>
     );
