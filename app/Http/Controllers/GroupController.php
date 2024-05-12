@@ -336,4 +336,67 @@ class GroupController extends Controller
             UserNotification::findOrFail($id)->delete();
         }
     }
+
+    public static function invitePeople(Request $request) {
+        $users = json_decode($request->input('users'));
+        $from_user_id = $request->input('from_user_id');
+        $group_id = $request->input('group_id');
+        \Illuminate\Support\Facades\Log::debug($group_id);
+        $from_user = User::findOrFail($from_user_id);
+        $group = Group::findOrFail($group_id);
+        foreach ($users as $user) {
+            // Verify if user has already been invited
+            $notification = UserNotification::where('user_id', $user->id)->where('from_user_id', $from_user_id)->where('group_ref_id', $group_id)->where('type', UserNotification::NOTIFICATION_TYPE_INVITE)->exists();
+            if (!$notification) {
+                UserNotification::create([
+                    'user_id' => $user->id,
+                    'from_user_id' => $from_user_id,
+                    'message' => NotificationController::getMessageForGroupInvite($from_user->username, $group->name),
+                    'type' => UserNotification::NOTIFICATION_TYPE_INVITE,
+                    'group_ref_id' => $group_id,
+                ]);
+            }
+        }
+    }
+
+    public static function acceptInvite(Request $request) {
+        $group_id = $request->input('group_id');
+        if ($request->input('notification_id')) {
+            $notification = UserNotification::findOrFail($request->input('notification_id'));
+            if ($notification->group_ref_id) {
+                $group_id = $notification->group_ref_id;
+            }
+        }
+        $group = Group::findOrFail($group_id);
+        $user = User::findOrFail(Auth::id());
+        if ($user && $group) {
+            // Delete invite request
+            $user_notifications = UserNotification::where('user_id', $user->id)->where('type', UserNotification::NOTIFICATION_TYPE_INVITE)->get();
+            if ($user_notifications) {
+                foreach ($user_notifications as $notification) {
+                    $notification->delete();
+                }
+            }
+            // Add user to group
+            $group->members()->attach($user);
+            // Notify Group members
+            GroupNotification::create([
+                'group_id' => $group->id,
+                'from_user_id' => $user->id,
+                'message' => NotificationController::getNewGroupMemberMessage($user->username, $group->name),
+                'type' => GroupNotification::NOTIFICATION_TYPE_REQUEST_ACCEPTED,
+            ]);
+        }
+    }
+
+    public static function deleteMember(Request $request) {
+        $user_id = $request->input('user_id');
+        $group_id = $request->input('group_id');
+        if ($user_id && $group_id) {
+            $group = Group::findOrFail($group_id);
+            if ($group) {
+                $group->members()->detach($user_id);
+            }
+        }
+    }
 }

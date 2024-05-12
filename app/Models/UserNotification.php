@@ -14,6 +14,7 @@ class UserNotification extends Model
     public const NOTIFICATION_TYPE_COMMENT = 3;
     public const NOTIFICATION_TYPE_ROL = 4;
     public const NOTIFICATION_TYPE_REQUEST_ACCEPTED = 5;
+    public const NOTIFICATION_TYPE_INVITE = 6;
     protected $table = 'user_notifications';
     protected $fillable = [
         'user_id',
@@ -22,6 +23,7 @@ class UserNotification extends Model
         'following_notification',
         'viewed',
         'type',
+        'group_ref_id',
     ];
     public function user()
     {

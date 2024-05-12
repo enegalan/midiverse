@@ -13,6 +13,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import PeopleCard from '@/Components/Cards/PeopleCard';
 import { Checkbox } from '@/Components/Buttons';
 import { CloseButton } from '@/Components/Buttons';
+import AddGroupMember from './AddGroupMember';
 
 export default function InviteFriends({ auth_user = null, group = {} }) {
     const [users, setUsers] = useState([]);
@@ -36,31 +37,20 @@ export default function InviteFriends({ auth_user = null, group = {} }) {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [inviteDropdownVisible]);
-    const goNextStep = () => {
-        setStep('logo');
-    }
     const closeThisModal = () => {
         closeModal('add-group-member-modal')
     }
-    const postSuccess = () => {
-        closeThisModal();
-        router.get('groups')
-    }
-    const handleCreate = async () => {
-        const formData = new FormData();
-        try {
-            await axios.post('/group/create', formData)
-            postSuccess();
-        } catch (error) {
-            console.error(error)
-        }
-    }
     const handleInvite = () => {
-        setInviteDropdownVisible(!inviteDropdownVisible);
+        const formData = new FormData();
+        formData.append('users', JSON.stringify(users))
+        formData.append('from_user_id', auth_user.id);
+        formData.append('group_id', group.id);
+        axios.post('/group/invite/people', formData)
+        .then(data => handleCancel());
     }
-    const handleInviteFriends = () => {
+    const handleCancel = () => {
         closeThisModal();
-        openModal('group-invite-friends');
+        openModal('add-group-member-modal', <AddGroupMember auth_user={auth_user} group={group}/>);
     }
     const handleToggleCheckboxUser = (e) => {
         if (!e.target.checked) {
@@ -102,6 +92,8 @@ export default function InviteFriends({ auth_user = null, group = {} }) {
                         <SearchInput placeholder='Search a friend' />
                         <section>
                             {auth_user.followers.map((member, index) => {
+                                // Verify if user is already part of group
+                                if (!group.members.every((group_member) => group_member.id != member.id)) return;
                                 return (
                                     <div key={index} className='flex justify-between items-center w-full transition duration-300 px-2'>
                                         <Link id={member.id + '-invite'} className=''>
@@ -128,8 +120,8 @@ export default function InviteFriends({ auth_user = null, group = {} }) {
                     </div>
                 </div>
                 <div className='absolute bottom-8 flex gap-6'>
-                    <AuthButton text='Cancel' className='text-[var(--main-blue)] hover:bg-[var(--hover-light)]' />
-                    <AuthButton text='Send invitation' className={`${sendInvitationButtonDisabled ? 'bg-[var(--light-grey)] text-[var(--grey)]' : 'text-white bg-[var(--main-blue)] hover:bg-[var(--light-blue)]'}`} />
+                    <AuthButton onClick={handleCancel} text='Cancel' className='text-[var(--main-blue)] hover:bg-[var(--hover-light)]' />
+                    <AuthButton onClick={handleInvite} text='Send invitation' className={`${sendInvitationButtonDisabled ? 'bg-[var(--light-grey)] text-[var(--grey)] hover:bg-[var(--hover-light)]' : 'text-white bg-[var(--main-blue)] hover:bg-[var(--light-blue)]'}`} />
                 </div>
             </div>
         </BaseModal>

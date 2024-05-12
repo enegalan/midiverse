@@ -53,6 +53,8 @@ return new class extends Migration
             Rol Assigments => 4
 
             Request Accepted => 5
+
+            Invites => 6
             */
             $table->boolean('viewed')->default(0);
             $table->timestamps();

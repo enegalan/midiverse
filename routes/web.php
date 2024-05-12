@@ -55,6 +55,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/group/edit/{name}', [GroupController::class,'update'])->name('groups.update');
     Route::delete('/group/delete/{name}', [GroupController::class,'delete'])->name('group.delete');
     Route::get('/g/{name}', [GroupController::class,'getProfile'])->name('group.profile');
+    Route::post('/group/invite/people', [GroupController::class, 'invitePeople'])->name('group.invite.people');
+    Route::post('/group/member/delete', [GroupController::class, 'deleteMember'])->name('group.member.delete');
 
     // Posts
     Route::post('/post/create', [PostController::class,'store'])->name('post.create');
@@ -97,6 +99,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/user/request/follow/accept', [UserController::class, 'acceptFollowRequest'])->name('user.accept.follow');
     Route::post('/user/notification/delete', [UserController::class, 'deleteFollowRequest'])->name('user.delete.follow');
     Route::post('/group/request/follow/accept', [GroupController::class, 'acceptFollowRequest'])->name('group.accept.follow');
+    Route::post('/group/request/invite/accept', [GroupController::class, 'acceptInvite'])->name('group.accept.invite');
     Route::post('/group/notification/delete', [GroupController::class, 'deleteFollowRequest'])->name('group.delete.follow');
     // Protect
     Route::post('/user/set/private', [UserController::class, 'setSessionPrivate'])->name('user.set.private');

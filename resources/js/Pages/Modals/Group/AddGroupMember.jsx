@@ -1,4 +1,3 @@
-// TODO: All TODO
 import BaseModal from '../BaseModal';
 import { AuthButton } from '@/Components/Buttons';
 import { FloatLabelInput } from '@/Components/Inputs';
@@ -13,9 +12,12 @@ import { IconButton } from '@/Components/Buttons';
 import { BsThreeDots } from 'react-icons/bs';
 import PeopleCard from '@/Components/Cards/PeopleCard';
 import InviteFriends from './InviteFriends';
+import { MdDeleteOutline } from 'react-icons/md';
 
 export default function AddGroupMember({ auth_user = null, group = {} }) {
     const [inviteDropdownVisible, setInviteDropdownVisible] = useState(false);
+    const [memberMoreOptions, setMemberMoreOptions] = useState(null);
+    console.log(group);
     useEffect(() => {
         const handleClickOutside = (event) => {
             const dropdownElements = document.querySelectorAll(".dropdown");
@@ -27,6 +29,7 @@ export default function AddGroupMember({ auth_user = null, group = {} }) {
             }
             if (outsideClick) {
                 setInviteDropdownVisible(false);
+                setMemberMoreOptions(null);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
@@ -34,9 +37,6 @@ export default function AddGroupMember({ auth_user = null, group = {} }) {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [inviteDropdownVisible]);
-    const goNextStep = () => {
-        setStep('logo');
-    }
     const closeThisModal = () => {
         closeModal('add-group-member-modal')
     }
@@ -44,25 +44,31 @@ export default function AddGroupMember({ auth_user = null, group = {} }) {
         closeThisModal();
         router.get('groups')
     }
-    const handleCreate = async () => {
-        const formData = new FormData();
-        try {
-            await axios.post('/group/create', formData)
-            postSuccess();
-        } catch (error) {
-            console.error(error)
-        }
-    }
-    const handleInvite = () => {
+    const handleInvite = (e) => {
+        e.preventDefault();
         setInviteDropdownVisible(!inviteDropdownVisible);
     }
     const handleInviteFriends = () => {
         closeThisModal();
         openModal('group-invite-friends', <InviteFriends auth_user={auth_user} group={group} />);
     }
+    const handleGroupMemberMoreOptions = (id) => {
+        setMemberMoreOptions(id);
+    }
+    const handleDeleteUser = (user_id) => {
+        const formData = new FormData();
+        formData.append('user_id', user_id);
+        formData.append('group_id', group.id);
+        axios.post('/group/member/delete', formData)
+        .then(data => {
+            closeThisModal();
+            window.location.reload()
+        });
+    }
     const handleInviteWithLink = () => {
 
     }
+    const isAuthGroupOwner = auth_user.groups.every(user_group => group.id === user_group.id);
     return (
         <BaseModal id='add-group-member-modal'>
             <div>
@@ -100,18 +106,48 @@ export default function AddGroupMember({ auth_user = null, group = {} }) {
                     <SearchInput placeholder='Search a member' />
                     <section>
                         {group.members.map((member, index) => {
+                            const isOwner = group.roles.some(role => role.pivot.user_id === member.id);
                             return (
-                                <div key={index} className='flex items-center justify-between'>
+                                <div key={index} id={`group-member-${index}`} className='flex items-center justify-between relative'>
                                     <PeopleCard auth_user={auth_user} user={member} />
-                                    {group.roles.length > 0 ? (
-                                        group.roles.map((role, index) => {
-                                            if (role.pivot.user_id !== member.id) return;
-                                            return (<span key={index} className='text-sm text-[var(--grey)] select-none'>{role.title}</span>)
-                                        })
-                                    ) : (<></>)}
-                                    <IconButton>
-                                        <BsThreeDots />
-                                    </IconButton>
+                                    {group.roles.map((role, index) => {
+                                        if (role.pivot.user_id === member.id) {
+                                            return (
+                                                <>
+                                                    <span key={index} className='text-sm text-[var(--grey)] select-none'>
+                                                        {role.title}
+                                                    </span>
+                                                    <span></span>
+                                                </>
+                                            );
+                                        }
+                                    })}
+                                    <div className='relative inline-flex'>
+                                        {!isOwner && (isAuthGroupOwner || member.id === auth_user.id) && (
+                                            <IconButton onClick={(e) => { e.preventDefault(); handleGroupMemberMoreOptions(`group-member-${index}`) }}>
+                                                <BsThreeDots />
+                                            </IconButton>
+                                        )}
+                                        {memberMoreOptions === `group-member-${index}` && (
+                                            <section className='dropdown absolute top-10 -left-20'>
+                                                <div className='absolute -top-[6.7rem] left-0 min-w-[160px] bg-white rounded-lg shadow py-2'>
+                                                    <div className='flex flex-col gap-2'>
+                                                        {/* <Link className='flex items-center gap-2 px-4 py-2 hover:bg-[var(--hover-light)]'>
+                                                            <MdOutlineEdit />
+                                                            <span className='text-md'>Edit roles</span>
+                                                        </Link> */}
+                                                        <Link onClick={(e) => {e.preventDefault();handleDeleteUser(member.id)}} className='flex items-center gap-2 px-4 py-2 hover:bg-[var(--hover-red)] text-[var(--red)]'>
+                                                            <MdDeleteOutline />
+                                                            <span className='text-md'>{member.id == auth_user.id ? 'Leave group' : isAuthGroupOwner && 'Remove user'}</span>
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                                <div className="absolute top-[-3.2rem] left-[5.25rem] w-5 flex justify-center overflow-hidden">
+                                                    <div className="shadow h-3 w-3 bg-white -rotate-45 transform origin-top-left"></div>
+                                                </div>
+                                            </section>
+                                        )}
+                                    </div>
                                 </div>
                             );
                         })}
