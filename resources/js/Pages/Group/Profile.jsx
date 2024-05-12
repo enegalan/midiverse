@@ -21,7 +21,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import EditGroup from "../Modals/Group/EditGroup";
 import DeleteGroup from "../Modals/Group/DeleteGroup";
 
-export default function Profile({ auth_user = null, group = null }) {
+export default function Profile({ auth_user = null, group = null, group_roles = null }) {
     var isAuthUserGroupProfile = false;
     isAuthUserGroupProfile = auth_user.is_group_user_member;
     var groupInitial = group.name[0].toUpperCase();
@@ -42,7 +42,7 @@ export default function Profile({ auth_user = null, group = null }) {
         return group.concerts.map((concert) => <ConcertCard concert={concert} group={group} />);
     }
     const handleAddMembers = () => {
-        openModal('add-group-members', <AddGroupMember auth_user={auth_user} group={group} />)
+        openModal('add-group-members', <AddGroupMember roles={group_roles} auth_user={auth_user} group={group} />)
     }
     const handleMoreOptions = (e) => {
         e.preventDefault();

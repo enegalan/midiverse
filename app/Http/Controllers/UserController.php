@@ -215,7 +215,8 @@ class UserController extends Controller
         $auth_user = auth()->user();
         $this->getProfileData($user);
         $this->getProfileData($auth_user);
-        return Inertia::render('Profile', ['auth_user' => $auth_user, 'user' => $user]);
+        $roles = RoleController::getRoles();
+        return Inertia::render('Profile', ['auth_user' => $auth_user, 'user' => $user, 'roles' => $roles]);
     }
 
     public function getProfileData(&$user)

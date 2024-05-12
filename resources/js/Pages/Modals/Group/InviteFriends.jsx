@@ -15,7 +15,7 @@ import { Checkbox } from '@/Components/Buttons';
 import { CloseButton } from '@/Components/Buttons';
 import AddGroupMember from './AddGroupMember';
 
-export default function InviteFriends({ auth_user = null, group = {} }) {
+export default function InviteFriends({ auth_user = null, group = {}, group_roles = null }) {
     const [users, setUsers] = useState([]);
     const [inviteDropdownVisible, setInviteDropdownVisible] = useState(false);
     const [sendInvitationButtonDisabled, setSendInvitationButtonDisabled] = useState(true);
@@ -50,7 +50,7 @@ export default function InviteFriends({ auth_user = null, group = {} }) {
     }
     const handleCancel = () => {
         closeThisModal();
-        openModal('add-group-member-modal', <AddGroupMember auth_user={auth_user} group={group}/>);
+        openModal('add-group-member-modal', <AddGroupMember roles={group_roles} auth_user={auth_user} group={group}/>);
     }
     const handleToggleCheckboxUser = (e) => {
         if (!e.target.checked) {

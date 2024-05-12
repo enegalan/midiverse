@@ -128,7 +128,7 @@ export default function EditGroup( { auth_user = {}, group = {} } ) {
                         <FloatLabelInput className={`${nameError ? 'p-invalid' : ''} w-full`} id='name-group' text='Name' value={name} onChange={onNameChange} />
                         {nameError && <div className="text-red-500">{nameError}</div>}
                         <Dropdown value={visibility} onChange={onVisibilityChange} options={visibilityOptions} />
-                        <TextAreaInput value={description} onChange={onDescriptionChange} cols={'21'} placeholder='Description (optional)' />
+                        <TextAreaInput className='w-full' value={description} onChange={onDescriptionChange} placeholder='Description (optional)' />
                         <AuthButton disabled={nextStepButtonDisabled} className={`${nextStepButtonDisabled ? 'bg-[var(--disabled)] hover:bg-[var(--disabled)] hover:cursor-default' : ''} mt-5 text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)]`} onClick={handleNextButton} text='Next' />                        
                     </div>
                 </div>

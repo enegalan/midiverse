@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Models\User;
 use App\Models\GroupNotification;
 use App\Models\UserNotification;
+use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -88,7 +89,7 @@ class GroupController extends Controller
         // Insert user as group member
         \DB::table('group_members')->insert(['group_id' => $created_group['id'], 'user_id' => auth()->user()->id]);
         // Insert user as owner of the new group
-        $groupOwnerRoleId = 5;
+        $groupOwnerRoleId = Role::ROLE_GROUP_OWNER;
         \DB::table('group_roles')->insert(['role_id' => $groupOwnerRoleId, 'group_id' => $created_group['id'], 'user_id' => auth()->user()->id]);
     }
 
@@ -202,7 +203,8 @@ class GroupController extends Controller
         }
         $auth_user = auth()->user();
         $this->getProfileData($auth_user, $group);
-        return Inertia::render('Group/Profile', ['auth_user' => auth()->user(), 'group' => $group]);
+        $group_roles = RoleController::getGroupRoles();
+        return Inertia::render('Group/Profile', ['auth_user' => auth()->user(), 'group' => $group, 'group_roles' => $group_roles]);
     }
 
     public static function getProfileData(&$user, &$group)
@@ -396,6 +398,42 @@ class GroupController extends Controller
             $group = Group::findOrFail($group_id);
             if ($group) {
                 $group->members()->detach($user_id);
+            }
+        }
+    }
+
+    public static function updateRoles(Request $request) {
+        $roles = json_decode($request->input('roles'));
+        $group_id = $request->input('group_id');
+        $user_id = $request->input('user_id');
+        if ($roles) {
+            if ($group_id && $user_id) {
+                $group = Group::findOrFail($group_id);
+                $existingRoles = array();
+                foreach ($group->roles as $role) {
+                    // \Illuminate\Support\Facades\Log::debug($role);
+                    array_push($existingRoles, $role);
+                }
+                // \Illuminate\Support\Facades\Log::debug(var_export($roles, true));
+    
+                $group->roles()->detach($existingRoles);
+                foreach ($roles as $role) {
+                    $group->roles()->attach($role, ['user_id' => $user_id]);
+                }
+            }
+        } else {
+            if ($group_id && $user_id) {
+                $group = Group::findOrFail($group_id);
+                $existingRoles = array();
+                foreach ($group->roles as $role) {
+                    \Illuminate\Support\Facades\Log::debug($role);
+                    if ($role->pivot->user_id == $user_id) {
+                        array_push($existingRoles, $role->id);
+                    }
+                }
+                \Illuminate\Support\Facades\Log::debug(var_export($existingRoles, true));
+    
+                $group->roles()->detach($existingRoles);
             }
         }
     }

@@ -182,9 +182,9 @@ TextAreaInput.propTypes = {
     cols: PropTypes.string || PropTypes.number,
 };
 
-const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) => {
+const DropdownCheckbox = ({ options = [{}], selectedOptionIds = [], onChange = (options) => {} }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedOptions, setSelectedOptions] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState(selectedOptionIds);
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
@@ -197,6 +197,9 @@ const DropdownCheckbox = ({ options = [{}], action = null, name = "elements" }) 
             }
         });
     };
+    useEffect(() => {
+        onChange(selectedOptions)
+    }, [selectedOptions]);
     return (
         <div className="relative inline-block text-left flex-1">
             <div>

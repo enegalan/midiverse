@@ -12,12 +12,12 @@ import { IconButton } from '@/Components/Buttons';
 import { BsThreeDots } from 'react-icons/bs';
 import PeopleCard from '@/Components/Cards/PeopleCard';
 import InviteFriends from './InviteFriends';
-import { MdDeleteOutline } from 'react-icons/md';
+import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md';
+import EditMemberRoles from './EditMemberRoles';
 
-export default function AddGroupMember({ auth_user = null, group = {} }) {
+export default function AddGroupMember({ auth_user = null, group = {}, roles = null }) {
     const [inviteDropdownVisible, setInviteDropdownVisible] = useState(false);
     const [memberMoreOptions, setMemberMoreOptions] = useState(null);
-    console.log(group);
     useEffect(() => {
         const handleClickOutside = (event) => {
             const dropdownElements = document.querySelectorAll(".dropdown");
@@ -40,17 +40,13 @@ export default function AddGroupMember({ auth_user = null, group = {} }) {
     const closeThisModal = () => {
         closeModal('add-group-member-modal')
     }
-    const postSuccess = () => {
-        closeThisModal();
-        router.get('groups')
-    }
     const handleInvite = (e) => {
         e.preventDefault();
         setInviteDropdownVisible(!inviteDropdownVisible);
     }
     const handleInviteFriends = () => {
         closeThisModal();
-        openModal('group-invite-friends', <InviteFriends auth_user={auth_user} group={group} />);
+        openModal('group-invite-friends', <InviteFriends group_roles={roles} auth_user={auth_user} group={group} />);
     }
     const handleGroupMemberMoreOptions = (id) => {
         setMemberMoreOptions(id);
@@ -65,10 +61,21 @@ export default function AddGroupMember({ auth_user = null, group = {} }) {
             window.location.reload()
         });
     }
+    const handleEditUserRoles = (user_id) => {
+        closeThisModal();
+        // Get the user from group
+        var user = null;
+        for (let groupMember of group.members) {
+            if (groupMember.id == user_id) {
+                user = groupMember;
+            }
+        }
+        openModal('edit-member-roles', <EditMemberRoles user={user} group={group} roles={roles} />)
+    }
     const handleInviteWithLink = () => {
 
     }
-    const isAuthGroupOwner = auth_user.groups.every(user_group => group.id === user_group.id);
+    const isAuthGroupOwner = group.roles.some(role => role.pivot.user_id === auth_user.id && role.id === 5);
     return (
         <BaseModal id='add-group-member-modal'>
             <div>
@@ -106,36 +113,38 @@ export default function AddGroupMember({ auth_user = null, group = {} }) {
                     <SearchInput placeholder='Search a member' />
                     <section>
                         {group.members.map((member, index) => {
-                            const isOwner = group.roles.some(role => role.pivot.user_id === member.id);
+                            const isOwner = group.roles.some(role => role.pivot.user_id === member.id && role.id === 5);
                             return (
                                 <div key={index} id={`group-member-${index}`} className='flex items-center justify-between relative'>
                                     <PeopleCard auth_user={auth_user} user={member} />
                                     {group.roles.map((role, index) => {
                                         if (role.pivot.user_id === member.id) {
                                             return (
-                                                <>
-                                                    <span key={index} className='text-sm text-[var(--grey)] select-none'>
+                                                <div key={index}>
+                                                    <span className='text-sm text-[var(--grey)] select-none'>
                                                         {role.title}
                                                     </span>
                                                     <span></span>
-                                                </>
+                                                </div>
                                             );
                                         }
                                     })}
                                     <div className='relative inline-flex'>
-                                        {!isOwner && (isAuthGroupOwner || member.id === auth_user.id) && (
+                                        {!isOwner && (
                                             <IconButton onClick={(e) => { e.preventDefault(); handleGroupMemberMoreOptions(`group-member-${index}`) }}>
                                                 <BsThreeDots />
                                             </IconButton>
                                         )}
                                         {memberMoreOptions === `group-member-${index}` && (
                                             <section className='dropdown absolute top-10 -left-20'>
-                                                <div className='absolute -top-[6.7rem] left-0 min-w-[160px] bg-white rounded-lg shadow py-2'>
+                                                <div className={`absolute -top-[${isAuthGroupOwner ? '9.7rem' : '6.7rem'}] left-0 min-w-[160px] bg-white rounded-lg shadow py-2`}>
                                                     <div className='flex flex-col gap-2'>
-                                                        {/* <Link className='flex items-center gap-2 px-4 py-2 hover:bg-[var(--hover-light)]'>
-                                                            <MdOutlineEdit />
-                                                            <span className='text-md'>Edit roles</span>
-                                                        </Link> */}
+                                                        {isAuthGroupOwner && (
+                                                            <Link onClick={(e) => {e.preventDefault();handleEditUserRoles(member.id)}} className='flex items-center gap-2 px-4 py-2 hover:bg-[var(--hover-light)]'>
+                                                                <MdOutlineEdit />
+                                                                <span className='text-md'>Edit roles</span>
+                                                            </Link>
+                                                        )}
                                                         <Link onClick={(e) => {e.preventDefault();handleDeleteUser(member.id)}} className='flex items-center gap-2 px-4 py-2 hover:bg-[var(--hover-red)] text-[var(--red)]'>
                                                             <MdDeleteOutline />
                                                             <span className='text-md'>{member.id == auth_user.id ? 'Leave group' : isAuthGroupOwner && 'Remove user'}</span>

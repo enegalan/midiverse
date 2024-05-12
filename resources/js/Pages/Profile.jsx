@@ -15,7 +15,7 @@ import MyGroups from "@/Components/Navbars/Components/MyGroups";
 import { openModal, getUserInitials, formatDateAtForProfiles, isUserFollowing } from "@/Functions";
 import EditProfileModal from "./Modals/EditProfileModal";
 
-export default function Profile({ auth_user = null, user = null }) {
+export default function Profile({ auth_user = null, user = null, roles = null }) {
     var isAuthUserProfile = false;
     if (auth_user['username'] === user['username']) {
         isAuthUserProfile = true;

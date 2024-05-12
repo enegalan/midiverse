@@ -57,6 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/g/{name}', [GroupController::class,'getProfile'])->name('group.profile');
     Route::post('/group/invite/people', [GroupController::class, 'invitePeople'])->name('group.invite.people');
     Route::post('/group/member/delete', [GroupController::class, 'deleteMember'])->name('group.member.delete');
+    Route::post('/group/roles/edit', [GroupController::class, 'updateRoles'])->name('group.roles.edit');
 
     // Posts
     Route::post('/post/create', [PostController::class,'store'])->name('post.create');
