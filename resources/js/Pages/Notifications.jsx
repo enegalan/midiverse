@@ -2,6 +2,8 @@ import MainLayout from "@/Layouts/mainLayout";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import NotificationsNavbar from "@/Components/Navbars/NotificationsNavbar";
 import NotificationCard from "@/Components/Cards/NotificationCard";
+import { SearchInput } from "@/Components/Inputs";
+import MyGroups from '@/Components/Navbars/Components/MyGroups';
 import { useEffect } from "react";
 
 export default function Notifications({ user = null }) {
@@ -17,7 +19,8 @@ export default function Notifications({ user = null }) {
                     </div>
                 </section>
                 <RightNavbar>
-
+                    <SearchInput placeholder="Search" />
+                    <MyGroups groups={user.groups} />
                 </RightNavbar>
             </MainLayout>
         </>
