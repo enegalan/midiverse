@@ -5,6 +5,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
@@ -104,6 +105,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/group/notification/delete', [GroupController::class, 'deleteFollowRequest'])->name('group.delete.follow');
     // Protect
     Route::post('/user/set/private', [UserController::class, 'setSessionPrivate'])->name('user.set.private');
+    // Invitations
+    Route::post('/group/generate/invite', [InvitationController::class, 'generateGroupInvite'])->name('group.generate.invite');
+    Route::get('/group/invite/{token}', [InvitationController::class, 'acceptGroupInvite'])->name('group.accept.invite');
 });
 Route::get('/', [MainController::class, 'rootRedirect']);
 

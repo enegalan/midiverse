@@ -14,6 +14,7 @@ import PeopleCard from '@/Components/Cards/PeopleCard';
 import InviteFriends from './InviteFriends';
 import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md';
 import EditMemberRoles from './EditMemberRoles';
+import InviteLink from './InviteLink';
 
 export default function AddGroupMember({ auth_user = null, group = {}, roles = null }) {
     const [inviteDropdownVisible, setInviteDropdownVisible] = useState(false);
@@ -73,7 +74,8 @@ export default function AddGroupMember({ auth_user = null, group = {}, roles = n
         openModal('edit-member-roles', <EditMemberRoles user={user} group={group} roles={roles} />)
     }
     const handleInviteWithLink = () => {
-
+        closeThisModal();
+        openModal('group-invite-link', <InviteLink auth_user={auth_user} group={group} roles={roles} />)
     }
     const isAuthGroupOwner = group.roles.some(role => role.pivot.user_id === auth_user.id && role.id === 5);
     return (

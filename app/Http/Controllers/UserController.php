@@ -206,25 +206,23 @@ class UserController extends Controller
         return Redirect::to('/');
     }
 
-    public function getProfile($username)
-    {
+    public static function getProfile($username) {
         $user = User::where('username', $username)->first();
         if (!$user) {
             return redirect()->route('home');
         }
         $auth_user = auth()->user();
-        $this->getProfileData($user);
-        $this->getProfileData($auth_user);
+        self::getProfileData($user);
+        self::getProfileData($auth_user);
         $roles = RoleController::getRoles();
         return Inertia::render('Profile', ['auth_user' => $auth_user, 'user' => $user, 'roles' => $roles]);
     }
 
-    public function getProfileData(&$user)
-    {
+    public static function getProfileData(&$user) {
         if ($user['username'] === auth()->user()->username) {
             $user = auth()->user();
         }
-        $this->loadUserData($user);
+        self::loadUserData($user);
     }
 
     public static function getRoles(&$user)

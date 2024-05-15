@@ -23,7 +23,7 @@ export default function ProfileBottomNavbar({ disabled = false, getProfileSectio
     };
     return (
         <>
-            <nav className='sticky flex items-center top-0 z-50 w-full backdrop-blur-md border-b border-gray-200/50'>
+            <nav className='sticky flex items-center top-0 w-full backdrop-blur-md border-b border-gray-200/50'>
                 <div className='bg-white/85 flex gap-6 items-center w-full'>
                     <button data-ref='posts' className={`${buttonStyle}`} onClick={handleButtonClick}>
                         <span className={`${defaultProfileSection === 'posts' ? 'font-black' : 'text-gray-500'} pointer-events-none pt-3 pb-2`}>Posts</span>

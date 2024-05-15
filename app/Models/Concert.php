@@ -41,4 +41,8 @@ class Concert extends Model {
     public function bookmarks() {
         return $this->belongsToMany(User::class, 'user_concert_bookmarks');
     }
+
+    public function invitations() {
+        return $this->hasMany(Invitation::class);
+    }
 }

@@ -13,7 +13,7 @@ import ConcertCard from "@/Components/Cards/ConcertCard";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
 import { TiUserAddOutline } from "react-icons/ti";
-import { openModal, formatDateAtForProfiles, userFollowsGroup } from "@/Functions";
+import { openModal, formatDateAtForProfiles, userFollowsGroup, userMemberGroup } from "@/Functions";
 import AddGroupMember from "../Modals/Group/AddGroupMember";
 import { BsThreeDots } from "react-icons/bs";
 import { MdOutlineEdit } from "react-icons/md";
@@ -27,7 +27,8 @@ export default function Profile({ auth_user = null, group = null, group_roles = 
     var groupInitial = group.name[0].toUpperCase();
     const joined = formatDateAtForProfiles(group.created_at);
     var groupFollowing = userFollowsGroup(auth_user, group);
-    var groupProfileDisabledDuePrivate = group.visibility == 1 && !groupFollowing;
+    var groupMember = userMemberGroup(auth_user, group);
+    var groupProfileDisabledDuePrivate = group.visibility == 1 && !groupFollowing && !groupMember;
     const [profileSection, setProfileSection] = useState(localStorage.getItem('group_profile_default_section') ? localStorage.getItem('group_profile_default_section') : 'midi');
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const getProfileSection = (sectionRef) => {

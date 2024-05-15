@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use App\Models\User;
 use App\Models\GroupNotification;
-use App\Models\UserNotification;
 use App\Models\Role;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\UserNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -195,14 +195,14 @@ class GroupController extends Controller
         }
     }
 
-    public function getProfile($name)
+    public static function getProfile($name)
     {
         $group = Group::where('name', $name)->first();
         if (!$group) {
             return redirect()->route('home');
         }
         $auth_user = auth()->user();
-        $this->getProfileData($auth_user, $group);
+        self::getProfileData($auth_user, $group);
         $group_roles = RoleController::getGroupRoles();
         return Inertia::render('Group/Profile', ['auth_user' => auth()->user(), 'group' => $group, 'group_roles' => $group_roles]);
     }
@@ -299,7 +299,8 @@ class GroupController extends Controller
         return Inertia::render('Group/Follows', compact('auth_user', 'type', 'group'));
     }
 
-    public static function hasSentFollowRequest(Request $request) {
+    public static function hasSentFollowRequest(Request $request)
+    {
         $group_id = $request->input('group_id');
         if ($group_id) {
             $from_user_id = Auth::id();
@@ -308,7 +309,8 @@ class GroupController extends Controller
         return false;
     }
 
-    public static function acceptFollowRequest(Request $request) {
+    public static function acceptFollowRequest(Request $request)
+    {
         $from_user_id = $request->input('user_id');
         $group_id = $request->input('group_id');
         if ($from_user_id && $group_id) {
@@ -332,18 +334,19 @@ class GroupController extends Controller
         }
     }
 
-    public static function deleteFollowRequest(Request $request) {
+    public static function deleteFollowRequest(Request $request)
+    {
         $id = $request->input('id');
         if ($id) {
             UserNotification::findOrFail($id)->delete();
         }
     }
 
-    public static function invitePeople(Request $request) {
+    public static function invitePeople(Request $request)
+    {
         $users = json_decode($request->input('users'));
         $from_user_id = $request->input('from_user_id');
         $group_id = $request->input('group_id');
-        \Illuminate\Support\Facades\Log::debug($group_id);
         $from_user = User::findOrFail($from_user_id);
         $group = Group::findOrFail($group_id);
         foreach ($users as $user) {
@@ -360,7 +363,7 @@ class GroupController extends Controller
             }
         }
     }
-
+    // Legacy invite, via Follow
     public static function acceptInvite(Request $request) {
         $group_id = $request->input('group_id');
         if ($request->input('notification_id')) {
@@ -372,37 +375,44 @@ class GroupController extends Controller
         $group = Group::findOrFail($group_id);
         $user = User::findOrFail(Auth::id());
         if ($user && $group) {
-            // Delete invite request
-            $user_notifications = UserNotification::where('user_id', $user->id)->where('type', UserNotification::NOTIFICATION_TYPE_INVITE)->get();
-            if ($user_notifications) {
-                foreach ($user_notifications as $notification) {
-                    $notification->delete();
+            if (!$group->members()->where('user_id', $user->id)->exists()) {
+                // Delete invite request
+                $user_notifications = UserNotification::where('user_id', $user->id)->where('type', UserNotification::NOTIFICATION_TYPE_INVITE)->get();
+                if ($user_notifications) {
+                    foreach ($user_notifications as $notification) {
+                        $notification->delete();
+                    }
                 }
+                // Add user to group
+                $group->members()->attach($user);
+                $groupMemberRoleId = Role::ROLE_GROUP_MEMBER;
+                \DB::table('group_roles')->insert(['role_id' => $groupMemberRoleId, 'group_id' => $group_id, 'user_id' => $user->id]);
+                // Notify Group members
+                GroupNotification::create([
+                    'group_id' => $group->id,
+                    'from_user_id' => $user->id,
+                    'message' => NotificationController::getNewGroupMemberMessage($user->username, $group->name),
+                    'type' => GroupNotification::NOTIFICATION_TYPE_REQUEST_ACCEPTED,
+                ]);
             }
-            // Add user to group
-            $group->members()->attach($user);
-            // Notify Group members
-            GroupNotification::create([
-                'group_id' => $group->id,
-                'from_user_id' => $user->id,
-                'message' => NotificationController::getNewGroupMemberMessage($user->username, $group->name),
-                'type' => GroupNotification::NOTIFICATION_TYPE_REQUEST_ACCEPTED,
-            ]);
         }
     }
 
-    public static function deleteMember(Request $request) {
+    public static function deleteMember(Request $request)
+    {
         $user_id = $request->input('user_id');
         $group_id = $request->input('group_id');
         if ($user_id && $group_id) {
             $group = Group::findOrFail($group_id);
             if ($group) {
                 $group->members()->detach($user_id);
+                \DB::table('group_roles')->where('user_id', $user_id)->delete();
             }
         }
     }
 
-    public static function updateRoles(Request $request) {
+    public static function updateRoles(Request $request)
+    {
         $roles = json_decode($request->input('roles'));
         $group_id = $request->input('group_id');
         $user_id = $request->input('user_id');
@@ -411,11 +421,8 @@ class GroupController extends Controller
                 $group = Group::findOrFail($group_id);
                 $existingRoles = array();
                 foreach ($group->roles as $role) {
-                    // \Illuminate\Support\Facades\Log::debug($role);
                     array_push($existingRoles, $role);
                 }
-                // \Illuminate\Support\Facades\Log::debug(var_export($roles, true));
-    
                 $group->roles()->detach($existingRoles);
                 foreach ($roles as $role) {
                     $group->roles()->attach($role, ['user_id' => $user_id]);
@@ -426,13 +433,10 @@ class GroupController extends Controller
                 $group = Group::findOrFail($group_id);
                 $existingRoles = array();
                 foreach ($group->roles as $role) {
-                    \Illuminate\Support\Facades\Log::debug($role);
                     if ($role->pivot->user_id == $user_id) {
                         array_push($existingRoles, $role->id);
                     }
                 }
-                \Illuminate\Support\Facades\Log::debug(var_export($existingRoles, true));
-    
                 $group->roles()->detach($existingRoles);
             }
         }

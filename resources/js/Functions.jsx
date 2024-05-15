@@ -112,5 +112,13 @@ function userFollowsGroup(user, group) {
     return false;
 }
 
+function userMemberGroup(user, group) {
+    console.log(group)
+    for (let member of group.members) {
+        if (member.id == user.id) return true;
+    }
+    return false;
+}
 
-export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, userFollowsGroup };
+
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, userFollowsGroup, userMemberGroup };

@@ -41,4 +41,8 @@ class Group extends Model {
     public function notifications() {
         return $this->hasMany(GroupNotification::class);
     }
+
+    public function invitations() {
+        return $this->hasMany(Invitation::class);
+    }
 }
