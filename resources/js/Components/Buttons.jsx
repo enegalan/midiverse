@@ -10,6 +10,8 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { router } from '@inertiajs/react';
 import { FaCheck } from "react-icons/fa6";
+import { openModal } from '@/Functions';
+import RecoveryModal from '@/Pages/Modals/RecoveryModal';
 
 const GlowButton = ({ value = "", href = "#", backgroundColor = "#09041e", textColor = "white", image = "", imageClass = "", icon = "" }) => {
     const buttonRef = useRef(null);
@@ -333,18 +335,29 @@ const GoogleLoginButton = ({ onAuth = () => { }, onAuthError = (e) => { } }) => 
     const onSuccess = async (credentialResponse) => {
         const userCredentials = jwtDecode(credentialResponse.credential);
         const formData = new FormData();
-        formData.append('google_user', JSON.stringify(userCredentials));
-        try {
-            await axios.post('/users/register', formData);
-            postSuccess();
-        } catch (error) {
-            try {
-                await axios.post('/users/login', formData)
-                postSuccess();
-            } catch (error2) {
-                console.error(error2)
+        const userEmail = userCredentials.email;
+        formData.append('email', userEmail);
+        axios.post('/user/deleted/', formData)
+        .then(async data => {
+            // If user is deleted open Recovery Modal
+            if (data.data) {
+                openModal('recovery-modal', <RecoveryModal email={userEmail} />)
+            } else {
+                const formData = new FormData();
+                formData.append('google_user', JSON.stringify(userCredentials));
+                try {
+                    await axios.post('/users/register', formData);
+                    postSuccess();
+                } catch (error) {
+                    try {
+                        await axios.post('/users/login', formData)
+                        postSuccess();
+                    } catch (error2) {
+                        console.error(error2)
+                    }
+                }
             }
-        }
+        });
     };
     const onError = (e) => {
         onAuthError(e);

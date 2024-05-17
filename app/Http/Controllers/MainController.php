@@ -71,29 +71,33 @@ class MainController extends Controller
         $recent_posts = Post::orderBy('created_at','desc')->get();
         $recent_posts = $recent_posts->sortByDesc('created_at')->map(function ($post) {
             $post->load('user');
-            return [
-                'id' => $post->id,
-                'user' => [
-                    'id' => $post->user->id,
-                    'avatar' => $post->user->avatar,
-                    'name' => $post->user->name,
-                    'lastname' => $post->user->lastname,
-                    'username' => $post->user->username,
-                    'private' => $post->user->private,
-                ],
-                'content' => $post->content,
-                'date' => $post->created_at->toDateString(),
-                'comments' => $post->comments,
-                'comments_count' => $post->comments->count(),
-                'likes' => $post->likes,
-                'likes_count' => $post->likes->count(),
-            ];
+            if ($post->user) {
+                return [
+                    'id' => $post->id,
+                    'user' => [
+                        'id' => $post->user?->id,
+                        'avatar' => $post->user?->avatar,
+                        'name' => $post->user?->name,
+                        'lastname' => $post->user?->lastname,
+                        'username' => $post->user?->username,
+                        'private' => $post->user?->private,
+                    ],
+                    'content' => $post->content,
+                    'date' => $post->created_at->toDateString(),
+                    'comments' => $post->comments,
+                    'comments_count' => $post->comments->count(),
+                    'likes' => $post->likes,
+                    'likes_count' => $post->likes->count(),
+                ];
+            }
         });
         $filteredRecentPosts = array();
         foreach ($recent_posts as &$recent_post) {
-            $validatedPost = app()->call([self::class, 'validateUserPosts'], array('user' => $recent_post['user']));
-            if ($validatedPost) {
-                $filteredRecentPosts[] = $recent_post;
+            if ($recent_post && array_key_exists('user', $recent_post)) {
+                $validatedPost = app()->call([self::class, 'validateUserPosts'], array('user' => $recent_post['user']));
+                if ($validatedPost) {
+                    $filteredRecentPosts[] = $recent_post;
+                }
             }
         }
         return $filteredRecentPosts;
@@ -123,6 +127,7 @@ class MainController extends Controller
     }
 
     public static function validateUserPosts($user) {
+        if (!$user) return false;
         $isUserObj = is_object($user);
         $userId = null;
         $userId = $isUserObj ? $user->id : $user['id'];

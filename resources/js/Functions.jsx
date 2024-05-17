@@ -120,5 +120,11 @@ function userMemberGroup(user, group) {
     return false;
 }
 
+function getUsernameFromEmail(email) {
+    if (email.includes('@')) {
+        return email.split('@')[0].trim();
+    }
+}
 
-export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, userFollowsGroup, userMemberGroup };
+
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, userFollowsGroup, userMemberGroup, getUsernameFromEmail };

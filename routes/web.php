@@ -72,6 +72,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/settings/account', [SettingsController::class, 'account'])->name('settings.account');
     Route::get('/settings/account/password', [SettingsController::class, 'accountPassword'])->name('settings.account.password');
     Route::get('/settings/account/deactivate', [SettingsController::class, 'accountDeactivate'])->name('settings.account.deactivate');
+    Route::delete('/account/deactivate', [UserController::class, 'destroy'])->name('account.destroy');
     // Privacity
     Route::get('/settings/privacity', [SettingsController::class, 'privacity'])->name('settings.privacity');
     Route::get('/settings/privacity/audience_and_media', [SettingsController::class, 'audienceAndMedia'])->name('settings.privacity.audienceandmedia');
@@ -109,10 +110,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/group/generate/invite', [InvitationController::class, 'generateGroupInvite'])->name('group.generate.invite');
     Route::get('/group/invite/{token}', [InvitationController::class, 'acceptGroupInvite'])->name('group.accept.invite');
 });
+// Redirect routes
 Route::get('/', [MainController::class, 'rootRedirect']);
 
-// Public Data Routes
+// Public Routes
 Route::get('/user/email/exists/', [UserController::class,'existsByEmail'])->name('user.exists.email');
 Route::post('/user/auth/type', [UserController::class, 'getAuthType'])->name('user.auth.type');
+Route::post('/user/deleted/', [UserController::class, 'isUserDeleted'])->name('is.user.deleted');
+Route::post('/user/send/recovery', [UserController::class, 'sendRecoveryLink'])->name('send.recovery.link');
+Route::get('/recover/{token}', [UserController::class, 'validateRecoveryToken'])->name('user.recover');
 
 require __DIR__ . '/auth.php';

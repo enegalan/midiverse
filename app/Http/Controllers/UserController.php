@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Group;
+use App\Models\GroupNotification;
+use App\Models\Post;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserMidi;
-use App\Models\Post;
 use App\Models\UserNotification;
-use App\Models\GroupNotification;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -195,9 +195,6 @@ class UserController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
         $user = $request->user();
         Auth::logout();
         $user->delete();
@@ -206,7 +203,8 @@ class UserController extends Controller
         return Redirect::to('/');
     }
 
-    public static function getProfile($username) {
+    public static function getProfile($username)
+    {
         $user = User::where('username', $username)->first();
         if (!$user) {
             return redirect()->route('home');
@@ -218,7 +216,8 @@ class UserController extends Controller
         return Inertia::render('Profile', ['auth_user' => $auth_user, 'user' => $user, 'roles' => $roles]);
     }
 
-    public static function getProfileData(&$user) {
+    public static function getProfileData(&$user)
+    {
         if ($user['username'] === auth()->user()->username) {
             $user = auth()->user();
         }
@@ -434,7 +433,7 @@ class UserController extends Controller
 
             // Verificar si el usuario autenticado sigue al usuario objetivo
             $isFollowing = DB::table('user_followers')
-                ->where('user_id', $user->id)
+                ->where('user_id', $user?->id)
                 ->where('follower_id', $authUserId)
                 ->exists();
 
@@ -561,7 +560,8 @@ class UserController extends Controller
         return $follows_posts;
     }
 
-    public static function verifyPassword(Request $request) : bool {
+    public static function verifyPassword(Request $request): bool
+    {
         $password = $request->input('password');
         if ($password) {
             $user = Auth::user();
@@ -573,7 +573,8 @@ class UserController extends Controller
         return false;
     }
 
-    public static function getAuthType(&$user){
+    public static function getAuthType(&$user)
+    {
         $type = 'manual';
         $user->auth_type = $type;
         $user2 = User::find($user['id']);
@@ -583,7 +584,8 @@ class UserController extends Controller
         }
     }
 
-    public static function updateAuthUserProfile(Request $request) {
+    public static function updateAuthUserProfile(Request $request)
+    {
         $auth_user = auth()->user();
         $user = User::findOrFail($auth_user->id);
         $name = $request->input('name');
@@ -614,13 +616,15 @@ class UserController extends Controller
         }
     }
 
-    public static function setSessionPrivate() {
+    public static function setSessionPrivate()
+    {
         $user = User::findOrFail(auth()->user()->id);
         $user->private = !$user->private;
         $user->save();
     }
 
-    public static function hasSentFollowRequest(Request $request) {
+    public static function hasSentFollowRequest(Request $request)
+    {
         $user_id = $request->input('user_id');
         if ($user_id) {
             $from_user_id = Auth::id();
@@ -629,7 +633,8 @@ class UserController extends Controller
         return false;
     }
 
-    public static function acceptFollowRequest(Request $request) {
+    public static function acceptFollowRequest(Request $request)
+    {
         $from_user_id = $request->input('user_id');
         if ($from_user_id) {
             $from_user = User::findOrFail($from_user_id);
@@ -651,14 +656,16 @@ class UserController extends Controller
         }
     }
 
-    public static function deleteFollowRequest(Request $request) {
+    public static function deleteFollowRequest(Request $request)
+    {
         $id = $request->input('id');
         if ($id) {
             UserNotification::findOrFail($id)->delete();
         }
     }
 
-    public static function setNotificationsViewed() {
+    public static function setNotificationsViewed()
+    {
         $user_id = Auth::id();
         if ($user_id) {
             $notifications = UserNotification::where('user_id', $user_id)->where('viewed', 0)->get();
@@ -675,9 +682,13 @@ class UserController extends Controller
         }
     }
 
-    public static function getUserGroupIds(&$user = null) {
+    public static function getUserGroupIds(&$user = null)
+    {
         $user_group_ids = array();
-        if (!$user) $user = Auth::user();
+        if (!$user) {
+            $user = Auth::user();
+        }
+
         foreach ($user->groups as $group) {
             $user_group_ids[] = $group->id;
         }
@@ -685,6 +696,79 @@ class UserController extends Controller
             $user->user_group_ids = $user_group_ids;
         }
         return $user_group_ids;
+    }
+
+    public static function isUserDeleted(Request $request)
+    {
+        $email = $request->input('email');
+        if ($email) {
+            $user = User::withTrashed()->where('email', $email)->first();
+            if ($user && $user->trashed()) {
+                return response()->json(true);
+            }
+
+            return response()->json(false);
+        }
+        return false;
+    }
+
+    public static function sendRecoveryLink(Request $request)
+    {
+        $email = $request->input('email');
+        if ($email) {
+            $user = User::withTrashed()->where('email', $email)->first();
+            if ($user && $user->trashed()) {
+                $recoveryLink = self::generateRecoveryLink();
+                DB::table('recovery')->updateOrInsert(
+                    ['email' => $user->email, 'user_id' => $user->id],
+                    ['url' => $recoveryLink, 'created_at' => now()]
+                );
+                \Mail::send('emails.recovery', ['link' => $recoveryLink],
+                    function ($message) use ($user) {
+                        $message->to($user->email);
+                        $message->subject('MiDiverse Account Recovery');
+                    }
+                );
+            }
+        }
+    }
+
+    public static function validateRecoveryToken($token)
+    {
+        $recoveryLink = self::getRecoveryLink($token);
+        $record = DB::table('recovery')->where('url', $recoveryLink)->first();
+        if ($record) {
+            $currentTimestamp = time();
+            $tokenCreationTimestamp = strtotime($record->created_at);
+            // Define the token expiration time in seconds: 60 minutes
+            $tokenExpirationTime = 60 * 60;
+            // Check if the url is not expired
+            if (($currentTimestamp - $tokenCreationTimestamp) < $tokenExpirationTime) {
+                $user = DB::table('users')->where('id', $record->user_id)->first();
+                if ($user && $user->deleted_at) {
+                    DB::table('users')->where('id', $record->user_id)->update(['deleted_at' => null]);
+                }
+                // Delete the recovery record
+                DB::table('recovery')->where('url', $recoveryLink)->delete();
+                // Auto login
+                Auth::loginUsingId($user->id);
+                return redirect()->route('home');
+            } else {
+                return redirect()->route('login');
+            }
+        } else {
+            return redirect()->route('login');
+        }
+    }
+
+    public static function generateRecoveryLink()
+    {
+        return env('APP_URL') . '/recover/' . \Str::random(\random_int(10, 25));
+    }
+
+    public static function getRecoveryLink($token)
+    {
+        return env('APP_URL') . '/recover/' . $token;
     }
 
 }

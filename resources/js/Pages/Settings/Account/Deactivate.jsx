@@ -1,18 +1,23 @@
 import MainLayout from "@/Layouts/mainLayout";
-import { SearchInput } from "@/Components/Inputs";
-import { AuthButton, BackButton, FollowButton } from "@/Components/Buttons";
+import { BackButton } from "@/Components/Buttons";
 import { useState, useEffect } from "react";
-import PostCard from "@/Components/Cards/PostCard";
-import { IconButton } from "@/Components/Buttons";
 import { Link } from "@inertiajs/react";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import SettingsNavbar from "@/Components/Navbars/SettingsNavbar";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { IoKeyOutline } from "react-icons/io5";
-import { TbHeartBroken } from "react-icons/tb";
 import PeopleCard from "@/Components/Cards/PeopleCard";
+import { openModal, closeModal } from "@/Functions";
+import ConfirmationDialog from "@/Pages/Modals/ConfirmationDialog";
 
 export default function Deactivate({ user = null }) {
+    const handleDeactivate = (e) => {
+        e.preventDefault();
+        openModal('deactivate-confirmation-dialog', <ConfirmationDialog message='Are you sure?' getStatus={handleConfirm} id='deactivate-confirmation-dialog' buttonText='Confirm'  />)
+    }
+    const handleConfirm = (status) => {
+        if (status) {
+            axios.delete('/account/deactivate')
+        }
+    }
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
@@ -41,7 +46,7 @@ export default function Deactivate({ user = null }) {
                             <li className='border-b py-3 text-sm text-[var(--grey)] px-8'>You can restore your MiDiverse account if it was accidentally or wrongfully deactivated for up to 30 days after deactivation.</li>
                             <li className='border-b py-3 text-sm text-[var(--grey)] px-8'>Some account information may still be available in search engines, such as Google or Bing.</li>
                             <li className='border-b py-3 text-sm text-[var(--grey)] px-8'>If you just want to change your @username, you don’t need to deactivate your account — edit it in your <Link className='text-[var(--main-blue)] hover:underline' href={`/u/${user.username}`}>profile</Link>.</li>
-                            <Link className='text-[var(--red)]'>
+                            <Link onClick={handleDeactivate} className='text-[var(--red)]'>
                                 <li className='py-4 px-8 text-center transition duration-300 hover:cursor-pointer hover:bg-[var(--hover-red)]'>
                                     Deactivate
                                 </li>

@@ -13,7 +13,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::get('/', [AuthenticatedSessionController::class, 'login'])->name('login');
 Route::post('/users/login', [UserController::class, 'login'])->name('user.login');
 
 Route::middleware('guest')->group(function () {
