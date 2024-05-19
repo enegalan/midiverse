@@ -10,9 +10,28 @@ import SettingsNavbar from "@/Components/Navbars/SettingsNavbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { MdOutlineEmail } from "react-icons/md";
 import { IoNotificationsOutline } from "react-icons/io5";
-
+import { BackButton } from "@/Components/Buttons";
+import { isMobile } from "@/Functions";
 
 export default function Notifications({ user = null }) {
+    const [hiddenRightNavbar, setHiddenRightNavbar] = useState(localStorage.getItem('settings_active_link') == 'notifications' && isMobile() ? false : true);
+    const [activeElement, setActiveElement] = useState(localStorage.getItem('settings_active_link') == 'notifications' || !isMobile() ? 'notifications' : null); // notifications or null
+    useEffect(() => {
+        if (isMobile()) {
+            localStorage.removeItem('settings_active_link')
+            setActiveElement(null)
+        } else {
+            localStorage.setItem('settings_active_link', 'notifications')
+            setActiveElement('notifications')
+        }
+    }, []);
+    const handleBack = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setHiddenRightNavbar(!hiddenRightNavbar);
+        setActiveElement(null);
+        localStorage.removeItem('settings_active_link');
+    }
     const links = [
         {
             'id': 'push',
@@ -30,17 +49,19 @@ export default function Notifications({ user = null }) {
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
-                <div className='flex flex-col w-full' >
-                    <section className="pb-16 border-r relative flex-1">
-                        <div className="w-full h-full">
-                            <SettingsNavbar activeLink='notifications' />
-                        </div>
-                    </section>
+                <div className={`${hiddenRightNavbar ? 'flex' : 'hidden lg:flex'} flex-col w-full`} >                    <section className="pb-16 border-r relative flex-1">
+                    <div className="w-full h-full">
+                        <SettingsNavbar hidden={!hiddenRightNavbar} activeLink={activeElement} onClick={(e) => { setHiddenRightNavbar(!hiddenRightNavbar) }} />
+                    </div>
+                </section>
                 </div>
-                <RightNavbar width='625px' rightBorder={true} setPaddingX={false} minWidth='700px'>
+                <RightNavbar hideMobile={hiddenRightNavbar} className='w-[70%] lg:w-[40%]' rightBorder={true} setPaddingX={false} minWidth='700px'>
                     <div className='h-screen'>
                         <div className='px-5 flex flex-col gap-5'>
-                            <h2 className='font-bold text-xl'>Notifications</h2>
+                            <div className='flex items-center gap-6'>
+                                <BackButton onClick={handleBack} className='block lg:hidden' />
+                                <h2 className='font-bold text-xl'>Notifications</h2>
+                            </div>
                             <p className='text-[var(--grey)] text-sm'>Select the kinds of notifications you get about your activities, interests and others.</p>
                         </div>
                         <ul className='mt-6'>

@@ -203,10 +203,16 @@ SubmitButton.propTypes = {
     icon: PropTypes.string,
 };
 
-const BackButton = ({ className = '', iconClass = '' }) => {
+const BackButton = ({ className = '', iconClass = '', onClick = null }) => {
     const defaultClass = "w-[40px] p-3 rounded-full self-start transition hover:bg-[var(--hover-light)]";
-    const handleClick = () => {
-        window.history.back();
+    const handleClick = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (!onClick) {
+            window.history.back();
+        } else {
+            onClick(e);
+        }
     };
     return (
         <Link onClick={handleClick} className={`${defaultClass} ${className}`}>

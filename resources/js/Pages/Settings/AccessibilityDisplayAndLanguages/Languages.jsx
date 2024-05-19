@@ -17,23 +17,34 @@ import { InputSwitch } from 'primereact/inputswitch';
 export default function Languages({ user = null }) {
     // TODO: useStates should get their states with user preferences, not with static language value.
     const [currentLanguage, setCurrenLanguage] = useState('English');
+    const [hiddenRightNavbar, setHiddenRightNavbar] = useState(false);
+    const [activeElement, setActiveElement] = useState('accessibility_display_and_languages'); // accessibility_display_and_languages or null
     const handleDisplayLanguage = (e) => {
         e.preventDefault();
+    }
+    useEffect(() => {
+        localStorage.removeItem('settings_active_link');
+    }, [])
+    const handleBack = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        localStorage.setItem('settings_active_link', 'accessibility_display_and_languages');
+        window.location.href = '/settings/accessibility_display_and_languages';
     }
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
-                <div className='flex flex-col w-full' >
+                <div className={`${hiddenRightNavbar ? 'flex' : 'hidden lg:flex'} flex-col w-full`} >
                     <section className="pb-16 border-r relative flex-1">
                         <div className="w-full h-full">
-                            <SettingsNavbar activeLink='account' />
+                            <SettingsNavbar hidden={!hiddenRightNavbar} activeLink={activeElement} onClick={(e) => { setHiddenRightNavbar(!hiddenRightNavbar) }} />
                         </div>
                     </section>
                 </div>
-                <RightNavbar width='625px' rightBorder={true} setPaddingX={false} minWidth='700px'>
+                <RightNavbar hideMobile={hiddenRightNavbar} className='w-[70%] lg:w-[40%]' rightBorder={true} setPaddingX={false} minWidth='700px'>
                     <div className='h-screen'>
                         <div className='px-5 flex gap-8 mb-2 items-center'>
-                            <BackButton />
+                            <BackButton onClick={handleBack} />
                             <h2 className='font-bold text-xl'>Languages</h2>
                         </div>
                         <div className='px-8 mt-6'>

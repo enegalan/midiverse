@@ -151,5 +151,9 @@ function getUsernameFromEmail(email) {
     }
 }
 
+function isMobile() {
+    return window.innerWidth < 1024;
+}
 
-export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, userFollowsGroup, userMemberGroup, getUsernameFromEmail, formatDateForPublic };
+
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, userFollowsGroup, userMemberGroup, getUsernameFromEmail, formatDateForPublic, isMobile };

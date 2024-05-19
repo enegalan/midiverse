@@ -1,13 +1,16 @@
 import { FollowButton } from "@/Components/Buttons";
 import { Link } from "@inertiajs/react";
 
-export default function PeopleCard({ auth_user = {}, user = {}, className = '', disableFollowButton = false }) {
+export default function PeopleCard({ auth_user = {}, user = {}, className = '', disableFollowButton = false, redirect = true }) {
     var isAuthUser = false;
     if (auth_user['username'] == user['username'] || disableFollowButton) {
         isAuthUser = true;
     }
+    const handleProfileRedirect = () => {
+        window.location.href = `/u/${user.username}`;
+    }
     return (
-        <article className={`${className} flex p-3 gap-2 justify-start`} id={user.id} key={user.id}>
+        <article onClick={redirect ? handleProfileRedirect : () => {}} className={`${className} flex p-3 gap-2 justify-start transition duration-300 ${redirect ? 'hover:bg-[var(--hover-light)] hover:cursor-pointer' : ''}`} id={user.id} key={user.id}>
             <Link href={`/u/${user.username}`}>
                 <img className='w-10 min-w-10 rounded-full' src={user.avatar} alt={`${user.username} avatar`} />
             </Link>

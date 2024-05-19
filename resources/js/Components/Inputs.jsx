@@ -256,11 +256,11 @@ const Dropdown = ({ options = [{}], id = '', onChange = () => { }, placeholder =
     );
 }
 
-const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, autoFocus = false, keyfilter = '', onChange = () => { }, name = '', invalid = false }) => {
+const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, autoFocus = false, keyfilter = '', onChange = () => { }, name = '', invalid = false, autoComplete = '' }) => {
     if (type === 'password') {
         return (
             <span className="p-float-label w-full">
-                <Password invalid={invalid} name={name} keyfilter={keyfilter} toggleMask feedback={false} className='w-full' autoFocus={autoFocus} inputId={id} disabled={disabled} value={value} onChange={onChange} inputClassName={`${className} rounded-md`} />
+                <Password autoComplete={autoComplete} invalid={invalid} name={name} keyfilter={keyfilter} toggleMask feedback={false} className='w-full' autoFocus={autoFocus} inputId={id} disabled={disabled} value={value} onChange={onChange} inputClassName={`${className} rounded-md`} />
                 <label htmlFor={id}>{text}</label>
             </span>
         );

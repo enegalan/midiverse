@@ -9,34 +9,45 @@ import { openModal, closeModal } from "@/Functions";
 import ConfirmationDialog from "@/Pages/Modals/ConfirmationDialog";
 
 export default function Deactivate({ user = null }) {
+    const [hiddenRightNavbar, setHiddenRightNavbar] = useState(false);
+    const [activeElement, setActiveElement] = useState('account'); // account or null
     const handleDeactivate = (e) => {
         e.preventDefault();
-        openModal('deactivate-confirmation-dialog', <ConfirmationDialog message='Are you sure?' getStatus={handleConfirm} id='deactivate-confirmation-dialog' buttonText='Confirm'  />)
+        openModal('deactivate-confirmation-dialog', <ConfirmationDialog message='Are you sure?' getStatus={handleConfirm} id='deactivate-confirmation-dialog' buttonText='Confirm' />)
     }
     const handleConfirm = (status) => {
         if (status) {
             axios.delete('/account/deactivate')
         }
     }
+    useEffect(() => {
+        localStorage.removeItem('settings_active_link');
+    }, [])
+    const handleBack = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        localStorage.setItem('settings_active_link', 'account');
+        window.location.href = '/settings/account';
+    }
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
-                <div className='flex flex-col w-full' >
+                <div className={`${hiddenRightNavbar ? 'flex' : 'hidden lg:flex'} flex-col w-full`} >
                     <section className="pb-16 border-r relative flex-1">
                         <div className="w-full h-full">
-                            <SettingsNavbar activeLink='account' />
+                            <SettingsNavbar hidden={!hiddenRightNavbar} activeLink={activeElement} onClick={(e) => { setHiddenRightNavbar(!hiddenRightNavbar) }} />
                         </div>
                     </section>
                 </div>
-                <RightNavbar width='625px' rightBorder={true} setPaddingX={false} minWidth='700px'>
+                <RightNavbar hideMobile={hiddenRightNavbar} className='w-[70%] lg:w-[40%]' rightBorder={true} setPaddingX={false} minWidth='700px'>
                     <div className='h-screen'>
                         <div className='px-5 flex gap-8 mb-2'>
-                            <BackButton />
+                            <BackButton onClick={handleBack} />
                             <h2 className='font-bold text-xl'>Deactivate your account</h2>
                         </div>
-                        <Link className='block transition duration-300 hover:bg-[var(--hover-light)]' href={`/u/${user.username}`}>
+                        <div>
                             <PeopleCard user={user} disableFollowButton={true} />
-                        </Link>
+                        </div>
                         <div className='px-8 mt-6'>
                             <h2 className='font-bold text-xl mb-4'>This will deactivate your account</h2>
                             <p className='text-[var(--grey)] text-sm'>You’re about to start the process of deactivating your MiDiverse account. Your display name, @username, and public profile will no longer be viewable.</p>

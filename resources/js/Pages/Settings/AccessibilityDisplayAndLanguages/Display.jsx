@@ -19,66 +19,77 @@ import { ColorOptions, BackgroundOptions } from "@/Components/Buttons";
 export default function Display({ user = null }) {
     // TODO: useStates should get their states with user preferences, not with static boolean values.
     const [fontSize, setFontSize] = useState(50);
+    const [hiddenRightNavbar, setHiddenRightNavbar] = useState(false);
+    const [activeElement, setActiveElement] = useState('accessibility_display_and_languages'); // accessibility_display_and_languages or null
     const colorOptions = [
         {
-            'value' : 'var(--main-blue)',
-            'hover' : 'var(--hover-blue)',
+            'value': 'var(--main-blue)',
+            'hover': 'var(--hover-blue)',
         },
         {
-            'value' : 'var(--red)',
-            'hover' : 'var(--hover-red)',
+            'value': 'var(--red)',
+            'hover': 'var(--hover-red)',
         },
         {
-            'value' : 'var(--pink)',
-            'hover' : 'var(--hover-pink)',
+            'value': 'var(--pink)',
+            'hover': 'var(--hover-pink)',
         },
         {
-            'value' : 'var(--purple)',
-            'hover' : 'var(--hover-purple)',
+            'value': 'var(--purple)',
+            'hover': 'var(--hover-purple)',
         },
         {
-            'value' : 'var(--orange)',
-            'hover' : 'var(--hover-orange)',
+            'value': 'var(--orange)',
+            'hover': 'var(--hover-orange)',
         },
         {
-            'value' : 'var(--green)',
-            'hover' : 'var(--hover-green)',
+            'value': 'var(--green)',
+            'hover': 'var(--hover-green)',
         },
     ];
     const backgroundOptions = [
         {
-            'name' : 'Default',
-            'value' : 'white',
-            'textColor' : 'black',
+            'name': 'Default',
+            'value': 'white',
+            'textColor': 'black',
         },
         {
-            'name' : 'Dark',
-            'value' : 'var(--dark)',
-            'textColor' : 'var(--white)',
+            'name': 'Dark',
+            'value': 'var(--dark)',
+            'textColor': 'var(--white)',
         },
         {
-            'name' : 'Lights out',
-            'value' : 'var(--oled)',
-            'textColor' : 'var(--light-grey)',
+            'name': 'Lights out',
+            'value': 'var(--oled)',
+            'textColor': 'var(--light-grey)',
         },
     ];
     const handleFontSizeSlider = (e) => {
         setFontSize(e.value);
     }
+    useEffect(() => {
+        localStorage.removeItem('settings_active_link');
+    }, [])
+    const handleBack = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        localStorage.setItem('settings_active_link', 'accessibility_display_and_languages');
+        window.location.href = '/settings/accessibility_display_and_languages';
+    }
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
-                <div className='flex flex-col w-full' >
+                <div className={`${hiddenRightNavbar ? 'flex' : 'hidden lg:flex'} flex-col w-full`} >
                     <section className="pb-16 border-r relative flex-1">
                         <div className="w-full h-full">
-                            <SettingsNavbar activeLink='account' />
+                            <SettingsNavbar hidden={!hiddenRightNavbar} activeLink={activeElement} onClick={(e) => { setHiddenRightNavbar(!hiddenRightNavbar) }} />
                         </div>
                     </section>
                 </div>
-                <RightNavbar width='625px' rightBorder={true} setPaddingX={false} minWidth='700px'>
+                <RightNavbar hideMobile={hiddenRightNavbar} className='w-[70%] lg:w-[40%]' rightBorder={true} setPaddingX={false} minWidth='700px'>
                     <div className='h-screen'>
                         <div className='px-5 flex gap-8 mb-2 items-center'>
-                            <BackButton />
+                            <BackButton onClick={handleBack} />
                             <h2 className='font-bold text-xl'>Display</h2>
                         </div>
                         <div className='px-8 mt-6'>

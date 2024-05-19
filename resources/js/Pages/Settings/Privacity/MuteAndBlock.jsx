@@ -14,20 +14,31 @@ import PeopleCard from "@/Components/Cards/PeopleCard";
 import { Checkbox } from "@/Components/Buttons";
 
 export default function MuteAndBlock({ user = null }) {
+    const [hiddenRightNavbar, setHiddenRightNavbar] = useState(false);
+    const [activeElement, setActiveElement] = useState('privacity'); // privacity or null
+    useEffect(() => {
+        localStorage.removeItem('settings_active_link');
+    }, [])
+    const handleBack = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        localStorage.setItem('settings_active_link', 'privacity');
+        window.location.href = '/settings/privacity';
+    }
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
                 <div className='flex flex-col w-full' >
                     <section className="pb-16 border-r relative flex-1">
                         <div className="w-full h-full">
-                            <SettingsNavbar activeLink='account' />
+                            <SettingsNavbar hidden={!hiddenRightNavbar} activeLink={activeElement} onClick={(e) => { setHiddenRightNavbar(!hiddenRightNavbar) }} />
                         </div>
                     </section>
                 </div>
-                <RightNavbar width='625px' rightBorder={true} setPaddingX={false} minWidth='700px'>
+                <RightNavbar hideMobile={hiddenRightNavbar} className='w-[70%] lg:w-[40%]' rightBorder={true} setPaddingX={false} minWidth='700px'>
                     <div className='h-screen'>
                         <div className='px-5 flex gap-8 mb-2 items-center'>
-                            <BackButton />
+                            <BackButton onClick={handleBack} />
                             <h2 className='font-bold text-xl'>Mute and block</h2>
                         </div>
                         <div className='px-8 mt-6'>

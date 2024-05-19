@@ -21,6 +21,8 @@ export default function Email({ user = null }) {
     const [directMessages, setDirectMessages] = useState(false);
     const [concerts, setConcerts] = useState(false);
     const [groups, setGroups] = useState(false);
+    const [hiddenRightNavbar, setHiddenRightNavbar] = useState(false);
+    const [activeElement, setActiveElement] = useState('notifications'); // notifications or null
     const handleEmailToggle = (e) => {
         e.preventDefault();
         setEmailEnabled(!emailEnabled);
@@ -45,20 +47,29 @@ export default function Email({ user = null }) {
         if (!emailEnabled) return;
         setGroups(!groups);
     }
+    useEffect(() => {
+        localStorage.removeItem('settings_active_link');
+    }, [])
+    const handleBack = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        localStorage.setItem('settings_active_link', 'notifications');
+        window.location.href = '/settings/notifications';
+    }
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
-                <div className='flex flex-col w-full' >
+                <div className={`${hiddenRightNavbar ? 'flex' : 'hidden lg:flex'} flex-col w-full`} >
                     <section className="pb-16 border-r relative flex-1">
                         <div className="w-full h-full">
-                            <SettingsNavbar activeLink='account' />
+                            <SettingsNavbar hidden={!hiddenRightNavbar} activeLink={activeElement} onClick={(e) => { setHiddenRightNavbar(!hiddenRightNavbar) }} />
                         </div>
                     </section>
                 </div>
-                <RightNavbar width='625px' rightBorder={true} setPaddingX={false} minWidth='700px'>
+                <RightNavbar hideMobile={hiddenRightNavbar} className='w-[70%] lg:w-[40%]' rightBorder={true} setPaddingX={false} minWidth='700px'>
                     <div className='h-screen'>
                         <div className='px-5 flex gap-8 mb-2 items-center'>
-                            <BackButton />
+                            <BackButton onClick={handleBack} />
                             <h2 className='font-bold text-xl'>Email notifications</h2>
                         </div>
                         <div className='px-8 mt-6' onClick={handleEmailToggle}>
