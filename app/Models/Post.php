@@ -34,6 +34,6 @@ class Post extends Model {
     }
 
     public function bookmarks() {
-        return $this->belongsToMany(User::class, 'user_post_bookmarks');
+        return $this->hasMany(User::class, 'user_post_bookmarks');
     }
 }

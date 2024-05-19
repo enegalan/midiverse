@@ -19,7 +19,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
     const [shareDropdownVisible, setShareDropdownVisible] = useState(false);
     // Check if the post is liked by the authenticated user
     const isLiked = auth_user && auth_user.post_given_likes.some(like => like.post_id === post.id);
-
+    const isBookmarked = auth_user && auth_user.post_bookmarks.some(bookmark => bookmark.id === post.id);
     // Event handlers
     const handleComment = (e) => {
         e.stopPropagation();
@@ -40,7 +40,13 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
 
     const handleBookmark = (e) => {
         e.stopPropagation();
-        // Your bookmark handling logic here
+        try {
+            axios.post(`/user/bookmark/${post.token}`);
+            // Reload the page after successful bookmark
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const handleShare = (e) => {
@@ -138,7 +144,11 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                             </div>
                             <div className='flex items-center gap-3 xl:gap-6'>
                                 <div onClick={handleBookmark} className={`p-3 relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
-                                    <FaRegBookmark className='text-md' />
+                                    {isBookmarked ? (
+                                        <FaBookmark className='text-md text-[var(--blue)]' />
+                                    ) : (
+                                        <FaRegBookmark className='text-md' />
+                                    )}
                                 </div>
                                 <div className='relative'>
                                     <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>

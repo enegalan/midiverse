@@ -147,7 +147,7 @@ const Navbar = ({
         },
         {
             title: 'Bookmarks',
-            href: '/',
+            href: '/bookmarks',
             id: 'bookmarks',
             ref: 'bookmarks',
             icon: <FaRegBookmark className={`text-[23px] ml-[2px]`} />,
@@ -182,7 +182,7 @@ const Navbar = ({
         },
         {
             title: 'Notifications',
-            href: '/',
+            href: '/notifications',
             id: 'm-notifications',
             ref: 'notifications',
             icon: '',
@@ -200,7 +200,6 @@ const Navbar = ({
     const handleLogout = () => {
         logout();
     }
-
     return (
         <>
             <header

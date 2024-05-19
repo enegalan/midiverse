@@ -33,6 +33,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/playground', [MainController::class, 'playground'])->name('playground');
 
     Route::get('/notifications', [MainController::class, 'notifications'])->name('notifications');
+
+    Route::get('/bookmarks', [MainController::class, 'bookmarks'])->name('bookmarks');
     
     Route::get('/messages', [MainController::class, 'messages'])->name('messages');
 
@@ -116,6 +118,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Invitations
     Route::post('/group/generate/invite', [InvitationController::class, 'generateGroupInvite'])->name('group.generate.invite');
     Route::get('/group/invite/{token}', [InvitationController::class, 'acceptGroupInvite'])->name('group.accept.invite');
+    // Bookmark
+    Route::post('/user/bookmark/{token}', [UserController::class, 'bookmarkPost'])->name('user.bookmark.post');
 });
 // Redirect routes
 Route::get('/', [MainController::class, 'rootRedirect']);

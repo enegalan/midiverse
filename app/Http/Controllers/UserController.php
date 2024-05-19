@@ -36,6 +36,7 @@ class UserController extends Controller
         app()->call([self::class, 'getUserPostsReceivedLikes'], compact('user'));
         app()->call([self::class, 'getUserConcertsGivenLikes'], compact('user'));
         app()->call([self::class, 'getUserConcertsReceivedLikes'], compact('user'));
+        app()->call([self::class, 'getUserBookmarkedPosts'], compact('user'));
         app()->call([self::class, 'getUserMidis'], compact('user'));
         app()->call([self::class, 'getConcerts'], compact('user'));
         app()->call([self::class, 'getGroups'], compact('user'));
@@ -298,7 +299,8 @@ class UserController extends Controller
         return array('You are not logged in.');
     }
 
-    public static function getUserCommentsGivenLikes(&$user) {
+    public static function getUserCommentsGivenLikes(&$user)
+    {
         if (auth()->check()) {
             $commentIds = Comment::all()->pluck('id')->toArray();
             $commentsLikesGiven = DB::table('comment_likes')
@@ -368,6 +370,30 @@ class UserController extends Controller
                 $user->midis = $midis;
                 return $midis;
             }
+        }
+        return array('You are not logged in.');
+    }
+
+    public static function getUserBookmarkedPosts(&$user)
+    {
+        if (auth()->check()) {
+            $bookmarks = array();
+            @$user_aux = $user;
+            $user_bookmarks = \DB::table('user_post_bookmarks')->where('user_id', $user->id)->get();
+            foreach ($user_bookmarks as $bookmark) {
+                $post = Post::findOrFail($bookmark->post_id);
+                $post = self::getPostData($post);
+                $bookmarks[] = [
+                    'id' => $bookmark->post_id,
+                    'user_id' => $bookmark->user_id,
+                    'post_id' => $bookmark->post_id,
+                    'created_at' => $bookmark->created_at,
+                    'updated_at' => $bookmark->updated_at,
+                    'post' => $post,
+                ];
+                $user->post_bookmarks = $bookmarks;
+            }
+            return $bookmarks;
         }
         return array('You are not logged in.');
     }
@@ -559,7 +585,8 @@ class UserController extends Controller
         return $follows_posts;
     }
 
-    public static function getPostData($post) {
+    public static function getPostData($post)
+    {
         $comments = \DB::table('comments')->where('post_id', $post->id)->get();
         return [
             'id' => $post->id,
@@ -790,6 +817,19 @@ class UserController extends Controller
     public static function getRecoveryLink($token)
     {
         return env('APP_URL') . '/recover/' . $token;
+    }
+
+    public static function bookmarkPost(string $token)
+    {
+        $post = Post::where('token', $token)->first();
+        $user = Auth::user();
+        if ($user->postBookmarks()->where('post_id', $post->id)->exists()) {
+            $user->postBookmarks()->detach($post->id);
+            return response()->json(['message' => 'Post bookmark removed']);
+        } else {
+            $user->postBookmarks()->attach($post);
+            return response()->json(['message' => 'Post bookmarked']);
+        }
     }
 
 }

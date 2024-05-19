@@ -63,6 +63,12 @@ class MainController extends Controller
         return Inertia::render('Messages', compact('user'));
     }
 
+    public static function bookmarks () {
+        $user = auth()->user();
+        app()->call([UserController::class,'loadUserData'], compact('user'));
+        return Inertia::render('Bookmarks', compact('user'));
+    }
+
     public static function profileRedirect () {
         return redirect('/u/' . auth()->user()->username);
     }
