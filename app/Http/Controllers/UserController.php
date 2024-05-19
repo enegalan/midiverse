@@ -561,7 +561,6 @@ class UserController extends Controller
 
     public static function getPostData($post) {
         $comments = \DB::table('comments')->where('post_id', $post->id)->get();
-        $replies = \DB::table('comments')->where('parent_id', $post->id)->get();
         return [
             'id' => $post->id,
             'user' => [
@@ -573,7 +572,7 @@ class UserController extends Controller
                 'private' => $post->user?->private,
             ],
             'content' => $post->content,
-            'date' => $post->created_at->toDateString(),
+            'created_at' => $post->created_at,
             'comments' => $comments,
             'comments_count' => $post->comments->count(),
             'likes' => $post->likes,

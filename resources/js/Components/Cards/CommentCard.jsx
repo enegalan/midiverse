@@ -8,7 +8,7 @@ import { FaBookmark } from 'react-icons/fa';
 import { FaRegBookmark } from 'react-icons/fa';
 import { IoShare } from 'react-icons/io5';
 import { IoShareOutline } from 'react-icons/io5';
-import { openModal } from '@/Functions';
+import { formatDateForPublic, openModal } from '@/Functions';
 import CommentDialog from '@/Pages/Modals/CommentDialog';
 
 export default function CommentCard({ user, comment, post, controls = true, redirect = true }) {
@@ -67,7 +67,7 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                                 <Link onClick={handleUserProfileRedirect} className='text-sm text-gray-400'>
                                     <label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + comment?.user?.username}</label>
                                     <label className='hover:cursor-pointer'> · </label>
-                                    <label className='hover:cursor-pointer'>{comment?.created_at}</label>
+                                    <label className='hover:cursor-pointer'>{formatDateForPublic(comment?.created_at)}</label>
                                 </Link>
                             </>
                         ) : (
@@ -76,7 +76,7 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                                 <span className='text-sm text-gray-400'>
                                     <label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px]'>{'@' + comment?.user?.username}</label>
                                     <label className=''> · </label>
-                                    <label className=''>{comment?.created_at}</label>
+                                    <label className=''>{formatDateForPublic(comment?.created_at)}</label>
                                 </span>
                             </>
                         )}

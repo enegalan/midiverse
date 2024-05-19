@@ -98,6 +98,31 @@ function formatDateAtForProfiles(createdAt) {
     return joined;
 }
 
+function formatDateForPublic(date) {
+    if (!date) return;
+    if (!(date instanceof Date)) {
+        date = new Date(date);
+    }
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    if (diffInSeconds < 60) {
+        // < 1m
+        return `${diffInSeconds}s`;
+    } else if (diffInSeconds < 3600) {
+        // < 1h
+        const diffInMinutes = Math.floor(diffInSeconds / 60);
+        return `${diffInMinutes}min`;
+    } else if (diffInSeconds < 86400) {
+        // < 1 days
+        const diffInHours = Math.floor(diffInSeconds / 3600);
+        return `${diffInHours}h`;
+    } else {
+        // > 1 days
+        const options = { month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+}
+
 function isUserFollowing(auth_user, user) {
     for (let follower of auth_user.followings) {
         if (follower.id == user.id) return true; break;
@@ -127,4 +152,4 @@ function getUsernameFromEmail(email) {
 }
 
 
-export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, userFollowsGroup, userMemberGroup, getUsernameFromEmail };
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, userFollowsGroup, userMemberGroup, getUsernameFromEmail, formatDateForPublic };

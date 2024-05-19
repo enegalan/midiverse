@@ -7,6 +7,7 @@ import { IoShare } from 'react-icons/io5';
 import { IoShareOutline } from 'react-icons/io5';
 import { openModal } from '@/Functions';
 import CommentDialog from '@/Pages/Modals/CommentDialog';
+import { formatDateForPublic } from '@/Functions';
 
 import axios from 'axios';
 import { Link } from '@inertiajs/inertia-react';
@@ -75,7 +76,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                             <Link onClick={handleUserProfileRedirect} className='text-sm text-gray-400'>
                                 <label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + post?.user?.username}</label>
                                 <label className='hover:cursor-pointer'> · </label>
-                                <label className='hover:cursor-pointer'>{post?.date}</label>
+                                <label className='hover:cursor-pointer'>{formatDateForPublic(post?.created_at)}</label>
                             </Link>
                         </>
                     ) : (
@@ -84,7 +85,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                             <span className='text-sm text-gray-400'>
                                 <label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px]'>{'@' + post?.user?.username}</label>
                                 <label className=''> · </label>
-                                <label className=''>{post?.date}</label>
+                                <label className=''>{formatDateForPublic(post?.created_at)}</label>
                             </span>
                         </>
                     )}
