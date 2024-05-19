@@ -109,6 +109,10 @@ svg:focus {
   z-index: 9999;
 }
 
+.dropdown-shadow {
+  box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+} 
+
 /*Playground fix styles*/
 @media (min-width: 1024px) {
   .flex-lg-hidden {

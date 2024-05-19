@@ -265,7 +265,7 @@ const Navbar = ({
                                 <Avatar label={userInitials} size="large" shape="circle" style={{ backgroundColor: '#2196F3', color: '#ffffff' }} />
                             </span>
                         )}
-                        {isLogoutModal ? (
+                        {isLogoutModal && (
                             <section className='dropdown absolute top-12 left-0'>
                                 <div className='absolute -top-40 left-4 min-w-[150px] bg-white rounded-lg shadow py-2'>
                                     <div className='flex flex-col gap-2'>
@@ -277,7 +277,7 @@ const Navbar = ({
                                     <div className="shadow h-3 w-3 bg-white -rotate-45 transform origin-top-left"></div>
                                 </div>
                             </section>
-                        ) : (<></>)}
+                        )}
                     </div>
                 </div>
             </header>
