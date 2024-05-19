@@ -18,7 +18,7 @@ export default function PeopleCard({ auth_user = {}, user = {}, className = '', 
                         <Link href={`/u/${user.username}`} className='text-sm text-gray-400'><label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + user.username}</label></Link>
                     </div>
                     <div>
-                        {isAuthUser === false ? (<FollowButton user={user} id={user.id} />) : (<></>)}
+                        {isAuthUser === false && (<FollowButton user={user} id={user.id} />)}
                     </div>
                 </div>
                 <div>

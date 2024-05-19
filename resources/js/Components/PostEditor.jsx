@@ -11,7 +11,7 @@ import { HiOutlineGif } from "react-icons/hi2";
 
 import axios from 'axios';
 
-export default function PostEditor({ id = 'default', user = {} }) {
+export default function PostEditor({ id = 'default', user = {}, placeholder = 'Write here...', buttonText = 'Post', action = '/post/create', onSubmit = null, border = true, padding = true }) {
     const [value, setValue] = useState('');
     const maxWordLimit = 280;
     const minStrokeDashOffset = 62.60745359653945;
@@ -53,13 +53,14 @@ export default function PostEditor({ id = 'default', user = {} }) {
         if (value.length > 0) {
             const formData = new FormData();
             formData.append('content', value);
-            axios.post('/post/create', formData).then(res => {
+            onSubmit ? onSubmit(value) : axios.post(action, formData).then(res => {
                 window.location.reload();
             }).catch(error => console.error(error))
+            
         }
     }
     return (
-        <div className='p-4 border-b flex gap-2'>
+        <div className={`${padding ? 'p-4' : ''} ${border ? 'border-b' : ''} flex gap-2`}>
             <div>
                 <img className='w-12 rounded-full' src={user.avatar} alt={`${user.username} avatar`} />
             </div>
@@ -72,10 +73,10 @@ export default function PostEditor({ id = 'default', user = {} }) {
                                 onChange={onEditorChange}
                                 containerProps={{ style: { fontSize: '20px', border: 'none' } }}
                                 id={`${id}-post-editor`}
-                                placeholder='Write here...'
+                                placeholder={placeholder}
                             />
                         </div>
-                        <nav className='flex border-t items-center justify-between pt-5 mt-2' id='toolbar'>
+                        <nav className={`flex ${border && 'border-t'} items-center justify-between pt-5 mt-2`} id='toolbar'>
                             <div className='flex items-center gap-1'>
                                 <IconButton className='border-none text-[1.08rem] p-3 text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
                                     <PiImageBold />
@@ -103,7 +104,7 @@ export default function PostEditor({ id = 'default', user = {} }) {
                                         </svg>
                                     </div>
                                 )}
-                                <AuthButton onClick={handlePost} disabled={value.length === 0} className={`${value.length > 0 ? 'bg-[var(--blue)] hover:bg-[var(--hover-blue)]' : 'bg-[var(--light-blue)] hover:bg-[var(--light-blue)] hover:cursor-default'} text-white `} text='Post' />
+                                <AuthButton onClick={handlePost} disabled={value.length === 0} className={`${value.length > 0 ? 'bg-[var(--blue)] hover:bg-[var(--hover-blue)]' : 'bg-[var(--light-blue)] hover:bg-[var(--light-blue)] hover:cursor-default'} text-white `} text={buttonText} />
                             </div>
                         </nav>
                     </EditorProvider>

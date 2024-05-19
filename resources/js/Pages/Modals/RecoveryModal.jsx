@@ -11,7 +11,6 @@ import RegisterModal from './RegisterModal';
 import { router } from '@inertiajs/react';
 
 export default function RecoveryModal({ email }) {
-    console.log(email)
     const [step, setStep] = useState('recovery') // recovery or sent
 
     const handleSendRecoveryLink = (e) => {

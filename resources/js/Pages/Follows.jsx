@@ -2,7 +2,6 @@ import MainLayout from "@/Layouts/mainLayout";
 import { SearchInput } from "@/Components/Inputs";
 import FollowsTopNavbar from "@/Components/Navbars/FollowsTopNavbar";
 import { useState, useEffect } from "react";
-import { AiOutlineMessage } from "react-icons/ai";
 import PeopleCard from "@/Components/Cards/PeopleCard";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
@@ -22,9 +21,9 @@ export default function Follows({ auth_user = null, user = null, type = '', foll
                         {followsSection === 'followers' ? (
                             <div id='followers' className="w-full h-full">
                                 {followers && followers.length > 0 ? (
-                                    followers.map((follower) => {
+                                    followers.map((follower, index) => {
                                         return (
-                                            <PeopleCard auth_user={auth_user} user={follower} />
+                                            <PeopleCard key={index} auth_user={auth_user} user={follower} />
                                         );
                                     })
                                 ) : (
@@ -37,9 +36,9 @@ export default function Follows({ auth_user = null, user = null, type = '', foll
                         ) : followsSection === 'following' ? (
                             <div id='following'>
                                 {followings && followings.length > 0 ? (
-                                    followings.map((following) => {
+                                    followings.map((following, index) => {
                                         return (
-                                            <PeopleCard auth_user={auth_user} className='transition hover:bg-[var(--hover-light)] hover:cursor-pointer' user={following} />
+                                            <PeopleCard key={index} auth_user={auth_user} className='transition hover:bg-[var(--hover-light)] hover:cursor-pointer' user={following} />
                                         );
                                     })
                                 ) : (

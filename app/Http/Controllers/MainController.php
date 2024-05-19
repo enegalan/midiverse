@@ -72,23 +72,7 @@ class MainController extends Controller
         $recent_posts = $recent_posts->sortByDesc('created_at')->map(function ($post) {
             $post->load('user');
             if ($post->user) {
-                return [
-                    'id' => $post->id,
-                    'user' => [
-                        'id' => $post->user?->id,
-                        'avatar' => $post->user?->avatar,
-                        'name' => $post->user?->name,
-                        'lastname' => $post->user?->lastname,
-                        'username' => $post->user?->username,
-                        'private' => $post->user?->private,
-                    ],
-                    'content' => $post->content,
-                    'date' => $post->created_at->toDateString(),
-                    'comments' => $post->comments,
-                    'comments_count' => $post->comments->count(),
-                    'likes' => $post->likes,
-                    'likes_count' => $post->likes->count(),
-                ];
+                return UserController::getPostData($post);
             }
         });
         $filteredRecentPosts = array();

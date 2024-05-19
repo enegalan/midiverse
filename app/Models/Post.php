@@ -14,6 +14,7 @@ class Post extends Model {
         'user_id',
         'user_midi_id',
         'content',
+        'token',
     ];
 
     public function user() {
@@ -29,7 +30,7 @@ class Post extends Model {
     }
 
     public function comments() {
-        return $this->hasMany(PostComment::class);
+        return $this->hasMany(Comment::class, 'post_id');
     }
 
     public function bookmarks() {

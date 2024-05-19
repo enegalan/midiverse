@@ -4,7 +4,7 @@ import { closeModal } from '@/Functions';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-export default function ConfirmationDialog({ id = 'confirmation-modal', message = '', subtitle = '', onCancel = (e) => {}, onConfirm = (e) => {}, getStatus = (status) => {}, buttonText = '' }) {
+export default function ConfirmationDialog({ id = 'confirmation-dialog', message = '', subtitle = '', onCancel = (e) => {}, onConfirm = (e) => {}, getStatus = (status) => {}, buttonText = '' }) {
     const [confirmed, setConfirmed] = useState(false)
     const handleConfirm = (e) => {
         e.preventDefault()

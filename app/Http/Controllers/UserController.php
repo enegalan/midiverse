@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Comment;
 use App\Models\Group;
 use App\Models\GroupNotification;
 use App\Models\Post;
@@ -31,6 +32,7 @@ class UserController extends Controller
         app()->call([self::class, 'getFollowers'], compact('user'));
         app()->call([self::class, 'getFollowings'], compact('user'));
         app()->call([self::class, 'getUserPostsGivenLikes'], compact('user'));
+        app()->call([self::class, 'getUserCommentsGivenLikes'], compact('user'));
         app()->call([self::class, 'getUserPostsReceivedLikes'], compact('user'));
         app()->call([self::class, 'getUserConcertsGivenLikes'], compact('user'));
         app()->call([self::class, 'getUserConcertsReceivedLikes'], compact('user'));
@@ -296,6 +298,17 @@ class UserController extends Controller
         return array('You are not logged in.');
     }
 
+    public static function getUserCommentsGivenLikes(&$user) {
+        if (auth()->check()) {
+            $commentIds = Comment::all()->pluck('id')->toArray();
+            $commentsLikesGiven = DB::table('comment_likes')
+                ->whereIn('comment_id', $commentIds)->where('user_id', $user->id)->get()->toArray();
+            $user->comment_given_likes = $commentsLikesGiven;
+            return $commentsLikesGiven;
+        }
+        return array('You are not logged in.');
+    }
+
     public static function getUserPostsReceivedLikes(&$user)
     {
         if (auth()->check()) {
@@ -539,25 +552,34 @@ class UserController extends Controller
             $user_posts = Post::where('user_id', $user_follow['id'])->orderBy('created_at', 'desc')->get();
             $user_posts->load('user');
             foreach ($user_posts as $post) {
-                $follow_post = [
-                    'id' => $post->id,
-                    'user' => [
-                        'avatar' => $post->user->avatar,
-                        'name' => $post->user->name,
-                        'lastname' => $post->user->lastname,
-                        'username' => $post->user->username,
-                    ],
-                    'content' => $post->content,
-                    'date' => $post->created_at->toDateString(),
-                    'comments' => $post->comments,
-                    'comments_count' => $post->comments->count(),
-                    'likes' => $post->likes,
-                    'likes_count' => $post->likes->count(),
-                ];
+                $follow_post = self::getPostData($post);
                 array_push($follows_posts, $follow_post);
             }
         }
         return $follows_posts;
+    }
+
+    public static function getPostData($post) {
+        $comments = \DB::table('comments')->where('post_id', $post->id)->get();
+        $replies = \DB::table('comments')->where('parent_id', $post->id)->get();
+        return [
+            'id' => $post->id,
+            'user' => [
+                'id' => $post->user?->id,
+                'avatar' => $post->user?->avatar,
+                'name' => $post->user?->name,
+                'lastname' => $post->user?->lastname,
+                'username' => $post->user?->username,
+                'private' => $post->user?->private,
+            ],
+            'content' => $post->content,
+            'date' => $post->created_at->toDateString(),
+            'comments' => $comments,
+            'comments_count' => $post->comments->count(),
+            'likes' => $post->likes,
+            'likes_count' => $post->likes->count(),
+            'token' => $post->token,
+        ];
     }
 
     public static function verifyPassword(Request $request): bool

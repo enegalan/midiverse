@@ -58,6 +58,9 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
         setExploreSection('people')
         localStorage.setItem('explore_default_section', 'people');
     }
+    const handleProfileRedirect = (user) => {
+        window.location.href = `/u/${user.username}`;
+    }
     return (
         <>
             <MainLayout user={auth_user} headerClassName='backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50' defaultBackgroundColor='transparent' defaultTextColor='var(--main-blue)' dynamicBackground={false}>
@@ -101,9 +104,9 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
 
                         <section className={`${exploreSection === 'people' ? 'block' : 'hidden'}`} id='people'>
                             {all_users.map((user, index) => (
-                                <Link key={index} href={`/u/${user.username}`}>
+                                <span key={index} onClick={() => {handleProfileRedirect(user)}}>
                                     <PeopleCard className='transition duration-300 hover:bg-[var(--hover-light)]' auth_user={auth_user} key={user.id} user={user} />
-                                </Link>
+                                </span>
                             ))}
                         </section>
 

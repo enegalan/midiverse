@@ -5,8 +5,8 @@ import ConcertsSlider from "@/Components/Sliders/ConcertsSlider";
 import FollowsPosts from "@/Components/Sections/FollowsPosts";
 import RecentPosts from "@/Components/Sections/RecentPosts";
 import { SearchInput } from "@/Components/Inputs";
-import ForYouAndFollowingNavbar from "@/Components/Navbars/ForYouAndFollowingNavbar";
 import MyGroups from '@/Components/Navbars/Components/MyGroups';
+import ForYouAndFollowingNavbar from "@/Components/Navbars/ForYouAndFollowingNavbar";
 import RightNavbar from '@/Components/Navbars/RightNavbar';
 import PostEditor from '@/Components/PostEditor';
 

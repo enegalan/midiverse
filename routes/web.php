@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
@@ -63,7 +64,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Posts
     Route::post('/post/create', [PostController::class,'store'])->name('post.create');
     Route::post('/post/like/{id}', [PostController::class, 'like'])->name('post.like');
-
+    Route::get('/post/{token}', [PostController::class, 'show'])->name('posts.show');
+    Route::post('/post/{token}/comment', [CommentController::class, 'store'])->name('comments.store');
+    // Comments
+    Route::get('/comment/{token}', [CommentController::class, 'show'])->name('comments.show');
+    Route::put('/comment/{token}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{token}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::post('/comment/like/{token}', [CommentController::class, 'like'])->name('comment.like');
     /* 
         Settings
     */
