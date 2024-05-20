@@ -19,7 +19,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
     const [shareDropdownVisible, setShareDropdownVisible] = useState(false);
     // Check if the post is liked by the authenticated user
     const isLiked = auth_user && auth_user.post_given_likes.some(like => like.post_id === post.id);
-    const isBookmarked = auth_user && auth_user.post_bookmarks.some(bookmark => bookmark.id === post.id);
+    const isBookmarked = auth_user && auth_user.post_bookmarks?.some(bookmark => bookmark.id === post.id);
     // Event handlers
     const handleComment = (e) => {
         e.stopPropagation();

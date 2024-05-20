@@ -378,7 +378,6 @@ class UserController extends Controller
     {
         if (auth()->check()) {
             $bookmarks = array();
-            @$user_aux = $user;
             $user_bookmarks = \DB::table('user_post_bookmarks')->where('user_id', $user->id)->get();
             foreach ($user_bookmarks as $bookmark) {
                 $post = Post::findOrFail($bookmark->post_id);
