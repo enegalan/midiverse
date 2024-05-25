@@ -4,7 +4,7 @@ import { closeModal } from '@/Functions';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-export default function ConfirmationDialog({ id = 'confirmation-dialog', message = '', subtitle = '', onCancel = (e) => {}, onConfirm = (e) => {}, getStatus = (status) => {}, buttonText = '' }) {
+export default function ConfirmationDialog({ id = 'confirmation-dialog', className = '', width = '400px', message = '', subtitle = '', onCancel = (e) => {}, onConfirm = (e) => {}, getStatus = (status) => {}, buttonText = '', buttonClass = '' }) {
     const [confirmed, setConfirmed] = useState(false)
     const handleConfirm = (e) => {
         e.preventDefault()
@@ -26,8 +26,8 @@ export default function ConfirmationDialog({ id = 'confirmation-dialog', message
         getStatus(confirmed)
     }, [confirmed])
     return (
-        <BaseDialog miniDialog={true} closeButton={false} width='400px' id={id}>
-            <div>
+        <BaseDialog miniDialog={true} closeButton={false} width={width} id={id}>
+            <div className={className}>
                 <div className="flex justify-between pb-2 rounded-t w-full">
                     <h3 className="text-left text-xl font-semibold text-gray-900">
                         {message}
@@ -37,7 +37,7 @@ export default function ConfirmationDialog({ id = 'confirmation-dialog', message
                     <p className='text-sm text-[var(--grey)]'>{subtitle}</p>
                 </section>
                 <div className='flex flex-col justify-between gap-3'>
-                    <AuthButton className={`text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)]`} onClick={handleConfirm} text={buttonText} />
+                    <AuthButton className={`text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)] ${buttonClass}`} onClick={handleConfirm} text={buttonText} />
                     <AuthButton className={`text-center w-full bg-[var(--white)] border text-black hover:bg-[var(--hover-light)]`} onClick={handleCancel} text='Cancel' />
                 </div>
             </div>

@@ -105,6 +105,10 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->belongsToMany(Concert::class, 'user_concert_bookmarks');
     }
 
+    public function commentBookmarks() {
+        return $this->belongsToMany(Comment::class, 'user_comment_bookmarks');
+    }
+
     public function notifications() {
         return $this->hasMany(UserNotification::class);
     }

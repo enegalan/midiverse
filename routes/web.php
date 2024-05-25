@@ -67,12 +67,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/post/create', [PostController::class,'store'])->name('post.create');
     Route::post('/post/like/{id}', [PostController::class, 'like'])->name('post.like');
     Route::get('/post/{token}', [PostController::class, 'show'])->name('posts.show');
+    Route::post('/post/edit/', [PostController::class, 'update'])->name('post.update');
     Route::post('/post/{token}/comment', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/post/{token}', [PostController::class, 'delete'])->name('post.destroy');
+    Route::post('/post/comments/visibility', [PostController::class, 'updateCommentsVisibility'])->name('post.comments.visibility');
     // Comments
     Route::get('/comment/{token}', [CommentController::class, 'show'])->name('comments.show');
-    Route::put('/comment/{token}', [CommentController::class, 'update'])->name('comments.update');
+    Route::post('/comment/{token}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{token}', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('/comment/like/{token}', [CommentController::class, 'like'])->name('comment.like');
+    Route::post('/comments/visibility', [CommentController::class, 'updateVisibility'])->name('comment.visibility');
     /* 
         Settings
     */
@@ -119,7 +123,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/group/generate/invite', [InvitationController::class, 'generateGroupInvite'])->name('group.generate.invite');
     Route::get('/group/invite/{token}', [InvitationController::class, 'acceptGroupInvite'])->name('group.accept.invite');
     // Bookmark
-    Route::post('/user/bookmark/{token}', [UserController::class, 'bookmarkPost'])->name('user.bookmark.post');
+    Route::post('/user/bookmark/{token}', [UserController::class, 'bookmark'])->name('user.bookmark');
 });
 // Redirect routes
 Route::get('/', [MainController::class, 'rootRedirect']);

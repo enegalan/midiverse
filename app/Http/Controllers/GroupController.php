@@ -338,7 +338,7 @@ class GroupController extends Controller
     {
         $id = $request->input('id');
         if ($id) {
-            UserNotification::findOrFail($id)->delete();
+            GroupNotification::findOrFail($id)->delete();
         }
     }
 

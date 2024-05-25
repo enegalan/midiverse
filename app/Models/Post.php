@@ -15,6 +15,7 @@ class Post extends Model {
         'user_midi_id',
         'content',
         'token',
+        'comments_visibility',
     ];
 
     public function user() {

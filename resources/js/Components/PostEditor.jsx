@@ -11,8 +11,8 @@ import { HiOutlineGif } from "react-icons/hi2";
 
 import axios from 'axios';
 
-export default function PostEditor({ id = 'default', user = {}, placeholder = 'Write here...', buttonText = 'Post', action = '/post/create', onSubmit = null, border = true, padding = true }) {
-    const [value, setValue] = useState('');
+export default function PostEditor({ id = 'default', initialValue = '', onChange = (value) => {}, user = {}, placeholder = 'Write here...', buttonText = 'Post', action = '/post/create', onSubmit = null, border = true, padding = true, removeButton = false }) {
+    const [value, setValue] = useState(initialValue);
     const maxWordLimit = 280;
     const minStrokeDashOffset = 62.60745359653945;
     const maxStrokeDashOffset = 120.24777960769379;
@@ -21,6 +21,7 @@ export default function PostEditor({ id = 'default', user = {}, placeholder = 'W
 
     const onEditorChange = (e) => {
         const inputValue = e.target.value;
+        onChange(e.target.value);
         const wordCount = inputValue.length;
         // Determine if is adding or removing
         let isAdding = true;
@@ -104,7 +105,9 @@ export default function PostEditor({ id = 'default', user = {}, placeholder = 'W
                                         </svg>
                                     </div>
                                 )}
-                                <AuthButton onClick={handlePost} disabled={value.length === 0} className={`${value.length > 0 ? 'bg-[var(--blue)] hover:bg-[var(--hover-blue)]' : 'bg-[var(--light-blue)] hover:bg-[var(--light-blue)] hover:cursor-default'} text-white `} text={buttonText} />
+                                {!removeButton && (
+                                    <AuthButton onClick={handlePost} disabled={value.length === 0} className={`${value.length > 0 ? 'bg-[var(--blue)] hover:bg-[var(--hover-blue)]' : 'bg-[var(--light-blue)] hover:bg-[var(--light-blue)] hover:cursor-default'} text-white `} text={buttonText} />
+                                )}
                             </div>
                         </nav>
                     </EditorProvider>

@@ -15,7 +15,8 @@ class Comment extends Model {
         'body',
         'token',
         'created_at',
-        'updatedat',
+        'updated_at',
+        'comments_visibility',
     ];
     use HasFactory;
     public function post() {

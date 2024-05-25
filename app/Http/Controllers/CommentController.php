@@ -12,7 +12,7 @@ use Inertia\Inertia;
 class CommentController extends Controller {
 
     public function show($token) {
-        $comment = Comment::where('token', $token)->first();
+        $comment = Comment::where('token', $token)->firstOrFail();
         $post = Post::findOrFail($comment->post_id);
         $user = User::findOrFail($comment->user_id);
         UserController::loadUserData($user);
@@ -54,13 +54,11 @@ class CommentController extends Controller {
         return redirect()->back();
     }
 
-    public function update(Request $request, Comment $comment) {
-        $this->authorize('update', $comment);
-
+    public function update(Request $request, string $token) {
         $request->validate([
             'body' => 'required|string',
         ]);
-
+        $comment = Comment::where('token', $token)->firstOrFail();
         $comment->update([
             'body' => $request->body,
         ]);
@@ -108,6 +106,17 @@ class CommentController extends Controller {
             'user' => $user,
             'likes' => $likes,
             'token' => $comment->token,
+            'comments_visibility' => $comment->comments_visibility,
         ];
+    }
+
+    public static function updateVisibility (Request $request) {
+        $comment_id = $request->input('comment_id');
+        $visibility = $request->input('visibility');
+        $comment = Comment::findOrFail($comment_id);
+        if ($comment && $comment->user_id == auth()->id()) {
+            $comment->update(['comments_visibility' => $visibility]);
+            $comment->save();
+        }
     }
 }

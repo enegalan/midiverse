@@ -98,8 +98,6 @@ class MainController extends Controller
         $topPosts = [];
         foreach ($posts as $post) {
             $likes = \DB::table('post_likes')->where('post_id', $post->id)->get();
-            // Assign the like count to the post object
-            $post->like_count = $likes->count();
             $post->likes = $likes;
             $post->load('user', 'comments');
             $validatedPost = app()->call([self::class, 'validateUserPosts'], array('user' => $post->user));

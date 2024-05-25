@@ -32,10 +32,10 @@ export default function Index({ user = null, recent_posts = [], follows_posts = 
                             <PostEditor user={user} />
                         </div>
                         {/* Concerts sliders */}
-                        <div className={`${isForYouActive ? 'block' : 'hidden'}`}>
+                        {/* <div className={`${isForYouActive ? 'block' : 'hidden'}`}>
                             <h2 className="text-[var(--dark)] text-3xl font-bold mb-12 mt-16 text-center">Discover concerts</h2>
                             <ConcertsSlider />
-                        </div>
+                        </div> */}
                         {/* Recent Users' posts */}
                         <div className={`${isForYouActive ? 'block' : 'hidden'}`}>
                             <RecentPosts auth_user={user} posts={sortedRecentPosts} />

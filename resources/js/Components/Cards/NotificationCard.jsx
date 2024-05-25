@@ -72,7 +72,7 @@ export default function NotificationCard({ notification = null }) {
             }
         }
     }
-
+console.log(notification.type);
     return (
         <article className='flex relative' key={notification?.id}>
             <Link href={`/u/${notification.from_user?.username}`} className='w-full border-t flex p-3 gap-2 justify-start relative transition duration-300 hover:bg-[var(--hover-light)]'>
@@ -95,11 +95,12 @@ export default function NotificationCard({ notification = null }) {
                     </div>
                 </div>
             </Link>
-            {notification.type != 0 && notification.type != 6 || notification.type == 5 ? (
+            {(notification.type != 0 && notification.type != 6 && notification.type == 5) && (
                 <div className='absolute inline-block right-2 top-1'>
                     <CloseButton onClick={handleDeleteNotification} />
                 </div>
-            ) : notification.type == 0 || notification.type == 6 && (
+            )}
+            {(notification.type == 0 || notification.type == 6) && (
                 <div className='flex items-center gap-3 absolute right-10 top-10'>
                     <AuthButton onClick={handleAcceptFollow} text='Confirm' className='text-white bg-[var(--main-blue)] transition duration-300 hover:bg-[var(--hover-blue)]' />
                     <AuthButton onClick={handleDeleteNotification} text='Delete' className='text-white bg-[var(--grey)] transition duration-300 hover:bg-[var(--hover-grey)]' />
