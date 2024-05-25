@@ -8,10 +8,11 @@ import PostCard from '@/Components/Cards/PostCard';
 import PostEditor from '@/Components/PostEditor';
 
 export default function CommentDialog({ user, post, comment = null, reply = false }) {
-    const handleSubmit = (value) => {
+    const handleSubmit = (value, visibility) => {
         const formData = new FormData();
         // In the post comments gerarchy the first comment is always (parent_id = null)
         formData.append('content', value);
+        formData.append('visibility', visibility);
         if (reply && comment) {
             formData.append('parent_id', comment.id);
         }

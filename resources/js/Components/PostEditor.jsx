@@ -3,16 +3,24 @@ import {
     Editor,
     EditorProvider,
 } from 'react-simple-wysiwyg';
-
+import { convert } from 'html-to-text';
+const convertOptions = {
+    wordwrap: 130,
+}
 import { AuthButton, IconButton } from './Buttons';
-
+import { IoEarth, IoEarthOutline } from 'react-icons/io5';
 import { PiImageBold } from "react-icons/pi";
 import { HiOutlineGif } from "react-icons/hi2";
+import { Link } from '@inertiajs/react';
+import { FaCheck } from 'react-icons/fa6';
 
 import axios from 'axios';
 
-export default function PostEditor({ id = 'default', initialValue = '', onChange = (value) => {}, user = {}, placeholder = 'Write here...', buttonText = 'Post', action = '/post/create', onSubmit = null, border = true, padding = true, removeButton = false }) {
+export default function PostEditor({ id = 'default', initialValue = '', onChange = (value) => { }, user = {}, placeholder = 'Write here...', buttonText = 'Post', action = '/post/create', onSubmit = null, border = true, padding = true, removeButton = false }) {
     const [value, setValue] = useState(initialValue);
+    const [focusActive, setFocusActive] = useState(false);
+    const [whoCanReplyVisible, setWhoCanReplyVisible] = useState(false);
+    const [visibility, setVisibility] = useState(0);
     const maxWordLimit = 280;
     const minStrokeDashOffset = 62.60745359653945;
     const maxStrokeDashOffset = 120.24777960769379;
@@ -21,7 +29,8 @@ export default function PostEditor({ id = 'default', initialValue = '', onChange
 
     const onEditorChange = (e) => {
         const inputValue = e.target.value;
-        onChange(e.target.value);
+        const convertedValue = convert(e.target.value, convertOptions);
+        onChange(convertedValue, visibility);
         const wordCount = inputValue.length;
         // Determine if is adding or removing
         let isAdding = true;
@@ -53,12 +62,38 @@ export default function PostEditor({ id = 'default', initialValue = '', onChange
         e.preventDefault();
         if (value.length > 0) {
             const formData = new FormData();
-            formData.append('content', value);
-            onSubmit ? onSubmit(value) : axios.post(action, formData).then(res => {
+            const convertedData = convert(value, convertOptions);
+            formData.append('content', convertedData);
+            formData.append('visibility', visibility);
+            onSubmit ? onSubmit(convertedData, visibility) : axios.post(action, formData).then(res => {
                 window.location.reload();
             }).catch(error => console.error(error))
-            
+
         }
+    }
+    const handleOnFocus = () => {
+        setFocusActive(true);
+    }
+    const handleWhoCanReply = () => {
+        setWhoCanReplyVisible(!whoCanReplyVisible);
+    }
+    const handleEveryone = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setVisibility(0);
+        setWhoCanReplyVisible(false);
+    }
+    const handleFollowers = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setVisibility(1);
+        setWhoCanReplyVisible(false);
+    }
+    const handleOnlyYou = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setVisibility(2);
+        setWhoCanReplyVisible(false);
     }
     return (
         <div className={`${padding ? 'p-4' : ''} ${border ? 'border-b' : ''} flex gap-2`}>
@@ -68,15 +103,83 @@ export default function PostEditor({ id = 'default', initialValue = '', onChange
             <div className='flex flex-col w-full'>
                 <div className='' id='editor'>
                     <EditorProvider>
-                        <div className='mb-2 inline-grid w-full'>
+                        <div className='mb-2 inline-grid w-full relative'>
                             <Editor
                                 value={value}
                                 onChange={onEditorChange}
+                                onFocus={handleOnFocus}
                                 containerProps={{ style: { fontSize: '20px', border: 'none' } }}
                                 id={`${id}-post-editor`}
                                 placeholder={placeholder}
                             />
                         </div>
+                        {focusActive && (
+                            <div className='relative'>
+                                <div onClick={handleWhoCanReply} className='inline-flex select-none items-center ml-2 py-[0.12rem] px-3 gap-2 rounded-full text-[var(--blue)] transition duration-300 hover:cursor-pointer hover:bg-[var(--hover-blue)]'>
+                                    {visibility == 0 ? (
+                                        <>
+                                            <span className='pointer-events-none'><IoEarth /></span>
+                                            <span className='pointer-events-none font-bold text-sm'>Everyone can reply</span>
+                                        </>
+                                    ) : visibility == 1 ? (
+                                        <>
+                                            <span className='pointer-events-none'><i className={`pi pi-users`} /></span>
+                                            <span className='pointer-events-none font-bold text-sm'>Accounts you follow can reply</span>
+                                        </>
+                                    ) : visibility == 2 && (
+                                        <>
+                                            <span className='pointer-events-none'><i className={`pi pi-user`} /></span>
+                                            <span className='pointer-events-none font-bold text-sm'>Only you can reply</span>
+                                        </>
+                                    )}
+                                </div>
+                                {whoCanReplyVisible && (
+                                    <section className='dropdown absolute -top-28 left-52'>
+                                        <div className='absolute top-36 -left-64 min-w-[300px] bg-white rounded-lg dropdown-shadow'>
+                                            <div className='flex flex-col'>
+                                                <div className='px-4 py-3'>
+                                                    <h1 className='font-bold text-md'>Who can reply?</h1>
+                                                    <h3 className='text-sm text-[var(--grey)]'>Choose who can reply to this post. Anyone mentioned can always reply.</h3>
+                                                </div>
+                                                <Link onClick={handleEveryone} className='flex items-center justify-between font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                    <div className='flex items-center gap-3'>
+                                                        <span className='pointer-events-none bg-[var(--blue)] text-[var(--white)] rounded-full px-3 py-3'><IoEarthOutline /></span>
+                                                        <span className='pointer-events-none'>Everyone</span>
+                                                    </div>
+                                                    {visibility == 0 && (
+                                                        <div className='text-[var(--blue)]'>
+                                                            <FaCheck />
+                                                        </div>
+                                                    )}
+                                                </Link>
+                                                <Link onClick={handleFollowers} className='flex items-center justify-between font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                    <div className='flex items-center gap-3'>
+                                                        <span className='pointer-events-none bg-[var(--blue)] text-[var(--white)] rounded-full px-3 py-2'><i className={`pi pi-users`} /></span>
+                                                        <span className='pointer-events-none'>Accounts you follow</span>
+                                                    </div>
+                                                    {visibility == 1 && (
+                                                        <div className='text-[var(--blue)]'>
+                                                            <FaCheck />
+                                                        </div>
+                                                    )}
+                                                </Link>
+                                                <Link onClick={handleOnlyYou} className='flex items-center rounded-b-lg justify-between font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                    <div className='flex items-center gap-3'>
+                                                        <span className='pointer-events-none bg-[var(--blue)] text-[var(--white)] rounded-full px-3 py-2'><i className={`pi pi-user`} /></span>
+                                                        <span className='pointer-events-none'>Only you</span>
+                                                    </div>
+                                                    {visibility == 2 && (
+                                                        <div className='text-[var(--blue)]'>
+                                                            <FaCheck />
+                                                        </div>
+                                                    )}
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </section>
+                                )}
+                            </div>
+                        )}
                         <nav className={`flex ${border && 'border-t'} items-center justify-between pt-5 mt-2`} id='toolbar'>
                             <div className='flex items-center gap-1'>
                                 <IconButton className='border-none text-[1.08rem] p-3 text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>

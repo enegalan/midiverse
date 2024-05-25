@@ -11,11 +11,13 @@ import PostEditor from '@/Components/PostEditor';
 
 export default function EditPostModal({ post }) {
     const [value, setValue] = useState(post.content);
+    const [visibility, setVisibility] = useState(post.comments_visibility);
 
     const handleSave = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('post_id', post.id);
+        formData.append('visibility', visibility);
         formData.append('content', value);
         axios.post('/post/edit/', formData).then(() => {onClose(); window.location.reload();})
     };
@@ -42,7 +44,7 @@ export default function EditPostModal({ post }) {
                     </nav>
                     <main className='flex flex-col items-center justify-center'>
                         <section className='flex flex-col w-full gap-8 px-5 my-8' id='post-info'>
-                            <PostEditor id='edit-post-editor' onChange={(value) => setValue(value)} initialValue={value} removeButton={true} user={post.user} />
+                            <PostEditor id='edit-post-editor' onChange={(value, visibility) => { setVisibility(visibility); setValue(value); }} initialValue={value} removeButton={true} user={post.user} />
                         </section>
                     </main>
                 </div>

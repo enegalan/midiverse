@@ -38,7 +38,8 @@ class CommentController extends Controller {
         $post = Post::where('token', $token)->first();
         $request->validate([
             'content' => 'required|string',
-            'parent_id' => 'nullable|exists:comments,id'
+            'parent_id' => 'nullable|exists:comments,id',
+            'visibility' => 'required',
         ]);
         $token = PostController::generateNumericToken();
         \DB::table('comments')->insert([
@@ -47,6 +48,7 @@ class CommentController extends Controller {
             'post_id' => $post->id,
             'parent_id' => $request->parent_id,
             'token' => $token,
+            'comments_visibility' => $request->visibility,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -57,10 +59,12 @@ class CommentController extends Controller {
     public function update(Request $request, string $token) {
         $request->validate([
             'body' => 'required|string',
+            'visibility' => 'required',
         ]);
         $comment = Comment::where('token', $token)->firstOrFail();
         $comment->update([
             'body' => $request->body,
+            'comments_visibility' => $request->visibility,
         ]);
 
         return redirect()->back();

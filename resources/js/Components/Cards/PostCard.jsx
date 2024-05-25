@@ -289,7 +289,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                     </div>
                 </div>
                 <div className='flex flex-col justify-center'>
-                    <span className='text-sm' style={{ overflowWrap: 'anywhere' }}>{post?.content}</span>
+                    <pre className='text-sm' style={{ overflowWrap: 'anywhere' }}>{post?.content}</pre>
                     {separators && controls && (<div className="border-t mt-5 border-gray-100 flex-grow"></div>)}
                     {controls && (
                         <div className={`flex flex-wrap gap-6 py-1 xl:gap-24 ${!separators && 'mt-5'} justify-center`}>

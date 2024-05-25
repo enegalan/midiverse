@@ -28,22 +28,26 @@ class PostController extends Controller {
     
     public static function store (Request $request) {
         $content = $request->input('content');
+        $visibility = $request->input('visibility');
         $user_id = auth()->user()->id;
         $token = self::generateNumericToken();
         Post::createOrFirst([
             'content'=> $content,
             'user_id'=> $user_id,
             'token'=> $token,
+            'comments_visibility' => $visibility,
         ]);
     }
 
     public static function update (Request $request) {
         $content = $request->input('content');
+        $visibility = $request->input('visibility');
         $post_id = $request->input('post_id');
         $post = Post::findOrFail($post_id);
         if ($post && $post->user_id == auth()->id()) {
             $post->update([
                 'content' => $content,
+                'comments_visibility' => $visibility,
             ]);
         }
     }
