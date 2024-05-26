@@ -27,7 +27,6 @@ export default function Language({ user = null }) {
     }
     const handleLanguage = (e) => {
         const newLanguage = e.target.value;
-        console.log(newLanguage);
         setSelectedLanguage(newLanguage)
         if (selectedLanguage == currentLanguage) {
             setSaveButtonDisabled(false);

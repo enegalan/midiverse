@@ -72,7 +72,6 @@ export default function NotificationCard({ notification = null }) {
             }
         }
     }
-console.log(notification.type);
     return (
         <article className='flex relative' key={notification?.id}>
             <Link href={`/u/${notification.from_user?.username}`} className='w-full border-t flex p-3 gap-2 justify-start relative transition duration-300 hover:bg-[var(--hover-light)]'>

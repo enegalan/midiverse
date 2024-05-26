@@ -4,7 +4,6 @@ import BookmarksTopNavbar from "@/Components/Navbars/BookmarksTopNavbar";
 import PostCard from "@/Components/Cards/PostCard";
 
 export default function Bookmarks({ user }) {
-    console.log(user);
     return (
         <>
             <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>

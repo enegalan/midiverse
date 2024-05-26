@@ -138,7 +138,6 @@ function userFollowsGroup(user, group) {
 }
 
 function userMemberGroup(user, group) {
-    console.log(group)
     for (let member of group.members) {
         if (member.id == user.id) return true;
     }

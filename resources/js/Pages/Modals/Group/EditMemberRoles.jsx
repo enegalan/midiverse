@@ -50,7 +50,6 @@ export default function EditMemberRoles({ user = null, group = {}, roles = null 
         }
     }
     const handleRoleChange = (role) => {
-        console.log(role);
         setSelectedRoles(role);
     }
     return (

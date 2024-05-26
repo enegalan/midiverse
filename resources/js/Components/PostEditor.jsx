@@ -155,8 +155,6 @@ export default function PostEditor({
             </div>
         )
     }
-    console.log(initialMedia);
-    console.log(preview);
     return (
         <div className={`${padding ? 'p-4' : ''} ${border ? 'border-b' : ''} flex gap-2`}>
             <div>
