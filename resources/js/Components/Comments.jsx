@@ -4,15 +4,22 @@ import axios from 'axios';
 import PostEditor from './PostEditor';
 
 const Comments = ({ user, post, parent_id = null, comments }) => {
-    const handleSubmit = (value, visibility) => {
+    const handleSubmit = (value, visibility, media) => {
         const formData = new FormData();
-        // In the post comments gerarchy the first comment is always (parent_id = null)
+        if (!value) value = '';
         formData.append('content', value);
         formData.append('visibility', visibility);
+        media.forEach((file) => {
+            formData.append('media[]', file.file);
+        });
         if (parent_id) {
             formData.append('parent_id', parent_id);
         }
-        axios.post('/post/'+post.token+'/comment', formData)
+        axios.post('/post/' + post.token + '/comment', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
         .then(data => {
             window.location.reload();
         });

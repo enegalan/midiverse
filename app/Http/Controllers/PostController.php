@@ -31,12 +31,27 @@ class PostController extends Controller {
         $visibility = $request->input('visibility');
         $user_id = auth()->user()->id;
         $token = self::generateNumericToken();
-        Post::createOrFirst([
+        if (!$content) {
+            $content = '';
+        }
+        $post = Post::createOrFirst([
             'content'=> $content,
             'user_id'=> $user_id,
             'token'=> $token,
             'comments_visibility' => $visibility,
         ]);
+
+        if ($request->hasFile('media')) {
+            $mediaFiles = $request->file('media');
+            foreach ($mediaFiles as $file) {
+                $hashedName = \Str::random(40) . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('media', $hashedName, 'public');
+                \DB::table('post_media')->insert([
+                    'post_id' => $post->id,
+                    'filename' => $hashedName,
+                ]);
+            }
+        }
     }
 
     public static function update (Request $request) {

@@ -16,6 +16,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import { BiVolumeMute } from "react-icons/bi";
 import { FaCheck } from 'react-icons/fa6';
 import { IoEarthOutline } from 'react-icons/io5';
+import ImagesPreview from '../ImagesPreview';
 
 import axios from 'axios';
 import { Link } from '@inertiajs/inertia-react';
@@ -288,60 +289,61 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                         )}
                     </div>
                 </div>
-                <div className='flex flex-col justify-center'>
-                    <pre className='text-sm' style={{ overflowWrap: 'anywhere' }}>{post?.content}</pre>
-                    {separators && controls && (<div className="border-t mt-5 border-gray-100 flex-grow"></div>)}
-                    {controls && (
-                        <div className={`flex flex-wrap gap-6 py-1 xl:gap-24 ${!separators && 'mt-5'} justify-center`}>
-                            <div onClick={handleComment} className={`flex items-center gap-1 xl:gap-2 px-3 relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
-                                <FaRegComment className='text-md' />
-                                <span className='absolute -right-4'>{post?.comments?.length}</span>
-                            </div>
-                            <div onClick={handleLike} className={`flex items-center gap-1 xl:gap-2 px-[0.6rem] relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-like-red)] hover:text-[var(--like-red)]`}>
-                                {isLiked ? (
-                                    <IoIosHeart className='text-[var(--red)] text-xl hover:cursor-pointer rounded-full' />
+                <div className='grid justify-start'>
+                    <pre className='text-sm' style={{ overflowWrap: 'anywhere' }}>{post?.content && post.content.trim() != '' ? post.content : ''}</pre>
+                    <ImagesPreview media={post.media}/>
+                </div>
+                {separators && controls && (<div className="border-t mt-5 border-gray-100 flex-grow"></div>)}
+                {controls && (
+                    <div className={`flex flex-wrap gap-6 py-1 xl:gap-24 ${!separators && 'mt-5'} justify-center`}>
+                        <div onClick={handleComment} className={`flex items-center gap-1 xl:gap-2 px-3 relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                            <FaRegComment className='text-md' />
+                            <span className='absolute -right-4'>{post?.comments?.length}</span>
+                        </div>
+                        <div onClick={handleLike} className={`flex items-center gap-1 xl:gap-2 px-[0.6rem] relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-like-red)] hover:text-[var(--like-red)]`}>
+                            {isLiked ? (
+                                <IoIosHeart className='text-[var(--red)] text-xl hover:cursor-pointer rounded-full' />
+                            ) : (
+                                <IoIosHeartEmpty className='text-xl hover:cursor-pointer rounded-full' />
+                            )}
+                            <span className='absolute -right-4'>{post?.likes?.length}</span>
+                        </div>
+                        <div className='flex items-center gap-3 xl:gap-6'>
+                            <div onClick={handleBookmark} className={`p-3 relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                                {isBookmarked ? (
+                                    <FaBookmark className='text-md text-[var(--blue)]' />
                                 ) : (
-                                    <IoIosHeartEmpty className='text-xl hover:cursor-pointer rounded-full' />
+                                    <FaRegBookmark className='text-md' />
                                 )}
-                                <span className='absolute -right-4'>{post?.likes?.length}</span>
                             </div>
-                            <div className='flex items-center gap-3 xl:gap-6'>
-                                <div onClick={handleBookmark} className={`p-3 relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
-                                    {isBookmarked ? (
-                                        <FaBookmark className='text-md text-[var(--blue)]' />
-                                    ) : (
-                                        <FaRegBookmark className='text-md' />
-                                    )}
+                            <div className='relative'>
+                                <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                                    <IoShareOutline className='text-xl mb-1' />
                                 </div>
-                                <div className='relative'>
-                                    <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
-                                        <IoShareOutline className='text-xl mb-1' />
-                                    </div>
-                                    {shareDropdownVisible && (
-                                        <section className='dropdown absolute top-12 -left-4'>
-                                            <div className='absolute -top-40 left-4 min-w-[270px] bg-white rounded-lg dropdown-shadow py-2'>
-                                                <div className='flex flex-col gap-2'>
-                                                    <Link onClick={handleCopyLink} className='flex items-center gap-3 font-semibold px-4 py-2 hover:bg-[var(--hover-light)]'>
-                                                        <span className='pointer-events-none'><FiLink /></span>
-                                                        <span className='pointer-events-none'>Copy link</span>
-                                                    </Link>
-                                                    <Link className='flex items-center gap-3 font-semibold px-4 py-2 hover:bg-[var(--hover-light)]'>
-                                                        <span className='pointer-events-none'><MdOutlineEmail /></span>
-                                                        <span className='pointer-events-none'>Send via direct message</span>
-                                                    </Link>
-                                                </div>
+                                {shareDropdownVisible && (
+                                    <section className='dropdown absolute top-12 -left-4'>
+                                        <div className='absolute -top-40 left-4 min-w-[270px] bg-white rounded-lg dropdown-shadow py-2'>
+                                            <div className='flex flex-col gap-2'>
+                                                <Link onClick={handleCopyLink} className='flex items-center gap-3 font-semibold px-4 py-2 hover:bg-[var(--hover-light)]'>
+                                                    <span className='pointer-events-none'><FiLink /></span>
+                                                    <span className='pointer-events-none'>Copy link</span>
+                                                </Link>
+                                                <Link className='flex items-center gap-3 font-semibold px-4 py-2 hover:bg-[var(--hover-light)]'>
+                                                    <span className='pointer-events-none'><MdOutlineEmail /></span>
+                                                    <span className='pointer-events-none'>Send via direct message</span>
+                                                </Link>
                                             </div>
-                                            <div className="absolute top-[-3.5rem] left-6 w-5 flex justify-center overflow-hidden">
-                                                <div className="shadow h-3 w-3 bg-white -rotate-45 transform origin-top-left"></div>
-                                            </div>
-                                        </section>
-                                    )}
-                                </div>
+                                        </div>
+                                        <div className="absolute top-[-3.5rem] left-6 w-5 flex justify-center overflow-hidden">
+                                            <div className="shadow h-3 w-3 bg-white -rotate-45 transform origin-top-left"></div>
+                                        </div>
+                                    </section>
+                                )}
                             </div>
                         </div>
-                    )}
-                    {separators && controls && (<div className="border-t border-gray-100 flex-grow"></div>)}
-                </div>
+                    </div>
+                )}
+                {separators && controls && (<div className="border-t border-gray-100 flex-grow"></div>)}
             </div>
         </article>
     );

@@ -8,15 +8,23 @@ import PostCard from '@/Components/Cards/PostCard';
 import PostEditor from '@/Components/PostEditor';
 
 export default function CommentDialog({ user, post, comment = null, reply = false }) {
-    const handleSubmit = (value, visibility) => {
+    const handleSubmit = (value, visibility, media) => {
         const formData = new FormData();
+        if (!value) value = '';
         // In the post comments gerarchy the first comment is always (parent_id = null)
         formData.append('content', value);
         formData.append('visibility', visibility);
+        media.forEach((file) => {
+            formData.append('media[]', file.file);
+        });
         if (reply && comment) {
             formData.append('parent_id', comment.id);
         }
-        axios.post('/post/'+post.token+'/comment', formData)
+        axios.post('/post/' + post.token + '/comment', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        })
         .then(data => {
             window.location.reload();
         });

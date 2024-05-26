@@ -117,6 +117,26 @@ pre {
   box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
 } 
 
+.dark-glass, .p-link {
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--white);
+}
+
+.dark-glass:hover, .p-link:hover {
+  background: rgba(49, 49, 49, 0.5);
+}
+
+.white-glass {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--black);
+}
+
 /*Playground fix styles*/
 @media (min-width: 1024px) {
   .flex-lg-hidden {
@@ -152,7 +172,20 @@ pre {
 .p-slider-handle {
   border: 2px solid var(--main-blue);
 }
-
+.p-disabled, .p-disabled * {
+  visibility: hidden;
+}
+.p-link {
+  position: absolute;
+  border-radius: 16px;
+  z-index: 10;
+}
+.p-carousel-prev {
+  left: 4.5rem;
+}
+.p-carousel-next {
+  right: 1.25rem;
+}
 [type='checkbox']:focus, [type='radio']:focus {
   --tw-ring-offset-width: 0 !important;
 }

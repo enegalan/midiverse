@@ -292,6 +292,7 @@ class UserController extends Controller
             $commentsObj = Comment::where('user_id', $user->id)->get();
             $comments = array();
             foreach ($commentsObj as $comment) {
+                $media = \DB::table('comment_media')->where('comment_id', $comment->id)->get();
                 $comments[] = [
                     'id' => $comment->id,
                     'post_id' => $comment->post_id,
@@ -300,6 +301,7 @@ class UserController extends Controller
                     'token' => $comment->token,
                     'body' => $comment->body,
                     'comments_visibility' => $comment->comments_visibility,
+                    'media' => $media,
                     'created_at' => $comment->created_at,
                     'updated_at' => $comment->updated_at,
                 ];
@@ -636,6 +638,7 @@ class UserController extends Controller
 
     public static function getPostData($post) {
         $comments = \DB::table('comments')->where('post_id', $post->id)->get();
+        $media = \DB::table('post_media')->where('post_id', $post->id)->get();
         return [
             'id' => $post->id,
             'user' => $post->user,
@@ -643,6 +646,7 @@ class UserController extends Controller
             'created_at' => $post->created_at,
             'updated_at' => $post->updated_at,
             'comments' => $comments,
+            'media' => $media,
             'comments_visibility' => $post->comments_visibility,
             'likes' => $post->likes,
             'token' => $post->token,

@@ -8,7 +8,7 @@ import { FaBookmark } from 'react-icons/fa';
 import { FaRegBookmark } from 'react-icons/fa';
 import { IoShare } from 'react-icons/io5';
 import { FiLink } from "react-icons/fi";
-
+import ImagesPreview from '../ImagesPreview';
 import { IoShareOutline } from 'react-icons/io5';
 import { MdOutlineDelete, MdOutlineEmail, MdOutlineEdit, MdBlock, MdOutlineReport } from "react-icons/md";
 import { formatDateForPublic, openModal } from '@/Functions';
@@ -289,7 +289,8 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                         </div>
                     </div>
                 </div>
-                <p className='text-sm'>{comment.body}</p>
+                <pre className='text-sm' style={{ overflowWrap: 'anywhere' }}>{comment.body && comment.body.trim() != '' ? comment.body : ''}</pre>
+                <ImagesPreview media={comment.media}/>
                 {controls && (
                     <div className={`flex w-full items-center flex-wrap gap-6 py-1 xl:gap-24 mt-5 justify-center`}>
                         <div onClick={handleReply} className={`flex py-3 items-center gap-1 xl:gap-2 px-3 relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>

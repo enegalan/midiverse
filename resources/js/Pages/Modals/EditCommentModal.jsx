@@ -12,13 +12,19 @@ import PostEditor from '@/Components/PostEditor';
 export default function EditCommentModal({ comment }) {
     const [value, setValue] = useState(comment.body);
     const [visibility, setVisility] = useState(comment.comments_visibility);
+    const [media, setMedia] = useState(null); // Should be comment.media
 
     const handleSave = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('body', value);
         formData.append('visibility', visibility);
-        axios.post(`/comment/${comment.token}`, formData).then(() => {onClose(); window.location.reload();})
+        formData.append('media', media);
+        axios.post(`/comment/${comment.token}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }).then(() => {onClose(); window.location.reload();})
     };
 
     const onClose = () => {
@@ -43,7 +49,7 @@ export default function EditCommentModal({ comment }) {
                     </nav>
                     <main className='flex flex-col items-center justify-center'>
                         <section className='flex flex-col w-full gap-8 px-5 my-8'>
-                            <PostEditor id='edit-comment-editor' onChange={(value, visibility) => { setValue(value); setVisility(visibility) }} initialValue={value} removeButton={true} user={comment.user} />
+                            <PostEditor id='edit-comment-editor' onChange={(value, visibility, media) => { setValue(value); setVisility(visibility); setMedia(media); }} initialValue={value} removeButton={true} user={comment.user} />
                         </section>
                     </main>
                 </div>

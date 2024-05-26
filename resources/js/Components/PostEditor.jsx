@@ -1,54 +1,54 @@
-import { useState, useEffect } from 'react';
-import {
-    Editor,
-    EditorProvider,
-} from 'react-simple-wysiwyg';
+import { useState, useRef } from 'react';
+import { Editor, EditorProvider } from 'react-simple-wysiwyg';
 import { convert } from 'html-to-text';
-const convertOptions = {
-    wordwrap: 130,
-}
 import { AuthButton, IconButton } from './Buttons';
 import { IoEarth, IoEarthOutline } from 'react-icons/io5';
 import { PiImageBold } from "react-icons/pi";
-import { HiOutlineGif } from "react-icons/hi2";
 import { Link } from '@inertiajs/react';
 import { FaCheck } from 'react-icons/fa6';
-
+import { SiMidi } from "react-icons/si";
+import { Carousel } from 'primereact/carousel';
+import { CloseButton } from './Buttons';
 import axios from 'axios';
-
-export default function PostEditor({ id = 'default', initialValue = '', onChange = (value) => { }, user = {}, placeholder = 'Write here...', buttonText = 'Post', action = '/post/create', onSubmit = null, border = true, padding = true, removeButton = false }) {
+import { useEffect } from 'react';
+const convertOptions = {
+    wordwrap: 130,
+};
+export default function PostEditor({
+    id = 'default',
+    initialValue = '',
+    onChange = (value) => { },
+    user = {},
+    placeholder = 'Write here...',
+    buttonText = 'Post',
+    action = '/post/create',
+    onSubmit = null,
+    border = true,
+    padding = true,
+    removeButton = false
+}) {
     const [value, setValue] = useState(initialValue);
     const [focusActive, setFocusActive] = useState(false);
     const [whoCanReplyVisible, setWhoCanReplyVisible] = useState(false);
     const [visibility, setVisibility] = useState(0);
+    const [media, setMedia] = useState([]);
+    const [preview, setPreview] = useState([]);
+    const fileInputRef = useRef(null);
     const maxWordLimit = 280;
     const minStrokeDashOffset = 62.60745359653945;
     const maxStrokeDashOffset = 120.24777960769379;
     const [strokeDashOffset, setStrokeDashOffset] = useState(minStrokeDashOffset);
     const strokePerWordValue = 0.2243994753;
-
     const onEditorChange = (e) => {
         const inputValue = e.target.value;
         const convertedValue = convert(e.target.value, convertOptions);
-        onChange(convertedValue, visibility);
+        onChange(convertedValue, visibility, media);
         const wordCount = inputValue.length;
-        // Determine if is adding or removing
-        let isAdding = true;
-        if (wordCount < value.length) isAdding = false;
         if (wordCount <= maxWordLimit) {
             setValue(inputValue);
-            var newStrokeDashOffset;
-            if (isAdding) {
-                newStrokeDashOffset = minStrokeDashOffset;
-            } else {
-                newStrokeDashOffset = minStrokeDashOffset;
-            }
+            let newStrokeDashOffset = minStrokeDashOffset;
             for (let i = 2; i < wordCount; i++) {
-                if (isAdding) {
-                    newStrokeDashOffset -= strokePerWordValue;
-                } else {
-                    newStrokeDashOffset -= strokePerWordValue;
-                }
+                newStrokeDashOffset -= strokePerWordValue;
             }
             if (wordCount > 0) {
                 setStrokeDashOffset(newStrokeDashOffset);
@@ -60,15 +60,24 @@ export default function PostEditor({ id = 'default', initialValue = '', onChange
     };
     const handlePost = (e) => {
         e.preventDefault();
-        if (value.length > 0) {
+        if (value.length > 0 || media.length > 0) {
             const formData = new FormData();
-            const convertedData = convert(value, convertOptions);
-            formData.append('content', convertedData);
+            var convertedData = '';
+            if (value) {
+                convertedData = convert(value, convertOptions);
+                formData.append('content', convertedData);
+            }
             formData.append('visibility', visibility);
-            onSubmit ? onSubmit(convertedData, visibility) : axios.post(action, formData).then(res => {
+            media.forEach((mediaItem, index) => {
+                formData.append('media[]', mediaItem.file);
+            });
+            onSubmit ? onSubmit(convertedData, visibility, media) : axios.post(action, formData, { 
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }).then(res => {
                 window.location.reload();
-            }).catch(error => console.error(error))
-
+            }).catch(error => console.error(error));
         }
     }
     const handleOnFocus = () => {
@@ -95,6 +104,50 @@ export default function PostEditor({ id = 'default', initialValue = '', onChange
         setVisibility(2);
         setWhoCanReplyVisible(false);
     }
+    const handleImageClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInputRef.current.click();
+    }
+    const handleImageChange = async (e) => {
+        const files = Array.from(e.target.files);
+        if (files) {
+            let newMedia = files.map((file, index) => ({ id: media.length + index + 1, file }));
+            setMedia(prevMedia => [...prevMedia, ...newMedia]);
+            let previews = files.map((file, index) => ({
+                id: preview.length + index + 1,
+                url: URL.createObjectURL(file),
+            }));
+            setPreview(prevPreview => [...prevPreview, ...previews]);
+        }
+    }
+    useEffect(() => {
+        // Calculate when to do next slide
+        if (preview.length > 2) {
+            document.querySelector('.p-carousel-next')?.click();
+            document.querySelector('.p-carousel-next')?.click();
+        }
+    }, [preview])
+    const imageTemplate = (mediaPreview) => {
+        const handleClose = () => {
+            const updatedPreview = preview.filter(file => file.id !== mediaPreview.id);
+            setPreview(updatedPreview);
+            const updatedMedia = media.filter(item => item.id !== mediaPreview.id);
+            setMedia(updatedMedia);
+            const updatedFiles = Array.from(fileInputRef.current.files).filter((_, idx) => idx !== mediaPreview.id - 1);
+            const newFileList = new DataTransfer();
+            updatedFiles.forEach(file => newFileList.items.add(file));
+            fileInputRef.current.files = newFileList.files;
+        }
+        return (
+            <div className='rounded-xl relative cursor-pointer bg-center bg-no-repeat bg-cover bg-transparent h-full' style={{ backgroundImage: `url(${mediaPreview.url})` }}>
+                <div className='absolute right-4 top-1'>
+                    <CloseButton onClick={handleClose} className='bg-[var(--dark-gray)] text-[var(--white)] hover:bg-[var(--hover-dark-gray)]' />
+                </div>
+                <img style={{ visibility: 'hidden' }} src={mediaPreview.url} />
+            </div>
+        )
+    }
     return (
         <div className={`${padding ? 'p-4' : ''} ${border ? 'border-b' : ''} flex gap-2`}>
             <div>
@@ -113,6 +166,20 @@ export default function PostEditor({ id = 'default', initialValue = '', onChange
                                 placeholder={placeholder}
                             />
                         </div>
+                        {preview.length > 0 && (
+                            preview.length > 1 ? (
+                                <div className='flex'>
+                                    <Carousel showIndicators={false} className='w-full' numVisible={2} numScroll={1} value={preview} itemTemplate={imageTemplate} />
+                                </div>
+                            ) : (
+                                <div className='rounded-xl relative cursor-pointer bg-center bg-no-repeat bg-cover bg-transparent' style={{ backgroundImage: `url(${preview[0].url})` }}>
+                                    <div className='absolute right-4 top-1'>
+                                        <CloseButton onClick={() => { setPreview([]); setMedia([]); fileInputRef.current.value = ''; }} className='bg-[var(--dark-gray)] text-[var(--white)] hover:bg-[var(--hover-dark-gray)]' />
+                                    </div>
+                                    <img style={{ visibility: 'hidden' }} src={preview[0].url} />
+                                </div>
+                            )
+                        )}
                         {focusActive && (
                             <div className='relative'>
                                 <div onClick={handleWhoCanReply} className='inline-flex select-none items-center ml-2 py-[0.12rem] px-3 gap-2 rounded-full text-[var(--blue)] transition duration-300 hover:cursor-pointer hover:bg-[var(--hover-blue)]'>
@@ -182,11 +249,19 @@ export default function PostEditor({ id = 'default', initialValue = '', onChange
                         )}
                         <nav className={`flex ${border && 'border-t'} items-center justify-between pt-5 mt-2`} id='toolbar'>
                             <div className='flex items-center gap-1'>
-                                <IconButton className='border-none text-[1.08rem] p-3 text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
+                                <IconButton onClick={handleImageClick} className={`${media.length === 4 ? 'text-[var(--hover-lightblue)] cursor-auto' : 'text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'} border-none text-[1.08rem] p-3 `}>
                                     <PiImageBold />
                                 </IconButton>
-                                <IconButton className='icon-stroke-bolder text-lg border-none p-3 text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
-                                    <HiOutlineGif />
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    className='hidden'
+                                    onChange={handleImageChange}
+                                    accept="image/*"
+                                    multiple
+                                />
+                                <IconButton className='text-lg border-none p-3 text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
+                                    <SiMidi />
                                 </IconButton>
                                 <IconButton className='text-sm border-none p-[0.68rem] px-[0.85rem] text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
                                     <i style={{ WebkitTextStrokeWidth: 'thin' }} className="fa-regular fa-face-smile"></i>
@@ -209,7 +284,7 @@ export default function PostEditor({ id = 'default', initialValue = '', onChange
                                     </div>
                                 )}
                                 {!removeButton && (
-                                    <AuthButton onClick={handlePost} disabled={value.length === 0} className={`${value.length > 0 ? 'bg-[var(--blue)] hover:bg-[var(--hover-blue)]' : 'bg-[var(--light-blue)] hover:bg-[var(--light-blue)] hover:cursor-default'} text-white `} text={buttonText} />
+                                    <AuthButton onClick={handlePost} disabled={(value.length === 0 && media.length === 0)} className={`${value.length > 0 || media.length > 0 ? 'bg-[var(--blue)] hover:bg-[var(--hover-blue)]' : 'bg-[var(--light-blue)] hover:bg-[var(--light-blue)] hover:cursor-default'} text-white `} text={buttonText} />
                                 )}
                             </div>
                         </nav>

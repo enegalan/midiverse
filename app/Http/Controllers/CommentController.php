@@ -37,13 +37,12 @@ class CommentController extends Controller {
     public function store(Request $request, string $token) {
         $post = Post::where('token', $token)->first();
         $request->validate([
-            'content' => 'required|string',
             'parent_id' => 'nullable|exists:comments,id',
             'visibility' => 'required',
         ]);
         $token = PostController::generateNumericToken();
-        \DB::table('comments')->insert([
-            'body' => $request->content,
+        $comment_id = \DB::table('comments')->insertGetId([
+            'body' => $request->content ? $request->content : '',
             'user_id' => auth()->id(),
             'post_id' => $post->id,
             'parent_id' => $request->parent_id,
@@ -53,6 +52,16 @@ class CommentController extends Controller {
             'updated_at' => now(),
         ]);
 
+        if ($request->hasFile('media')) {
+            foreach ($request->file('media') as $file) {
+                $hashedName = \Str::random(40) . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('media', $hashedName, 'public');
+                \DB::table('comment_media')->insert([
+                    'comment_id' => $comment_id,
+                    'filename' => $hashedName,
+                ]);
+            }
+        }
         return redirect()->back();
     }
 
@@ -98,6 +107,7 @@ class CommentController extends Controller {
         UserController::getProfileData($user);
         $likes = \DB::table('comment_likes')
             ->where('comment_id', $comment->id)->where('user_id', $user->id)->get()->toArray();
+        $media = \DB::table('comment_media')->where('comment_id', $comment->id)->get();
         return [
             'id' => $comment->id,
             'post_id' => $comment->post_id,
@@ -108,6 +118,7 @@ class CommentController extends Controller {
             'updated_at' => $comment->updated_at,
             'replies' => $replies,
             'user' => $user,
+            'media' => $media,
             'likes' => $likes,
             'token' => $comment->token,
             'comments_visibility' => $comment->comments_visibility,
