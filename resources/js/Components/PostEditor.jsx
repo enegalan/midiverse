@@ -11,6 +11,7 @@ import { Carousel } from 'primereact/carousel';
 import { CloseButton } from './Buttons';
 import axios from 'axios';
 import { useEffect } from 'react';
+import EmojiPicker from "emoji-picker-react";
 const convertOptions = {
     wordwrap: 130,
 };
@@ -34,12 +35,31 @@ export default function PostEditor({
     const [visibility, setVisibility] = useState(0);
     const [media, setMedia] = useState(initialMedia);
     const [preview, setPreview] = useState(initialMedia);
+    const [showPicker, setShowPicker] = useState(false);
     const fileInputRef = useRef(null);
     const maxWordLimit = 280;
     const minStrokeDashOffset = 62.60745359653945;
     const maxStrokeDashOffset = 120.24777960769379;
     const [strokeDashOffset, setStrokeDashOffset] = useState(minStrokeDashOffset);
     const strokePerWordValue = 0.2243994753;
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const dropdownElements = document.querySelectorAll(".dropdown");
+            let outsideClick = true;
+            for (let dropdown of dropdownElements) {
+                if (dropdown.contains(event.target)) {
+                    outsideClick = false;
+                }
+            }
+            if (outsideClick) {
+                setShowPicker(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showPicker]);
     const onEditorChange = (e) => {
         const inputValue = e.target.value;
         const convertedValue = convert(e.target.value, convertOptions);
@@ -155,6 +175,11 @@ export default function PostEditor({
             </div>
         )
     }
+    const onEmojiClick = (emojiObject, event) => {
+        const emoji = emojiObject.emoji;
+        setValue((prevValue) => prevValue + emoji);
+        setShowPicker(false);
+    };
     return (
         <div className={`${padding ? 'p-4' : ''} ${border ? 'border-b' : ''} flex gap-2`}>
             <div>
@@ -270,9 +295,16 @@ export default function PostEditor({
                                 <IconButton className='text-lg border-none p-3 text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
                                     <SiMidi />
                                 </IconButton>
-                                <IconButton className='text-sm border-none p-[0.68rem] px-[0.85rem] text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
-                                    <i style={{ WebkitTextStrokeWidth: 'thin' }} className="fa-regular fa-face-smile"></i>
-                                </IconButton>
+                                <div className='relative'>
+                                    <IconButton onClick={(e) => {e.preventDefault(); setShowPicker(!showPicker)}} className='text-sm border-none p-[0.68rem] px-[0.85rem] text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
+                                        <i style={{ WebkitTextStrokeWidth: 'thin' }} className="fa-regular fa-face-smile"></i>
+                                    </IconButton>
+                                    {showPicker && (
+                                        <div className='dropdown absolute z-50 mt-3'>
+                                            <EmojiPicker skinTonePickerLocation='PREVIEW' searchPlaceHolder='Search emojis' lazyLoadEmojis={true} theme='auto' open={showPicker} emojiStyle='native' pickerStyle={{ width: "100%" }} onEmojiClick={onEmojiClick} />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <div className='flex items-center gap-3'>
                                 {value.length > 0 && (
