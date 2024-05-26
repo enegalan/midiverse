@@ -25,14 +25,15 @@ export default function PostEditor({
     onSubmit = null,
     border = true,
     padding = true,
-    removeButton = false
+    removeButton = false,
+    initialMedia = [],
 }) {
     const [value, setValue] = useState(initialValue);
     const [focusActive, setFocusActive] = useState(false);
     const [whoCanReplyVisible, setWhoCanReplyVisible] = useState(false);
     const [visibility, setVisibility] = useState(0);
-    const [media, setMedia] = useState([]);
-    const [preview, setPreview] = useState([]);
+    const [media, setMedia] = useState(initialMedia);
+    const [preview, setPreview] = useState(initialMedia);
     const fileInputRef = useRef(null);
     const maxWordLimit = 280;
     const minStrokeDashOffset = 62.60745359653945;
@@ -128,6 +129,12 @@ export default function PostEditor({
             document.querySelector('.p-carousel-next')?.click();
         }
     }, [preview])
+    useEffect(() => {
+        if (value) {
+            let convertedData = convert(value, convertOptions);
+            onChange(convertedData, visibility, media);
+        }
+    }, [preview, media])
     const imageTemplate = (mediaPreview) => {
         const handleClose = () => {
             const updatedPreview = preview.filter(file => file.id !== mediaPreview.id);
@@ -148,6 +155,8 @@ export default function PostEditor({
             </div>
         )
     }
+    console.log(initialMedia);
+    console.log(preview);
     return (
         <div className={`${padding ? 'p-4' : ''} ${border ? 'border-b' : ''} flex gap-2`}>
             <div>

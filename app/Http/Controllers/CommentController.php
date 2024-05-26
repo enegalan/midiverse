@@ -67,14 +67,34 @@ class CommentController extends Controller {
 
     public function update(Request $request, string $token) {
         $request->validate([
-            'body' => 'required|string',
             'visibility' => 'required',
         ]);
         $comment = Comment::where('token', $token)->firstOrFail();
         $comment->update([
-            'body' => $request->body,
+            'body' => $request->body ? $request->body : '',
             'comments_visibility' => $request->visibility,
         ]);
+        $prevMedia = json_decode($request->input('prev_media'), true);
+        // Retrieve and delete existing media files
+        $existingMedia = \DB::table('comment_media')->where('comment_id', $comment->id)->get();
+        foreach ($existingMedia as $media) {
+            if (!in_array($media->id, $prevMedia)) {
+                \Storage::disk('public')->delete('media/' . $media->filename);
+            }
+        }
+        // Remove existing media entries from the database
+        \DB::table('comment_media')->where('comment_id', $comment->id)->whereNotIn('id', $prevMedia)->delete();
+        // Upload new media
+        if ($request->hasFile('media')) {
+            foreach ($request->file('media') as $file) {
+                $hashedName = \Str::random(40) . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('media', $hashedName, 'public');
+                \DB::table('comment_media')->insert([
+                    'comment_id' => $comment->id,
+                    'filename' => $hashedName,
+                ]);
+            }
+        }
 
         return redirect()->back();
     }

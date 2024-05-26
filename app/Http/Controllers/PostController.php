@@ -55,7 +55,7 @@ class PostController extends Controller {
     }
 
     public static function update (Request $request) {
-        $content = $request->input('content');
+        $content = $request->input('content') ? $request->input('content') : '';
         $visibility = $request->input('visibility');
         $post_id = $request->input('post_id');
         $post = Post::findOrFail($post_id);
@@ -64,7 +64,29 @@ class PostController extends Controller {
                 'content' => $content,
                 'comments_visibility' => $visibility,
             ]);
+            $prevMedia = json_decode($request->input('prev_media'), true);
+            // Retrieve and delete existing media files
+            $existingMedia = \DB::table('post_media')->where('post_id', $post_id)->get();
+            foreach ($existingMedia as $media) {
+                if (!in_array($media->id, $prevMedia)) {
+                    \Storage::disk('public')->delete('media/' . $media->filename);
+                }
+            }
+            // Remove existing media entries from the database
+            \DB::table('post_media')->where('post_id', $post_id)->whereNotIn('id', $prevMedia)->delete();
+            // Upload new media
+            if ($request->hasFile('media')) {
+                foreach ($request->file('media') as $file) {
+                    $hashedName = \Str::random(40) . '.' . $file->getClientOriginalExtension();
+                    $file->storeAs('media', $hashedName, 'public');
+                    \DB::table('post_media')->insert([
+                        'post_id' => $post_id,
+                        'filename' => $hashedName,
+                    ]);
+                }
+            }
         }
+        return redirect()->back();
     }
 
     public static function generateNumericToken($length = 8) {

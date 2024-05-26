@@ -1,5 +1,5 @@
 export default function ImagesPreview ({ media }) {
-    if (!media) return;
+    if (!media || media.length === 0) return;
     return (
         <div className={`bg-[var(--white)] border rounded-xl mt-3 ${media.length === 2 || media.length === 3 ? 'flex border rounded-xl gap-[0.1rem]' : ''} ${media.length === 3 ? 'h-[65%]' : ''}`}>
             {media.map((mediaItem, index) => {
