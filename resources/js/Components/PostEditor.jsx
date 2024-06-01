@@ -92,7 +92,7 @@ export default function PostEditor({
             media.forEach((mediaItem, index) => {
                 formData.append('media[]', mediaItem.file);
             });
-            onSubmit ? onSubmit(convertedData, visibility, media) : axios.post(action, formData, { 
+            onSubmit ? onSubmit(convertedData, visibility, media) : axios.post(action, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -296,7 +296,7 @@ export default function PostEditor({
                                     <SiMidi />
                                 </IconButton>
                                 <div className='relative'>
-                                    <IconButton onClick={(e) => {e.preventDefault(); setShowPicker(!showPicker)}} className='text-sm border-none p-[0.68rem] px-[0.85rem] text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
+                                    <IconButton onClick={(e) => { e.preventDefault(); setShowPicker(!showPicker) }} className='text-sm border-none p-[0.68rem] px-[0.85rem] text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
                                         <i style={{ WebkitTextStrokeWidth: 'thin' }} className="fa-regular fa-face-smile"></i>
                                     </IconButton>
                                     {showPicker && (

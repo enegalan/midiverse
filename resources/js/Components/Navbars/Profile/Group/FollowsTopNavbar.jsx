@@ -24,7 +24,7 @@ export default function FollowsTopNavbar({ type = '', group = null, getFollowsSe
     return (
         <>
             <nav className='sticky flex items-center top-0 z-50 w-full backdrop-blur-md border-b border-r'>
-                <div className='bg-white/85 flex flex-col gap-6 items-center w-full pt-1'>
+                <div className='bg-white/25 flex flex-col gap-6 items-center w-full pt-1'>
                     <div className='flex gap-6 w-full px-1'>
                         <BackButton />
                         <div className='flex flex-col hover:cursor-pointer'>

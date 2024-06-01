@@ -8,10 +8,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PostController;
 use App\Models\Post;
+use App\Models\User;
 
-class MainController extends Controller
-{
-
+class MainController extends Controller {
     public static function rootRedirect () {
         if (auth()->check()) {
             return redirect(route('home'));
@@ -60,7 +59,22 @@ class MainController extends Controller
     public static function messages () {
         $user = auth()->user();
         app()->call([UserController::class,'loadUserData'], compact('user'));
-        return Inertia::render('Messages', compact('user'));
+        $messages = \App\Models\DirectMessage::where('sender_id', $user->id)
+            ->orWhere('receiver_id', $user->id)
+            ->with(['sender', 'receiver'])
+            ->get();
+        return Inertia::render('Messages', compact('user', 'messages'));
+    }
+
+    public static function messagesUser ($username) {
+        $selectedUser = User::where('username', $username)->first();
+        $user = auth()->user();
+        app()->call([UserController::class,'loadUserData'], compact('user'));
+        $messages = \App\Models\DirectMessage::where('sender_id', $user->id)
+            ->orWhere('receiver_id', $user->id)
+            ->with(['sender', 'receiver'])
+            ->get();
+        return Inertia::render('Messages', compact('user', 'messages', 'selectedUser'));
     }
 
     public static function bookmarks () {

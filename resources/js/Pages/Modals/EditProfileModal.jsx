@@ -112,7 +112,7 @@ export default function EditProfileModal({ user }) {
             <div className="relative max-w-[650px] w-full max-h-full">
                 <div className="relative bg-white rounded-lg shadow min-h-[600px] max-h-[600px] overflow-y-auto">
                     <nav className='sticky flex items-center rounded-lg top-0 z-50 w-full backdrop-blur-md border-b border-gray-200/50'>
-                        <div className='bg-white/85 px-3 flex gap-6 items-center w-full justify-between'>
+                        <div className='bg-white/25 px-3 flex gap-6 items-center w-full justify-between'>
                             <div className='flex gap-8 items-center'>
                                 <CloseButton onClick={onClose} />
                                 <div className='flex flex-col'>

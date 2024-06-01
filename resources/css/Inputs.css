@@ -3,7 +3,6 @@
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    letter-spacing: 1px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     background: transparent;
     padding: 8px 10px;
@@ -175,4 +174,10 @@
     left: 0;
     font-size: 12px;
     transition: 0.3s;
+}
+
+.input-outline-remove {
+    box-shadow: none !important;
+    border-color: transparent !important;
+    border: none !important;
 }

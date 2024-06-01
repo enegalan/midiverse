@@ -7,6 +7,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DirectMessageController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
@@ -36,11 +37,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/bookmarks', [MainController::class, 'bookmarks'])->name('bookmarks');
     
+    // Messages
     Route::get('/messages', [MainController::class, 'messages'])->name('messages');
-
-    Route::get('/u/{username}', [UserController::class, 'getProfile'])->name('profile');
-
+    Route::get('/messages/{username}', [MainController::class, 'messagesUser'])->name('messages.user');
+    Route::post('/messages', [DirectMessageController::class, 'store'])->name('messages.store');
+    
     // Profile
+    Route::get('/u/{username}', [UserController::class, 'getProfile'])->name('profile');
     Route::get('/profile', [MainController::class, 'profileRedirect']);
     Route::post('/user/profile/update', [UserController::class, 'updateAuthUserProfile'])->name('user.update.profile');
 

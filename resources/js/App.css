@@ -137,6 +137,17 @@ pre {
   color: var(--black);
 }
 
+/* React Chat Elements CSS rework */
+.rce-citem-body {
+  border: none !important;
+}
+.rce-citem {
+  background: none !important;
+}
+.rce-mbox-time-block {
+  display: none !important;
+}
+
 /*Playground fix styles*/
 @media (min-width: 1024px) {
   .flex-lg-hidden {

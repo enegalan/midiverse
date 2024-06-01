@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { router } from '@inertiajs/react'
 import { useForm } from "@inertiajs/inertia-react";
 import PropTypes from "prop-types";
@@ -7,6 +7,12 @@ import { InputText } from "primereact/inputtext";
 import { Password } from 'primereact/password';
 import { InputTextarea } from "primereact/inputtextarea";
 import { func } from "prop-types";
+import { IconButton } from "./Buttons";
+import { PiImageBold } from "react-icons/pi";
+import { SiMidi } from "react-icons/si";
+import { LuSendHorizonal } from "react-icons/lu";
+import EmojiPicker from "emoji-picker-react";
+import { CloseButton } from "./Buttons";
 
 const SearchInput = ({ placeholder = '', action = null }) => {
     const { data, setData, post, processing, errors } = useForm({
@@ -47,7 +53,7 @@ SearchInput.propTypes = {
     placeholder: PropTypes.string,
 };
 
-const DragAndDropBox = ({ id = '', title = 'Drag and drop your files here', subtitle = '(or click to select)', multiple = false, onChange = () => {}, previewImage = '' }) => {
+const DragAndDropBox = ({ id = '', title = 'Drag and drop your files here', subtitle = '(or click to select)', multiple = false, onChange = () => { }, previewImage = '' }) => {
     const [preview, setPreview] = useState('');
     useEffect(() => {
         const dropzone = document.getElementById(id + '-dropzone');
@@ -182,7 +188,7 @@ TextAreaInput.propTypes = {
     cols: PropTypes.string || PropTypes.number,
 };
 
-const DropdownCheckbox = ({ options = [{}], selectedOptionIds = [], onChange = (options) => {} }) => {
+const DropdownCheckbox = ({ options = [{}], selectedOptionIds = [], onChange = (options) => { } }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState(selectedOptionIds);
     const toggleDropdown = () => {
@@ -236,7 +242,7 @@ const DropdownCheckbox = ({ options = [{}], selectedOptionIds = [], onChange = (
     );
 };
 // Copy of DragAndDropBox due to create group not works reuse just one component
-const DragAndDropBox2 = ({ id = '', title = 'Drag and drop your files here', subtitle = '(or click to select)', multiple = false, onChange = () => {}, previewImage = '' }) => {
+const DragAndDropBox2 = ({ id = '', title = 'Drag and drop your files here', subtitle = '(or click to select)', multiple = false, onChange = () => { }, previewImage = '' }) => {
     return <DragAndDropBox id={id} title={title} subtitle={subtitle} multiple={multiple} onChange={onChange} previewImage={previewImage} />
 }
 
@@ -282,4 +288,132 @@ const InputError = ({ message, className = '', ...props }) => {
     ) : null;
 }
 
-export { SearchInput, DragAndDropBox, DragAndDropBox2, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput, InputError };
+const ChatInput = ({ receiverUser }) => {
+    const [value, setValue] = useState('');
+    const [media, setMedia] = useState([]);
+    const [preview, setPreview] = useState([]);
+    const [showPicker, setShowPicker] = useState(false);
+    const fileInputRef = useRef(null);
+    const handleImageClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInputRef.current.click();
+    }
+    const handleImageChange = async (e) => {
+        const files = Array.from(e.target.files);
+        if (files) {
+            let newMedia = files.map((file, index) => ({ id: media.length + index + 1, file }));
+            setMedia(prevMedia => [...prevMedia, ...newMedia]);
+            let previews = files.map((file, index) => ({
+                id: preview.length + index + 1,
+                url: URL.createObjectURL(file),
+            }));
+            setPreview(prevPreview => [...prevPreview, ...previews]);
+        }
+    }
+    const imageTemplate = (mediaPreview) => {
+        const handleClose = () => {
+            const updatedPreview = preview.filter(file => file.id !== mediaPreview.id);
+            setPreview(updatedPreview);
+            const updatedMedia = media.filter(item => item.id !== mediaPreview.id);
+            setMedia(updatedMedia);
+            const updatedFiles = Array.from(fileInputRef.current.files).filter((_, idx) => idx !== mediaPreview.id - 1);
+            const newFileList = new DataTransfer();
+            updatedFiles.forEach(file => newFileList.items.add(file));
+            fileInputRef.current.files = newFileList.files;
+        }
+        return (
+            <div className='rounded-xl relative cursor-pointer bg-center bg-no-repeat bg-cover bg-transparent h-full' style={{ backgroundImage: `url(${mediaPreview.url})` }}>
+                <div className='absolute right-4 top-1'>
+                    <CloseButton onClick={handleClose} className='bg-[var(--dark-gray)] text-[var(--white)] hover:bg-[var(--hover-dark-gray)]' />
+                </div>
+                <img style={{ visibility: 'hidden' }} src={mediaPreview.url} />
+            </div>
+        )
+    }
+    const onEmojiClick = (emojiObject, event) => {
+        const emoji = emojiObject.emoji;
+        setValue((prevValue) => prevValue + emoji);
+        setShowPicker(false);
+    };
+    const handleSubmitMessage = (e) => {
+        e.preventDefault();
+        if (value.length > 0 || media.length > 0) {
+            const formData = new FormData();
+            formData.append('receiver_id', receiverUser.id);
+            if (value) {
+                formData.append('message', value);
+            }
+            if (media) {
+                media.forEach((mediaItem, index) => {
+                    formData.append('media[]', mediaItem.file);
+                });
+            }
+            axios.post('/messages', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }).then(res => {
+                window.location.reload();
+            }).catch(error => console.error(error));
+        }
+    }
+    return (
+        <aside className='border-t bg-[var(--white)] w-full'>
+            <div className='flex items-center mx-[12px] my-[5px] gap-6 p-1 rounded-2xl bg-[var(--hover-light)]'>
+                {preview.length === 0 && (
+                    <div className='flex items-center gap-1'>
+                        <IconButton onClick={handleImageClick} className={`${media.length === 4 ? 'text-[var(--hover-lightblue)] cursor-auto' : 'text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'} border-none text-[1.08rem] p-3 `}>
+                            <PiImageBold />
+                        </IconButton>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            className='hidden'
+                            onChange={handleImageChange}
+                            accept="image/*"
+                            multiple
+                        />
+                        <IconButton className='text-lg border-none p-3 text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
+                            <SiMidi />
+                        </IconButton>
+                        <div className='relative'>
+                            <IconButton onClick={(e) => { e.preventDefault(); setShowPicker(!showPicker) }} className='text-sm border-none p-[0.68rem] px-[0.85rem] text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'>
+                                <i style={{ WebkitTextStrokeWidth: 'thin' }} className="fa-regular fa-face-smile"></i>
+                            </IconButton>
+                            {showPicker && (
+                                <div className='dropdown absolute top-[-30rem] -left-36 z-50 mt-3'>
+                                    <EmojiPicker skinTonePickerLocation='PREVIEW' searchPlaceHolder='Search emojis' lazyLoadEmojis={true} theme='auto' open={showPicker} emojiStyle='native' pickerStyle={{ width: "100%" }} onEmojiClick={onEmojiClick} />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+                <div className='w-full flex flex-col gap-3 mx-4 my-2'>
+                    {preview.length > 0 && (
+                        preview.length > 1 ? (
+                            <div className='flex'>
+                                <Carousel showIndicators={false} className='w-full' numVisible={2} numScroll={1} value={preview} itemTemplate={imageTemplate} />
+                            </div>
+                        ) : (
+                            <div className='rounded-xl max-w-32 relative cursor-pointer bg-center bg-no-repeat bg-cover bg-transparent' style={{ backgroundImage: `url(${preview[0].url})` }}>
+                                <div className='absolute right-4 top-1'>
+                                    <CloseButton onClick={() => { setPreview([]); setMedia([]); fileInputRef.current.value = ''; }} className='bg-[var(--dark-gray)] text-[var(--white)] hover:bg-[var(--hover-dark-gray)]' />
+                                </div>
+                                <img style={{ visibility: 'hidden' }} src={preview[0].url} />
+                            </div>
+                        )
+                    )}
+                    <input value={value} onChange={(e) => { setValue(e.target.value) }} className='p-0 w-full input-outline-remove border-none bg-transparent shadow-transparent outline-none' type='text' name='message' id='message-input' placeholder='Start a new message' />
+                </div>
+                <div className='text-[var(--blue)] inline-flex'>
+                    <IconButton onClick={handleSubmitMessage} className={`${value.length === 0 && preview.length === 0 ? 'text-[var(--hover-lightblue)] cursor-auto' : 'text-[var(--blue)] hover:bg-[var(--hover-lightblue)]'} border-none text-[1.08rem] p-3 `}>
+                        <LuSendHorizonal />
+                    </IconButton>
+                </div>
+            </div>
+        </aside>
+    );
+}
+
+export { SearchInput, DragAndDropBox, DragAndDropBox2, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput, InputError, ChatInput };
