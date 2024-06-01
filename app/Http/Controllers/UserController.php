@@ -479,16 +479,18 @@ class UserController extends Controller
         return response()->json(['status' => 'false']);
     }
 
-    public function toggleFollow($username)
-    {
+    public function toggleFollow($username) {
         $user = User::where('username', $username)->first();
         if (auth()->check() && $username !== auth()->user()->username) {
             $authUser = auth()->user();
             $isFollowing = $authUser->followings->contains($user);
             if ($isFollowing) {
                 $authUser->followings()->detach($user->id);
+                $user->followers()->detach($authUser->id);
                 $status = false;
             } else {
+                // If auth_user is not following the user
+                // And if user is private
                 if ($user && $user->private == 1) {
                     // Verify if user has already sent a follow request
                     $followAlreadySent = UserNotification::where('from_user_id', '=', $authUser->id)->where('user_id', '=', $user->id)->where('type', '=', UserNotification::NOTIFICATION_TYPE_FOLLOW)->exists();
@@ -504,8 +506,9 @@ class UserController extends Controller
                     } else {
                         UserNotification::where('from_user_id', '=', $authUser->id)->where('user_id', '=', $user->id)->where('type', '=', 0)->delete();
                     }
+                // If user is public
                 } else {
-                    $user?->followings()->sync($user->id);
+                    $authUser->followings()->attach($user->id);
                 }
                 $status = true;
             }
