@@ -48,7 +48,7 @@ const Navbar = ({
 
     var userInitials = getUserInitials(user);
 
-    const [webRef, setWebRef] = useState(localStorage.getItem('web-ref') ? localStorage.getItem('web-ref') : 'home');
+    const [webRef, setWebRef] = useState('home');
 
     const iconWidth = '26.5px';
 
@@ -200,6 +200,11 @@ const Navbar = ({
     const handleLogout = () => {
         logout();
     }
+    useEffect(() => {
+        const ref = window.location.pathname.split('/')[1];
+        setWebRef(ref)
+        localStorage.setItem('web-ref', ref);
+    }, []);
     return (
         <>
             <header
@@ -252,7 +257,7 @@ const Navbar = ({
                                 <Avatar image={user.avatar} size="large" shape="circle" />
                                 {/* <img src={'https://lh3.googleusercontent.com/a/ACg8ocLHGmAZcqZaiWkBKYTc5PM7K6kVberb2KrzSLFMfBB_agI=s96-c'} alt="User avatar" /> */}
                                 <div className='hidden xl:flex flex-col'>
-                                    <span className='font-bold'>{user.name}</span>
+                                    <span className='font-bold'>{user.name} {user.lastname ?? ''}</span>
                                     <span className='text-sm text-[var(--grey)]'>@{user.username}</span>
                                 </div>
                                 <div className='hidden xl:flex pr-2'>
