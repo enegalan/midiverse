@@ -12,22 +12,18 @@ export default function EditProfileModal({ user }) {
     const [name, setName] = useState('');
     const [lastname, setLastname] = useState('');
     const [description, setDescription] = useState('');
-
     const [editBirthdateEnabled, setEditBirthdateEnabled] = useState(false);
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
     const [birthdate, setBirthdate] = useState('');
-
     const [nameError, setNameError] = useState(false);
     const nameErrorMessage = 'Name is required';
-
     useEffect(() => {
         if (user) {
             setName(user.name ?? '');
             setLastname(user.lastname ?? '');
             setDescription(user.description ?? '');
-
             if (user.birthdate) {
                 const [birthYear, birthMonth, birthDay] = user.birthdate.split('-');
                 setYear(birthYear);
@@ -37,12 +33,10 @@ export default function EditProfileModal({ user }) {
             }
         }
     }, [user]);
-
     const postSuccess = () => {
         closeModal('edit-profile');
         window.location.reload();
     };
-
     const handleSave = async (e) => {
         e.preventDefault();
         if (name && name.length > 0 && name.trim() != '') {
@@ -69,33 +63,27 @@ export default function EditProfileModal({ user }) {
             setNameError(true);
         }
     };
-
     const onClose = () => {
         closeModal('edit-profile');
     };
-
     const handleEditBirthdate = (e) => {
         e.preventDefault();
         openModal('edit-birthdate', <ConfirmationDialog getStatus={handleEditBirthdateConfirmation} id='edit-birthdate' buttonText='Edit' message='Edit date of birth?' subtitle='This can only be changed a few times. Make sure you enter the age of the person using the account.' />);
     };
-
     const handleEditBirthdateConfirmation = (status) => {
         setEditBirthdateEnabled(status);
         if (!year) setYear(getYearsFromYearsAgo()[getYearsFromYearsAgo().length - 1].value);
         if (!month) setMonth(getAllMonths()[0].value);
         if (!day) setDay('1');
     };
-
     const handleCancelBirthdate = (e) => {
         e.preventDefault();
         setEditBirthdateEnabled(false);
     };
-
     const handleRemoveBirthdate = (e) => {
         e.preventDefault();
         openModal('remove-birthdate', <ConfirmationDialog getStatus={handleRemoveBirthdateConfirmation} id='remove-birthdate' buttonText='Remove' message='Remove date of birth?' subtitle='This can only be changed a few times. Make sure you enter the age of the person using the account.' />);
     };
-
     const handleRemoveBirthdateConfirmation = (status) => {
         if (status) {
             setYear('');
@@ -105,10 +93,35 @@ export default function EditProfileModal({ user }) {
             setEditBirthdateEnabled(false);
         }
     };
-
+    useEffect(() => {
+        const onEscapePressed = (e) => {
+            if (e.key == 'Escape') {
+                onClose();
+            }
+        }
+        document.addEventListener('keydown', onEscapePressed);
+        return () => {
+            document.removeEventListener('keydown', onEscapePressed);
+        };
+    });
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            let outsideClick = true;
+            if (event.target.id != 'modal-bg') {
+                outsideClick = false;
+            }
+            if (outsideClick) {
+                onClose();
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    });
     return (
         <div id='edit-profile' tabIndex="-1" aria-hidden="true" className="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-screen inset-0 max-h-full">
-            <div className='fixed w-full h-screen pointer bg-[#00000066]'></div>
+            <div id='modal-bg' className='fixed w-full h-screen pointer bg-[#00000066]'></div>
             <div className="relative max-w-[650px] w-full max-h-full">
                 <div className="relative bg-white rounded-lg shadow min-h-[600px] max-h-[600px] overflow-y-auto">
                     <nav className='sticky flex items-center rounded-lg top-0 z-50 w-full backdrop-blur-md border-b border-gray-200/50'>

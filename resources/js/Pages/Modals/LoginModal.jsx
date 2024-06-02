@@ -14,17 +14,13 @@ import { router } from '@inertiajs/react';
 export default function LoginModal() {
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
-
     const [password, setPassword] = useState('')
     const [loginButtonDisabled, setLoginButtonDisabled] = useState(true)
-
     const [step, setStep] = useState('login') // login or password
-
     const onEmailChange = (e) => {
         setEmail(e.target.value);
         setEmailError('');
     }
-
     const onPasswordChange = (e) => {
         setPassword(e.target.value);
         setLoginButtonDisabled(true);
@@ -32,7 +28,6 @@ export default function LoginModal() {
             setLoginButtonDisabled(false);
         }
     }
-
     const handleNextButton = (e) => {
         e.preventDefault();
         if (!validateEmail(email)) {

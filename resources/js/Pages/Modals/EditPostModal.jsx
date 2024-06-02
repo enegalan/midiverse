@@ -39,13 +39,38 @@ export default function EditPostModal({ post }) {
             }
         }).then(() => {onClose(); window.location.reload();})
     };
-
     const onClose = () => {
         closeModal('edit-post-modal');
     };
+    useEffect(() => {
+        const onEscapePressed = (e) => {
+            if (e.key == 'Escape') {
+                onClose();
+            }
+        }
+        document.addEventListener('keydown', onEscapePressed);
+        return () => {
+            document.removeEventListener('keydown', onEscapePressed);
+        };
+    });
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            let outsideClick = true;
+            if (event.target.id != 'modal-bg') {
+                outsideClick = false;
+            }
+            if (outsideClick) {
+                onClose();
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    });
     return (
         <div id='edit-post-modal' tabIndex="-1" aria-hidden="true" className="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-screen inset-0 max-h-full">
-            <div className='fixed w-full h-screen pointer bg-[#00000066]'></div>
+            <div id='modal-bg' className='fixed w-full h-screen pointer bg-[#00000066]'></div>
             <div className="relative max-w-[650px] w-full max-h-full">
                 <div className="relative bg-white rounded-lg shadow min-h-[600px] max-h-[600px] overflow-y-auto">
                     <nav className='sticky flex items-center rounded-lg top-0 z-50 w-full backdrop-blur-md border-b border-gray-200/50'>
