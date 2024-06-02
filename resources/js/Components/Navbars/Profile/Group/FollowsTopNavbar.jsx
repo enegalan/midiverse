@@ -27,7 +27,7 @@ export default function FollowsTopNavbar({ type = '', group = null, getFollowsSe
                 <div className='bg-white/25 flex flex-col gap-6 items-center w-full pt-1'>
                     <div className='flex gap-6 w-full px-1'>
                         <BackButton />
-                        <div className='flex flex-col hover:cursor-pointer'>
+                        <div className='flex flex-col cursor-pointer'>
                             <h2 className='text-lg font-bold'>{group.name}</h2>
                         </div>
                     </div>

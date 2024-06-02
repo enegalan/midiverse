@@ -8,16 +8,16 @@ import MessagesRightTopNavbar from "@/Components/Navbars/Messages/MessagesRightT
 import { MessageList, ChatItem } from 'react-chat-elements';
 import { AuthButton } from "@/Components/Buttons";
 import { SearchInput } from "@/Components/Inputs";
-import { formatDateForPublic } from "@/Functions";
+import { formatDateForPublic, openModal } from "@/Functions";
+import NewMessageModal from "./Modals/NewMessageModal";
 import axios from "axios";
-import { data } from "autoprefixer";
+import { router } from "@inertiajs/react";
 
 export default function Messages({ user = null, messages = [], selectedUser = null }) {
     var [directMessages, setDirectMessages] = useState(messages);
     const [messagesUsers, setMessagesUsers] = useState([]);
     const [selectedChat, setSelectedChat] = useState(selectedUser);
     const messageListReference = useRef(null);
-
     useEffect(() => {
         if (user) {
             const channel = window.Echo.private(`messages.${user.id}`)
@@ -35,11 +35,11 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
     useEffect(() => {
         const uniqueUsers = {};
         for (let message of messages) {
-            uniqueUsers[message.sender.username] = {
-                id: message.sender.id,
-                avatar: message.sender.avatar || '',
-                alt: message.sender.username,
-                title: message.sender.username,
+            uniqueUsers[message.receiver.username] = {
+                id: message.receiver.id,
+                avatar: message.receiver.avatar || '',
+                alt: message.receiver.username,
+                title: message.receiver.username,
                 subtitle: message.message,
                 dateString: formatDateForPublic(message.created_at),
             };
@@ -55,26 +55,26 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
 
     const handleNewMessage = (e) => {
         e.preventDefault();
-        // Implement the logic to handle new message
+        openModal('new-message-modal', <NewMessageModal user={user} users={[...user.followings, ...user.followers]} />);
     };
 
     const handleSelectUserChat = (e) => {
         // <hack>
         var username = e.target.parentElement.parentElement.parentElement.parentElement.children[0].children[1].children[0].children[0].innerText;
         // </hack>
-        window.location.href = `/messages/${username}`;
+        router.get(`/messages/${username}`);
     };
 
     return (
         <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
             <section className="pb-16 border-r relative max-w-[430px] flex-1">
                 {messagesUsers.length > 0 ? (
-                    <div className="w-full h-full">
-                        <MessagesLeftTopNavbar />
+                    <div className="w-full h-full absolute">
+                        <MessagesLeftTopNavbar user={user} />
                         <div className="px-3 my-3">
                             <SearchInput placeholder='Search Direct Messages' />
                         </div>
-                        <div className='overflow-scroll'>
+                        <div className=''>
                             {messagesUsers.map((user, index) => (
                                 <ChatItem
                                     id={user.id}
@@ -92,7 +92,7 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
                     </div>
                 ) : (
                     <div className="w-full h-full">
-                        <MessagesLeftTopNavbar />
+                        <MessagesLeftTopNavbar user={user} />
                         <div className='flex flex-col gap-3 py-8 justify-center items-center'>
                             <h1 className='font-bold text-3xl px-10'>Welcome to your inbox!</h1>
                             <h3 className='text-[var(--grey)] text-sm pl-10'>Drop a line, share posts and more with private conversations between you and others on miDiverse.</h3>
@@ -101,11 +101,11 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
                     </div>
                 )}
             </section>
-            <RightNavbar className='py-0 px-0 gap-0' rightBorder={true} width="600px" minWidth='600px'>
+            <RightNavbar setPaddingY={false} setPaddingX={false} className='py-0 px-0 gap-0' rightBorder={true} width="600px" minWidth='600px'>
                 {selectedChat ? (
                     <>
                         <MessagesRightTopNavbar user={selectedChat} />
-                        <div className="overflow-y-scroll" ref={messageListReference}>
+                        <div className="overflow-y-scroll h-full" ref={messageListReference}>
                             <div className='flex flex-col'>
                                 <div className='pb-8 overflow-y-scroll mt-20'>
                                     <MessageList
@@ -113,7 +113,7 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
                                         lockable={true}
                                         toBottomHeight={'100%'}
                                         dataSource={directMessages.map((message) => {
-                                            if (message.sender.id !== selectedChat.id) return null;
+                                            if (message.receiver.id !== selectedChat.id) return;
                                             let type = message.media != null ? 'photo' : 'text';
                                             let uri = message.media != null ? '/storage/' + message.media : 'nofound';
                                             return {

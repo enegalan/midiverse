@@ -157,7 +157,7 @@ export default function CommentCard({ user, comment, post, controls = true, redi
         };
     }, [shareDropdownVisible]);
     return (
-        <article onClick={redirect ? handleCommentRedirect : () => { }} className={`flex gap-2 p-3 w-full transition duration-300 ${redirect ? 'hover:cursor-pointer hover:bg-[var(--hover-light)]' : ''}`} style={{ marginLeft: comment.parent_id ? '20px' : '0' }}>
+        <article onClick={redirect ? handleCommentRedirect : () => { }} className={`flex gap-2 p-3 w-full transition duration-300 ${redirect ? 'cursor-pointer hover:bg-[var(--hover-light)]' : ''}`} style={{ marginLeft: comment.parent_id ? '20px' : '0' }}>
             <div>
                 {redirect ? (
                     <Link onClick={handleUserProfileRedirect} >
@@ -174,11 +174,11 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                     <div className='flex gap-1 items-center justify-between'>
                         {redirect ? (
                             <div className='flex gap-1 items-center'>
-                                <Link onClick={handleUserProfileRedirect} className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] font-bold hover:underline hover:cursor-pointer'>{comment?.user?.name + ' ' + comment?.user?.lastname}</Link>
+                                <Link onClick={handleUserProfileRedirect} className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] font-bold hover:underline cursor-pointer'>{comment?.user?.name + ' ' + comment?.user?.lastname}</Link>
                                 <Link onClick={handleUserProfileRedirect} className='text-sm text-gray-400'>
-                                    <label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + comment?.user?.username}</label>
-                                    <label className='hover:cursor-pointer'> · </label>
-                                    <label className='hover:cursor-pointer'>{formatDateForPublic(comment?.created_at)}</label>
+                                    <label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] cursor-pointer'>{'@' + comment?.user?.username}</label>
+                                    <label className='cursor-pointer'> · </label>
+                                    <label className='cursor-pointer'>{formatDateForPublic(comment?.created_at)}</label>
                                 </Link>
                             </div>
                         ) : (
@@ -293,20 +293,20 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                 <ImagesPreview media={comment.media}/>
                 {controls && (
                     <div className={`flex w-full items-center flex-wrap gap-6 py-1 xl:gap-24 mt-5 justify-center`}>
-                        <div onClick={handleReply} className={`flex py-3 items-center gap-1 xl:gap-2 px-3 relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                        <div onClick={handleReply} className={`flex py-3 items-center gap-1 xl:gap-2 px-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
                             <FaRegComment className='text-md' />
                             <span className='absolute -right-4'>{comment?.replies?.length}</span>
                         </div>
-                        <div onClick={handleLike} className={`flex py-[0.60rem] items-center gap-1 xl:gap-2 px-[0.6rem] relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-like-red)] hover:text-[var(--like-red)]`}>
+                        <div onClick={handleLike} className={`flex py-[0.60rem] items-center gap-1 xl:gap-2 px-[0.6rem] relative transition cursor-pointer rounded-full hover:bg-[var(--hover-like-red)] hover:text-[var(--like-red)]`}>
                             {isLiked ? (
-                                <IoIosHeart className='text-[var(--red)] text-xl hover:cursor-pointer rounded-full' />
+                                <IoIosHeart className='text-[var(--red)] text-xl cursor-pointer rounded-full' />
                             ) : (
-                                <IoIosHeartEmpty className='text-xl hover:cursor-pointer rounded-full' />
+                                <IoIosHeartEmpty className='text-xl cursor-pointer rounded-full' />
                             )}
                             <span className='absolute -right-4'>{comment?.likes?.length}</span>
                         </div>
                         <div className='flex items-center gap-3 xl:gap-6'>
-                            <div onClick={handleBookmark} className={`p-3 relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                            <div onClick={handleBookmark} className={`p-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
                                 {isBookmarked ? (
                                     <FaBookmark className='text-md text-[var(--blue)]' />
                                 ) : (
@@ -314,7 +314,7 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                                 )}
                             </div>
                             <div className='relative'>
-                                    <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                                    <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
                                         <IoShareOutline className='text-xl mb-1' />
                                     </div>
                                     {shareDropdownVisible && (

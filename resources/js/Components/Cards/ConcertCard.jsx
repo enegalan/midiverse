@@ -22,13 +22,13 @@ export default function ConcertCard({ concert = {}, user = null, group = null, }
                             <div className='flex flex-col items-start'>
                                 {user !== null ? (
                                     <>
-                                        <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline hover:cursor-pointer'>{user.name + ' ' + user.lastname}</span>
-                                        <span className='text-sm text-gray-400'><label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + user.username}</label></span>
+                                        <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline cursor-pointer'>{user.name + ' ' + user.lastname}</span>
+                                        <span className='text-sm text-gray-400'><label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] cursor-pointer'>{'@' + user.username}</label></span>
                                     </>
                                 ) : 
                                 (
                                     <>
-                                        <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline hover:cursor-pointer'>{group.name}</span>
+                                        <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline cursor-pointer'>{group.name}</span>
                                     </>
                                 )
                                 }

@@ -83,19 +83,19 @@ export default function Email({ user = null }) {
                             <div className='border-t px-8 py-4'>
                                 <h2 className='font-bold text-xl'>Related to you and your posts</h2>
                                 <div className='flex flex-col gap-3 mt-6'>
-                                    <div onClick={handleNewNotificationsToggle} className={`flex justify-between py-2 items-center ${emailEnabled && 'hover:cursor-pointer'}`}>
+                                    <div onClick={handleNewNotificationsToggle} className={`flex justify-between py-2 items-center ${emailEnabled && 'cursor-pointer'}`}>
                                         <span className={`${!emailEnabled ? 'text-[var(--grey)] cursor-default' : 'text-black'} `}>New notifications</span>
                                         <Checkbox checked={newNotifications} disabled={!emailEnabled} onClick={handleNewNotificationsToggle} />
                                     </div>
-                                    <div onClick={handleDirectMessagesToggle} className={`flex justify-between py-2 items-center ${emailEnabled && 'hover:cursor-pointer'}`}>
+                                    <div onClick={handleDirectMessagesToggle} className={`flex justify-between py-2 items-center ${emailEnabled && 'cursor-pointer'}`}>
                                         <span className={`${!emailEnabled ? 'text-[var(--grey)] cursor-default' : 'text-black'} `}>Direct messages</span>
                                         <Checkbox checked={directMessages} disabled={!emailEnabled} onClick={handleDirectMessagesToggle} />
                                     </div>
-                                    <div onClick={handleConcertsToggle} className={`flex justify-between py-2 items-center ${emailEnabled && 'hover:cursor-pointer'}`}>
+                                    <div onClick={handleConcertsToggle} className={`flex justify-between py-2 items-center ${emailEnabled && 'cursor-pointer'}`}>
                                         <span className={`${!emailEnabled ? 'text-[var(--grey)] cursor-default' : 'text-black'} `}>Concerts news</span>
                                         <Checkbox checked={concerts} disabled={!emailEnabled} onClick={handleConcertsToggle} />
                                     </div>
-                                    <div onClick={handleGroupsToggle} className={`flex justify-between py-2 items-center ${emailEnabled && 'hover:cursor-pointer'}`}>
+                                    <div onClick={handleGroupsToggle} className={`flex justify-between py-2 items-center ${emailEnabled && 'cursor-pointer'}`}>
                                         <span className={`${!emailEnabled ? 'text-[var(--grey)] cursor-default' : 'text-black'} `}>Group news</span>
                                         <Checkbox checked={groups} disabled={!emailEnabled} onClick={handleGroupsToggle} />
                                     </div>

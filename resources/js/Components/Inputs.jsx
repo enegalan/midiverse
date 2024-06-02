@@ -53,6 +53,49 @@ SearchInput.propTypes = {
     placeholder: PropTypes.string,
 };
 
+const TopSearchInput = ({ placeholder = '', action = null }) => {
+    const { data, setData, post, processing, errors } = useForm({
+        query: '',
+    });
+    const [focus, setFocus] = useState(false);
+    const handleSearchChange = (event) => {
+        const newQueryValue = event.target.value;
+        event.stopPropagation();
+        setData('query', newQueryValue);
+        if (action) {
+            setData('query', newQueryValue);
+            if (action !== null) router.get(action, { 'query': newQueryValue }, { preserveState: true })
+        }
+    };
+    const handleFocus = () => {
+        setFocus(true);
+    }
+    const handleBlur = () => {
+        setFocus(false);
+    }
+    return (
+        <div className="py-1 relative flex items-center mt-4 md:mt-0">
+            <span className="absolute">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`${focus ? 'text-[var(--blue)]' : 'text-gray-400 dark:text-gray-600'} w-5 h-5 mx-3`}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+            </span>
+
+            <input
+                type="text"
+                placeholder={placeholder}
+                onChange={handleSearchChange}
+                value={data.query}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="input-outline-remove block w-full py-1.5 pr-5 text-gray-700 bg-white border-gray-200 rounded-lg placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5" />
+            {errors.query && (
+                <div className="text-red-500">{errors.query}</div>
+            )}
+        </div>
+    );
+};
+
 const DragAndDropBox = ({ id = '', title = 'Drag and drop your files here', subtitle = '(or click to select)', multiple = false, onChange = () => { }, previewImage = '' }) => {
     const [preview, setPreview] = useState('');
     useEffect(() => {
@@ -416,4 +459,4 @@ const ChatInput = ({ receiverUser }) => {
     );
 }
 
-export { SearchInput, DragAndDropBox, DragAndDropBox2, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput, InputError, ChatInput };
+export { SearchInput, TopSearchInput, DragAndDropBox, DragAndDropBox2, TextInput, TextAreaInput, DropdownCheckbox, Dropdown, FloatLabelInput, InputError, ChatInput };

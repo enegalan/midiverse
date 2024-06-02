@@ -187,7 +187,7 @@ const SubmitButton = ({ value = "", hoverBackgroundColor = "var(--light-grey)", 
         <div className='flex items-center gap-5'>
             {image ? <img src={`${image}`} className={`${imageClass}`} /> : ""}
             {icon ? <i className={icon}></i> : ""}
-            <input value={value} type="submit" className={`bg-[${backgroundColor}] text-[${textColor}] rounded-xl p-3 px-8 ${borderColor ? 'border-2' : ''} border-[${borderColor}] transition hover:bg-[${hoverBackgroundColor}] hover:text-[${hoverTextColor}] hover:cursor-pointer`} />
+            <input value={value} type="submit" className={`bg-[${backgroundColor}] text-[${textColor}] rounded-xl p-3 px-8 ${borderColor ? 'border-2' : ''} border-[${borderColor}] transition hover:bg-[${hoverBackgroundColor}] hover:text-[${hoverTextColor}] cursor-pointer`} />
         </div>
     );
 };
@@ -383,7 +383,7 @@ const CloseButton = ({ onClick = () => { }, className = '', ...props }) => {
         <button
             {...props}
             onClick={onClick}
-            className={`${className} my-2 hover:cursor-pointer p-2 rounded-full transition duration-300 hover:bg-gray-200 focus:outline-none focus:bg-gray-300`}
+            className={`${className} my-2 cursor-pointer p-2 rounded-full transition duration-300 hover:bg-gray-200 focus:outline-none focus:bg-gray-300`}
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -418,7 +418,7 @@ const Checkbox = ({ className = '', disabled = false, ...props }) => {
             disabled={disabled}
             type='checkbox'
             className={
-                `rounded ${disabled ? 'border-gray-300' : 'border-gray-500'} border-2 w-5 h-5 text-[var(--main-blue)] shadow-sm focus:ring-transparent hover:cursor-pointer ${className}`
+                `rounded ${disabled ? 'border-gray-300' : 'border-gray-500'} border-2 w-5 h-5 text-[var(--main-blue)] shadow-sm focus:ring-transparent cursor-pointer ${className}`
             }
         />
     );
@@ -437,7 +437,7 @@ const ColorOptions = ({ colors = [{}] }) => {
         <div className='flex w-full justify-between'>
             {colors.map((color, index) => {
                 return (
-                    <div onClick={handleColor} key={index} value={color.value} className={`w-12 h-12 rounded-full text-white text-lg flex items-center justify-center transition duration-300 hover:cursor-pointer hover:bg-[${color.hover}]`}>
+                    <div onClick={handleColor} key={index} value={color.value} className={`w-12 h-12 rounded-full text-white text-lg flex items-center justify-center transition duration-300 cursor-pointer hover:bg-[${color.hover}]`}>
                         <div className={`bg-[${color.value}] pointer-events-none w-10 h-10 rounded-full p-2 flex items-center justify-center`}>
                             {activeColor == color.value && (
                                 <span className='pointer-events-none'>
@@ -481,7 +481,7 @@ const BackgroundOptions = ({ backgrounds = [] }) => {
                     key={index}
                     id={`div-background-${index}`}
                     onClick={(e) => handleBackground(e, background.value, index)}
-                    className={`div-background-option rounded border text-[${background.textColor}] text-lg flex py-5 px-2 w-44 items-center justify-around transition duration-300 hover:cursor-pointer bg-[${background.value}]`}
+                    className={`div-background-option rounded border text-[${background.textColor}] text-lg flex py-5 px-2 w-44 items-center justify-around transition duration-300 cursor-pointer bg-[${background.value}]`}
                 >
                     <RadioButton
                         value={background.value}

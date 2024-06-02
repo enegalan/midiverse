@@ -60,7 +60,7 @@ export default function Accessibility({ user = null }) {
                             <div className='px-8 py-4'>
                                 <h2 className='font-bold text-xl'>Vision</h2>
                                 <div className='flex flex-col gap-3 mt-4'>
-                                    <div onClick={handleColorContrastToggle} className={`flex flex-col justify-between py-2 hover:cursor-pointer`}>
+                                    <div onClick={handleColorContrastToggle} className={`flex flex-col justify-between py-2 cursor-pointer`}>
                                         <div className='flex justify-between items-center'>
                                             <span className={`text-black`}>Increase color contrast</span>
                                             <Checkbox checked={colorContrast} onClick={handleColorContrastToggle} />
@@ -72,7 +72,7 @@ export default function Accessibility({ user = null }) {
                             <div className='px-8 py-4 border-t'>
                                 <h2 className='font-bold text-xl'>Motion</h2>
                                 <div className='flex flex-col gap-3 mt-4'>
-                                    <div onClick={handleReduceMotionToggle} className={`flex flex-col justify-between py-2 hover:cursor-pointer`}>
+                                    <div onClick={handleReduceMotionToggle} className={`flex flex-col justify-between py-2 cursor-pointer`}>
                                         <div className='flex justify-between items-center'>
                                             <span className={`text-black`}>Reduce motion</span>
                                             <Checkbox checked={reduceMotion} onClick={handleReduceMotionToggle} />

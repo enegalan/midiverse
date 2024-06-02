@@ -159,7 +159,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
         };
     }, [shareDropdownVisible]);
     return (
-        <article onClick={redirect ? handlePostClick : () => { }} className={`${border ? 'border-t' : ''} flex p-3 gap-2 justify-start transition duration-300 ${redirect && 'hover:bg-[var(--hover-light)] hover:cursor-pointer'}`} key={post?.id}>
+        <article onClick={redirect ? handlePostClick : () => { }} className={`${border ? 'border-t' : ''} flex p-3 gap-2 justify-start transition duration-300 ${redirect && 'hover:bg-[var(--hover-light)] cursor-pointer'}`} key={post?.id}>
             <div>
                 {redirect ? (
                     <Link onClick={handleUserProfileRedirect} >
@@ -175,11 +175,11 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                 <div className='flex gap-1 items-center justify-between'>
                     {redirect ? (
                         <div className='flex gap-1 items-center'>
-                            <Link onClick={handleUserProfileRedirect} className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] font-bold hover:underline hover:cursor-pointer'>{post?.user?.name + ' ' + post?.user?.lastname}</Link>
+                            <Link onClick={handleUserProfileRedirect} className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] font-bold hover:underline cursor-pointer'>{post?.user?.name + ' ' + post?.user?.lastname}</Link>
                             <Link onClick={handleUserProfileRedirect} className='text-sm text-gray-400'>
-                                <label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] hover:cursor-pointer'>{'@' + post?.user?.username}</label>
-                                <label className='hover:cursor-pointer'> · </label>
-                                <label className='hover:cursor-pointer'>{formatDateForPublic(post?.created_at)}</label>
+                                <label className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px] cursor-pointer'>{'@' + post?.user?.username}</label>
+                                <label className='cursor-pointer'> · </label>
+                                <label className='cursor-pointer'>{formatDateForPublic(post?.created_at)}</label>
                             </Link>
                         </div>
                     ) : (
@@ -296,20 +296,20 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                 {separators && controls && (<div className="border-t mt-5 border-gray-100 flex-grow"></div>)}
                 {controls && (
                     <div className={`flex flex-wrap gap-6 py-1 xl:gap-24 ${!separators && 'mt-5'} justify-center`}>
-                        <div onClick={handleComment} className={`flex items-center gap-1 xl:gap-2 px-3 relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                        <div onClick={handleComment} className={`flex items-center gap-1 xl:gap-2 px-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
                             <FaRegComment className='text-md' />
                             <span className='absolute -right-4'>{post?.comments?.length}</span>
                         </div>
-                        <div onClick={handleLike} className={`flex items-center gap-1 xl:gap-2 px-[0.6rem] relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-like-red)] hover:text-[var(--like-red)]`}>
+                        <div onClick={handleLike} className={`flex items-center gap-1 xl:gap-2 px-[0.6rem] relative transition cursor-pointer rounded-full hover:bg-[var(--hover-like-red)] hover:text-[var(--like-red)]`}>
                             {isLiked ? (
-                                <IoIosHeart className='text-[var(--red)] text-xl hover:cursor-pointer rounded-full' />
+                                <IoIosHeart className='text-[var(--red)] text-xl cursor-pointer rounded-full' />
                             ) : (
-                                <IoIosHeartEmpty className='text-xl hover:cursor-pointer rounded-full' />
+                                <IoIosHeartEmpty className='text-xl cursor-pointer rounded-full' />
                             )}
                             <span className='absolute -right-4'>{post?.likes?.length}</span>
                         </div>
                         <div className='flex items-center gap-3 xl:gap-6'>
-                            <div onClick={handleBookmark} className={`p-3 relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                            <div onClick={handleBookmark} className={`p-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
                                 {isBookmarked ? (
                                     <FaBookmark className='text-md text-[var(--blue)]' />
                                 ) : (
@@ -317,7 +317,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                                 )}
                             </div>
                             <div className='relative'>
-                                <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition hover:cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                                <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
                                     <IoShareOutline className='text-xl mb-1' />
                                 </div>
                                 {shareDropdownVisible && (

@@ -9,7 +9,7 @@ export default function GroupCard({ className = '', disableFollowButton = false,
             <div className='flex flex-col w-full gap-6'>
                 <div className="flex flex-row justify-between">
                     <div className='flex flex-col items-start'>
-                        <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline hover:cursor-pointer'>{group.name}</span>
+                        <span className='whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[160px] font-bold hover:underline cursor-pointer'>{group.name}</span>
                     </div>
                     {!disableFollowButton && (
                         <div>

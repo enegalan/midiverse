@@ -38,7 +38,7 @@ export default function Follows({ auth_user = null, user = null, type = '', foll
                                 {followings && followings.length > 0 ? (
                                     followings.map((following, index) => {
                                         return (
-                                            <PeopleCard key={index} auth_user={auth_user} className='transition hover:bg-[var(--hover-light)] hover:cursor-pointer' user={following} />
+                                            <PeopleCard key={index} auth_user={auth_user} className='transition hover:bg-[var(--hover-light)] cursor-pointer' user={following} />
                                         );
                                     })
                                 ) : (

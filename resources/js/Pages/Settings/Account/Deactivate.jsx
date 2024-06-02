@@ -58,7 +58,7 @@ export default function Deactivate({ user = null }) {
                             <li className='border-b py-3 text-sm text-[var(--grey)] px-8'>Some account information may still be available in search engines, such as Google or Bing.</li>
                             <li className='border-b py-3 text-sm text-[var(--grey)] px-8'>If you just want to change your @username, you don’t need to deactivate your account — edit it in your <Link className='text-[var(--main-blue)] hover:underline' href={`/u/${user.username}`}>profile</Link>.</li>
                             <Link onClick={handleDeactivate} className='text-[var(--red)]'>
-                                <li className='py-4 px-8 text-center transition duration-300 hover:cursor-pointer hover:bg-[var(--hover-red)]'>
+                                <li className='py-4 px-8 text-center transition duration-300 cursor-pointer hover:bg-[var(--hover-red)]'>
                                     Deactivate
                                 </li>
                             </Link>

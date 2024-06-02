@@ -248,7 +248,7 @@ const Navbar = ({
                     </div>
                     <div className="absolute mt-24 xl:mt-1 flex-1 flex justify-center items-center">
                         {user.avatar ? (
-                            <span onClick={toggleLogoutModal} className='px-2 py-2 flex gap-3 justify-center items-center transition rounded-full hover:cursor-pointer hover:bg-[var(--hover-light)] w-full"'>
+                            <span onClick={toggleLogoutModal} className='px-2 py-2 flex gap-3 justify-center items-center transition rounded-full cursor-pointer hover:bg-[var(--hover-light)] w-full"'>
                                 <Avatar image={user.avatar} size="large" shape="circle" />
                                 {/* <img src={'https://lh3.googleusercontent.com/a/ACg8ocLHGmAZcqZaiWkBKYTc5PM7K6kVberb2KrzSLFMfBB_agI=s96-c'} alt="User avatar" /> */}
                                 <div className='hidden xl:flex flex-col'>
@@ -260,7 +260,7 @@ const Navbar = ({
                                 </div>
                             </span>
                         ) : (
-                            <span onClick={toggleLogoutModal} className='px-2 py-2 flex justify-center items-center transition rounded-full hover:cursor-pointer hover:bg-[var(--hover-light)] w-full"'>
+                            <span onClick={toggleLogoutModal} className='px-2 py-2 flex justify-center items-center transition rounded-full cursor-pointer hover:bg-[var(--hover-light)] w-full"'>
                                 <Avatar label={userInitials} size="large" shape="circle" style={{ backgroundColor: '#2196F3', color: '#ffffff' }} />
                             </span>
                         )}

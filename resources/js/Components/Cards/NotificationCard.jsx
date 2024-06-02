@@ -80,13 +80,13 @@ export default function NotificationCard({ notification = null }) {
                 </div>
                 <div>
                     <div>
-                        <span onClick={handleProfileRedirect} className='hover:cursor-pointer'>
+                        <span onClick={handleProfileRedirect} className='cursor-pointer'>
                             <img className='w-10 min-w-10 rounded-full' src={notification?.from_user?.avatar} alt={`${notification?.from_user?.username} avatar`} />
                         </span>
                     </div>
                     <div className='flex flex-col w-full mt-2'>
                         <div className='flex gap-1 items-center'>
-                            <span onClick={handleProfileRedirect} className='text-sm max-w-[100px] lg:max-w-none whitespace-nowrap overflow-hidden overflow-ellipsis font-bold hover:underline hover:cursor-pointer'>{notification?.from_user?.name + ' ' + notification?.from_user?.lastname}</span>
+                            <span onClick={handleProfileRedirect} className='text-sm max-w-[100px] lg:max-w-none whitespace-nowrap overflow-hidden overflow-ellipsis font-bold hover:underline cursor-pointer'>{notification?.from_user?.name + ' ' + notification?.from_user?.lastname}</span>
                         </div>
                         <div className='flex flex-col justify-center mt-3'>
                             <span className='text-sm text-[var(--grey)]' style={{ overflowWrap: 'anywhere' }}>{notification?.message}</span>

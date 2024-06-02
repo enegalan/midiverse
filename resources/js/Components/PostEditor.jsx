@@ -214,7 +214,7 @@ export default function PostEditor({
                         )}
                         {focusActive && (
                             <div className='relative'>
-                                <div onClick={handleWhoCanReply} className='inline-flex select-none items-center ml-2 py-[0.12rem] px-3 gap-2 rounded-full text-[var(--blue)] transition duration-300 hover:cursor-pointer hover:bg-[var(--hover-blue)]'>
+                                <div onClick={handleWhoCanReply} className='inline-flex select-none items-center ml-2 py-[0.12rem] px-3 gap-2 rounded-full text-[var(--blue)] transition duration-300 cursor-pointer hover:bg-[var(--hover-blue)]'>
                                     {visibility == 0 ? (
                                         <>
                                             <span className='pointer-events-none'><IoEarth /></span>

@@ -125,9 +125,6 @@ export default function Profile({ auth_user = null, group = null, group_roles = 
                                         </div>
                                     ) : (
                                         <div className='flex items-center gap-2'>
-                                            <IconButton className='text-2xl hover:bg-[var(--hover-light)]' >
-                                                <AiOutlineMessage />
-                                            </IconButton>
                                             <FollowButton onClick={() => {window.location.reload()}} group={group} userFollow={false} groupFollow={true} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />
                                         </div>
                                     )}

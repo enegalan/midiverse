@@ -8,7 +8,7 @@ export default function ProfileTopNavbar({ user = null }) {
             <nav className='sticky flex items-center top-0 w-full backdrop-blur-md border-b border-gray-200/50'>
                 <div className='bg-white/25 flex gap-6 items-center w-full'>
                     <BackButton />
-                    <div className='flex flex-col hover:cursor-pointer'>
+                    <div className='flex flex-col cursor-pointer'>
                         <h2 className='text-lg font-bold'>{userFullName}</h2>
                         <span className='text-xs text-[var(--grey)]'>{user.posts.length} posts</span>
                     </div>

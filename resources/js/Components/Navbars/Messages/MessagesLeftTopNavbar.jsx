@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { IconButton } from "@/Components/Buttons";
 import { FiSettings } from "react-icons/fi";
 import { BsSendPlus } from "react-icons/bs";
+import { openModal } from "@/Functions";
+import NewMessageModal from "@/Pages/Modals/NewMessageModal";
 
-
-export default function MessagesLeftTopNavbar({ user = null }) {
+export default function MessagesLeftTopNavbar({ user }) {
     const handleNewMessage = (e) => {
         e.preventDefault();
+        openModal('new-message-modal', <NewMessageModal user={user} users={[...user.followings, ...user.followers]} />);
     }
     return (
         <>
