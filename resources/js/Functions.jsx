@@ -130,6 +130,13 @@ function isUserFollowing(auth_user, user) {
     return false;
 }
 
+function isUserFollower(auth_user, user) {
+    for (let follower of auth_user.followers) {
+        if (follower.id == user.id) return true; break;
+    }
+    return false;
+}
+
 function userFollowsGroup(user, group) {
     for (let follower of group.followers) {
         if (follower.id == user.id) return true; break;
@@ -155,4 +162,4 @@ function isMobile() {
 }
 
 
-export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, userFollowsGroup, userMemberGroup, getUsernameFromEmail, formatDateForPublic, isMobile };
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, isUserFollower, userFollowsGroup, userMemberGroup, getUsernameFromEmail, formatDateForPublic, isMobile };

@@ -26,7 +26,7 @@ use Inertia\Inertia;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [MainController::class, 'home'])->name('home');
-    
+
     Route::get('/explore', [MainController::class, 'explore'])->name('explore');
     
     Route::get('/concerts', [MainController::class, 'concerts'])->name('concerts');
@@ -36,12 +36,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/notifications', [MainController::class, 'notifications'])->name('notifications');
 
     Route::get('/bookmarks', [MainController::class, 'bookmarks'])->name('bookmarks');
-    
+
     // Messages
     Route::get('/messages', [MainController::class, 'messages'])->name('messages');
     Route::get('/messages/{username}', [MainController::class, 'messagesUser'])->name('messages.user');
     Route::post('/messages', [DirectMessageController::class, 'store'])->name('messages.store');
-    
+
     // Profile
     Route::get('/u/{username}', [UserController::class, 'getProfile'])->name('profile');
     Route::get('/profile', [MainController::class, 'profileRedirect']);
@@ -55,7 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Store Midi
     Route::post('/midi/create', [UserController::class,'storeMidi'])->name('store.midi');
-    
+
     // Groups
     Route::get('/groups', [UserController::class,'renderGroups'])->name('render.groups');
     Route::post('/group/create', [GroupController::class,'store'])->name('groups.store');
@@ -93,6 +93,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/settings/privacity', [SettingsController::class, 'privacity'])->name('settings.privacity');
     Route::get('/settings/privacity/audience_and_media', [SettingsController::class, 'audienceAndMedia'])->name('settings.privacity.audienceandmedia');
     Route::get('/settings/privacity/mute_and_block', [SettingsController::class, 'muteAndBlock'])->name('settings.privacity.muteandblock');
+    Route::get('/settings/privacity/direct_messages', [SettingsController::class, 'directMessages'])->name('settings.privacity.direct_messages');
     // Notifications
     Route::get('/settings/notifications', [SettingsController::class, 'notifications'])->name('settings.notifications');
     Route::get('/settings/notifications/push', [SettingsController::class, 'pushNotifications'])->name('settings.notifications.push');
@@ -103,7 +104,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/settings/accessibility_display_and_languages/display', [SettingsController::class, 'display'])->name('settings.accessibility_display_and_languages.display');
     Route::get('/settings/accessibility_display_and_languages/languages', [SettingsController::class, 'languages'])->name('settings.accessibility_display_and_languages.languages');
     Route::get('/settings/accessibility_display_and_languages/language', [SettingsController::class, 'language'])->name('settings.accessibility_display_and_languages.language');
-    
 
     // Get Data Routes
     Route::get('/user/following/{username}', [UserController::class, 'isFollowing'])->name('user.is.following');
@@ -120,13 +120,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/group/request/follow/accept', [GroupController::class, 'acceptFollowRequest'])->name('group.accept.follow');
     Route::post('/group/request/invite/accept', [GroupController::class, 'acceptInvite'])->name('group.accept.invite');
     Route::post('/group/notification/delete', [GroupController::class, 'deleteFollowRequest'])->name('group.delete.follow');
-    // Protect
+    // User SET settings
     Route::post('/user/set/private', [UserController::class, 'setSessionPrivate'])->name('user.set.private');
+    Route::post('/user/set/allowed_message_requests', [UserController::class, 'setAllowedMessageRequests'])->name('user.set.allowed_message_requests');
+    Route::post('/user/set/read_receipts', [UserController::class, 'setReadReceipts'])->name('user.set.read_receipts');
     // Invitations
     Route::post('/group/generate/invite', [InvitationController::class, 'generateGroupInvite'])->name('group.generate.invite');
     Route::get('/group/invite/{token}', [InvitationController::class, 'acceptGroupInvite'])->name('group.accept.invite');
     // Bookmark
     Route::post('/user/bookmark/{token}', [UserController::class, 'bookmark'])->name('user.bookmark');
+    // Snooze
+    Route::post('/user/snooze/', [UserController::class, 'snoozeUser'])->name('user.snooze');
 });
 // Redirect routes
 Route::get('/', [MainController::class, 'rootRedirect']);

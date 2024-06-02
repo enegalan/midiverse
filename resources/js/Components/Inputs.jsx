@@ -331,7 +331,7 @@ const InputError = ({ message, className = '', ...props }) => {
     ) : null;
 }
 
-const ChatInput = ({ receiverUser }) => {
+const ChatInput = ({ user, receiverUser }) => {
     const [value, setValue] = useState('');
     const [media, setMedia] = useState([]);
     const [preview, setPreview] = useState([]);
@@ -383,7 +383,15 @@ const ChatInput = ({ receiverUser }) => {
         e.preventDefault();
         if (value.length > 0 || media.length > 0) {
             const formData = new FormData();
-            formData.append('receiver_id', receiverUser.id);
+            var receiverId = null;
+            if (receiverUser.receiver && user.id == receiverUser.receiver.id) {
+                receiverId = receiverUser.sender.id;
+            } else if (receiverUser.sender && user.id == receiverUser.sender.id) {
+                receiverId = receiverUser.receiver.id;
+            } else {
+                receiverId = receiverUser.id;
+            }
+            formData.append('receiver_id', receiverId);
             if (value) {
                 formData.append('message', value);
             }

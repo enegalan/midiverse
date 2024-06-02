@@ -4,10 +4,10 @@ import { FiSettings } from "react-icons/fi";
 import { BsSendPlus } from "react-icons/bs";
 import { MdInfoOutline } from "react-icons/md";
 
-export default function MessagesRightTopNavbar({ user = null }) {
+export default function MessagesRightTopNavbar({ user = null, onInfoClick = () => {} }) {
     const handleInfo = (e) => {
         e.preventDefault();
-        // TODO
+        onInfoClick();
     }
     return (
         <>

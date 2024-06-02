@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DirectMessage;
 use App\Events\DirectMessageSent;
+use App\Models\UserNotification;
+use App\Models\User;
 use Inertia\Inertia;
 
 class DirectMessageController extends Controller {
@@ -28,5 +30,24 @@ class DirectMessageController extends Controller {
             'media' => $mediaPath,
         ]);
         broadcast(new DirectMessageSent($message));
+        $authUser = User::findOrFail(auth()->id());
+        $receiver = User::findOrFail($request->receiver_id);
+        $snoozedUsers = UserController::getSnoozedUsers($receiver);
+        $isSnoozed = false;
+        foreach ($snoozedUsers as $snoozedUser) {
+            if ($snoozedUser->id == $authUser->id) {
+                $isSnoozed = true;
+                break;
+            }
+        }
+        if (!$isSnoozed) {
+            // Send notification
+            UserNotification::create([
+                'user_id' => $request->receiver_id,
+                'from_user_id' => $authUser->id,
+                'message' => NotificationController::getMessageForDirectMessage($authUser->username),
+                'type' => UserNotification::NOTIFICATION_TYPE_DIRECT_MESSAGE,
+            ]);
+        }
     }
 }

@@ -73,7 +73,7 @@ export default function NewMessageModal({ user, users = [] }) {
                                                     </h5>
                                                 ) : (
                                                     <h5 className='text-[var(--grey)] flex items-center gap-1'>
-                                                        <span className={`text-sm ${user.private ? 'text-[var(--grey)]' : ''}`}>{'@' + user.username}{user2.private ? ` can't be messaged` : ''}</span>
+                                                        <span className={`text-sm ${user.allowed_message_requests ? 'text-[var(--grey)]' : ''}`}>{'@' + user.username}{user2.allowed_message_requests ? ` can't be messaged` : ''}</span>
                                                     </h5>
                                                 )}
                                             </div>

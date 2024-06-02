@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable implements MustVerifyEmail {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    public const ALLOWED_MESSAGE_REQUEST_NO_ONE = 0;
+    public const ALLOWED_MESSAGE_REQUEST_EVERYONE = 1;
+
     protected $table = 'users';
 
     /**
@@ -32,6 +35,9 @@ class User extends Authenticatable implements MustVerifyEmail {
         'avatar',
         'sub',
         'email_verified_at',
+        'private',
+        'allowed_message_requests',
+        'read_receipts',
     ];
 
     /**

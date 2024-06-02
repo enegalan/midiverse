@@ -8,6 +8,7 @@ import { HiOutlineUsers } from "react-icons/hi2";
 import { BiVolumeMute } from "react-icons/bi";
 import { BackButton } from "@/Components/Buttons";
 import { isMobile } from "@/Functions";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 export default function Privacity({ user = null }) {
     const [hiddenRightNavbar, setHiddenRightNavbar] = useState(localStorage.getItem('settings_active_link') == 'privacity' && isMobile() ? false : true);
@@ -43,6 +44,13 @@ export default function Privacity({ user = null }) {
             'href': 'mute_and_block',
             'icon': <BiVolumeMute />,
         },
+        {
+            'id': 'direct_messages',
+            'name': 'Direct Messages',
+            'subtitle': 'Manage who can message you directly',
+            'href': 'direct_messages',
+            'icon': <IoChatbubbleEllipsesOutline />,
+        },
     ];
     return (
         <>
@@ -54,7 +62,8 @@ export default function Privacity({ user = null }) {
                         </div>
                     </section>
                 </div>
-                <RightNavbar hideMobile={hiddenRightNavbar} className='w-[70%] lg:w-[40%]' rightBorder={true} setPaddingX={false} minWidth='700px'>                    <div className='h-screen'>
+                <RightNavbar hideMobile={hiddenRightNavbar} className='w-[70%] lg:w-[40%]' rightBorder={true} setPaddingX={false} minWidth='700px'>
+                <div className='h-screen'>
                     <div className='px-5 flex flex-col gap-5'>
                         <div className='flex items-center gap-6'>
                             <BackButton onClick={handleBack} className='block lg:hidden'/>

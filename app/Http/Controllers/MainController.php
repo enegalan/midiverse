@@ -68,13 +68,25 @@ class MainController extends Controller {
 
     public static function messagesUser ($username) {
         $selectedUser = User::where('username', $username)->first();
-        $user = auth()->user();
-        app()->call([UserController::class,'loadUserData'], compact('user'));
-        $messages = \App\Models\DirectMessage::where('sender_id', $user->id)
-            ->orWhere('receiver_id', $user->id)
-            ->with(['sender', 'receiver'])
-            ->get();
-        return Inertia::render('Messages', compact('user', 'messages', 'selectedUser'));
+        $user = User::findOrFail(auth()->id());
+        $isAuthUserFollowingJson = app()->call([UserController::class, 'isFollowing'], array('username' => $user->username));
+        $isAuthUserFollowing = json_decode($isAuthUserFollowingJson, true);
+        $isSelectedUserFollowingJson = app()->call([UserController::class, 'isFollowing'], array('username' => $username));
+        $isSelectedUserFollowing = json_decode($isSelectedUserFollowingJson, true);
+        if (!$selectedUser|| $selectedUser->id == auth()->id()) {
+            return redirect()->route('messages');
+        }
+        $hasPreviousMessages = \DB::table('direct_messages')->where('sender_id', auth()->id())->orWhere('receiver_id', auth()->id())->exists();
+        if ($isSelectedUserFollowing['status'] || $isAuthUserFollowing['status'] || $hasPreviousMessages) {
+            app()->call([UserController::class,'loadUserData'], compact('user'));
+            $messages = \App\Models\DirectMessage::where('sender_id', $user->id)
+                ->orWhere('receiver_id', $user->id)
+                ->with(['sender', 'receiver'])
+                ->get();
+            return Inertia::render('Messages', compact('user', 'messages', 'selectedUser'));
+        } else {
+            return redirect()->route('messages');
+        }
     }
 
     public static function bookmarks () {

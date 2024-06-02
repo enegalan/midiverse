@@ -84,4 +84,8 @@ class NotificationController extends Controller {
     public static function getNewGroupMemberMessage($username, $group_name) {
         return $username . ' has joined as member of ' . $group_name . ' group.';
     }
+
+    public static function getMessageForDirectMessage($username) {
+        return $username . ' has sent you a message.';
+    }
 }

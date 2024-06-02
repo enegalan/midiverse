@@ -42,6 +42,7 @@ class UserController extends Controller
         app()->call([self::class, 'getConcerts'], compact('user'));
         app()->call([self::class, 'getGroups'], compact('user'));
         app()->call([self::class, 'getAuthType'], compact('user'));
+        app()->call([self::class, 'getSnoozedUsers'], compact('user'));
         app()->call([NotificationController::class, 'getUnreadNotificationsCount'], compact('user'));
         app()->call([NotificationController::class, 'getNotifications'], compact('user'));
     }
@@ -409,6 +410,8 @@ class UserController extends Controller
                         'email_verified_at' => $user->email_verified_at,
                         'created_at' => $user->created_at,
                         'private' => $user->private,
+                        'read_receipts' => $user->read_receipts,
+                        'allowed_message_requests' => $user->allowed_message_requests,
                     ],
                     'created_at' => $bookmark->created_at,
                     'updated_at' => $bookmark->updated_at,
@@ -437,6 +440,8 @@ class UserController extends Controller
                         'email_verified_at' => $user->email_verified_at,
                         'created_at' => $user->created_at,
                         'private' => $user->private,
+                        'read_receipts' => $user->read_receipts,
+                        'allowed_message_requests' => $user->allowed_message_requests,
                     ],
                     'comment_id' => $bookmark->comment_id,
                     'created_at' => $bookmark->created_at,
@@ -533,7 +538,7 @@ class UserController extends Controller
             // Devolver una respuesta JSON indicando si el usuario está siguiendo al usuario objetivo
             return response()->json(['status' => $isFollowing])->getContent();
         } else {
-            return response()->json(['status' => 'false'])->getContent();
+            return response()->json(['status' => false])->getContent();
         }
     }
 
@@ -716,6 +721,50 @@ class UserController extends Controller
         $user = User::findOrFail(auth()->user()->id);
         $user->private = !$user->private;
         $user->save();
+    }
+
+    public static function setAllowedMessageRequests() {
+        $user = User::findOrFail(auth()->user()->id);
+        $allowed_message_requests = 0;
+        if ($user->allowed_message_requests == 0) {
+            $allowed_message_requests = 1;
+        }
+        $user->allowed_message_requests = $allowed_message_requests;
+        $user->save();
+    }
+
+    public static function setReadReceipts() {
+        $user = User::findOrFail(auth()->user()->id);
+        $user->read_receipts = !$user->read_receipts;
+        $user->save();
+    }
+
+    public static function snoozeUser(Request $request) {
+        $user = User::findOrFail(auth()->user()->id);
+        $snoozed_user_id = $request->input('snoozed_user_id');
+        $alreadySnoozed = \DB::table('snoozed_users')->where('user_id', $user->id)->where('snoozed_user_id', $snoozed_user_id)->exists();
+        if ($alreadySnoozed) {
+            \DB::table('snoozed_users')->where('user_id', $user->id)->where('snoozed_user_id', $snoozed_user_id)->delete();
+        } else {
+            \DB::table('snoozed_users')->insert([
+                'user_id' => $user->id,
+                'snoozed_user_id' => $snoozed_user_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+    }
+
+    public static function getSnoozedUsers(&$user) : array {
+        $snoozed_users = \DB::table('snoozed_users')->where('user_id', $user->id)->get();
+        $users = array();
+        foreach($snoozed_users as $snoozed_user) {
+            $user2 = User::findOrFail($snoozed_user->snoozed_user_id);
+            app()->call([UserController::class, 'loadUserData'], array('user' => $user2));
+            $users[] = $user2;
+        }
+        $user->snoozed_users = $users;
+        return $users;
     }
 
     public static function hasSentFollowRequest(Request $request)

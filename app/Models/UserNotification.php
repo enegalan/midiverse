@@ -15,6 +15,7 @@ class UserNotification extends Model
     public const NOTIFICATION_TYPE_ROL = 4;
     public const NOTIFICATION_TYPE_REQUEST_ACCEPTED = 5;
     public const NOTIFICATION_TYPE_INVITE = 6;
+    public const NOTIFICATION_TYPE_DIRECT_MESSAGE = 7;
     protected $table = 'user_notifications';
     protected $fillable = [
         'user_id',

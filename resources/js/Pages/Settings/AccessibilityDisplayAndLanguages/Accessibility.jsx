@@ -63,7 +63,7 @@ export default function Accessibility({ user = null }) {
                                     <div onClick={handleColorContrastToggle} className={`flex flex-col justify-between py-2 cursor-pointer`}>
                                         <div className='flex justify-between items-center'>
                                             <span className={`text-black`}>Increase color contrast</span>
-                                            <Checkbox checked={colorContrast} onClick={handleColorContrastToggle} />
+                                            <Checkbox readOnly={true} checked={colorContrast} />
                                         </div>
                                         <span className='text-sm text-[var(--grey)]'>Improves legibility by increasing the contrast between text and background colors.</span>
                                     </div>
@@ -75,7 +75,7 @@ export default function Accessibility({ user = null }) {
                                     <div onClick={handleReduceMotionToggle} className={`flex flex-col justify-between py-2 cursor-pointer`}>
                                         <div className='flex justify-between items-center'>
                                             <span className={`text-black`}>Reduce motion</span>
-                                            <Checkbox checked={reduceMotion} onClick={handleReduceMotionToggle} />
+                                            <Checkbox readOnly={true} checked={reduceMotion} />
                                         </div>
                                         <span className='text-sm text-[var(--grey)]'>Limits the amount of in-app animations, including live engagement counts.</span>
                                     </div>

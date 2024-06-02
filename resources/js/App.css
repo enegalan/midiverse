@@ -140,6 +140,7 @@ pre {
 /* React Chat Elements CSS rework */
 .rce-citem-body {
   border: none !important;
+  pointer-events: none !important;
 }
 .rce-citem {
   background: none !important;

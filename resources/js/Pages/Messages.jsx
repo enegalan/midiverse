@@ -8,15 +8,20 @@ import MessagesRightTopNavbar from "@/Components/Navbars/Messages/MessagesRightT
 import { MessageList, ChatItem } from 'react-chat-elements';
 import { AuthButton } from "@/Components/Buttons";
 import { SearchInput } from "@/Components/Inputs";
-import { formatDateForPublic, openModal } from "@/Functions";
+import { formatDateForPublic, isUserFollowing, isUserFollower, openModal } from "@/Functions";
 import NewMessageModal from "./Modals/NewMessageModal";
 import axios from "axios";
 import { router } from "@inertiajs/react";
+import { BackButton } from "@/Components/Buttons";
+import { FollowButton } from "@/Components/Buttons";
+import { InputSwitch } from 'primereact/inputswitch';
 
 export default function Messages({ user = null, messages = [], selectedUser = null }) {
     var [directMessages, setDirectMessages] = useState(messages);
     const [messagesUsers, setMessagesUsers] = useState([]);
     const [selectedChat, setSelectedChat] = useState(selectedUser);
+    const [infoVisible, setInfoVisible] = useState(false);
+    const [snoozeUser, setSnoozeUser] = useState(false);
     const messageListReference = useRef(null);
     useEffect(() => {
         if (user) {
@@ -31,40 +36,55 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
             };
         }
     }, [user]);
-
     useEffect(() => {
         const uniqueUsers = {};
         for (let message of messages) {
-            uniqueUsers[message.receiver.username] = {
-                id: message.receiver.id,
-                avatar: message.receiver.avatar || '',
-                alt: message.receiver.username,
-                title: message.receiver.username,
+            let uniqueUser = message.receiver.username == user.username ? message.sender : message.receiver;
+            uniqueUsers[uniqueUser.username] = {
+                id: uniqueUser.id,
+                avatar: uniqueUser.avatar || '',
+                alt: uniqueUser.username,
+                title: uniqueUser.username,
                 subtitle: message.message,
                 dateString: formatDateForPublic(message.created_at),
             };
         }
         setMessagesUsers(Object.values(uniqueUsers));
     }, [messages]);
-
     useEffect(() => {
         if (messageListReference.current) {
             messageListReference.current.scrollTop = messageListReference.current.scrollHeight;
         }
     }, [directMessages]);
-
+    useEffect(() => {
+        if (!selectedChat) return;
+        for (let snoozedUser of user.snoozed_users) {
+            if (snoozedUser.id == selectedChat.id) {
+                setSnoozeUser(true);
+            }
+        }
+    }, [selectedChat]);
     const handleNewMessage = (e) => {
         e.preventDefault();
         openModal('new-message-modal', <NewMessageModal user={user} users={[...user.followings, ...user.followers]} />);
     };
-
-    const handleSelectUserChat = (e) => {
-        // <hack>
-        var username = e.target.parentElement.parentElement.parentElement.parentElement.children[0].children[1].children[0].children[0].innerText;
-        // </hack>
-        router.get(`/messages/${username}`);
+    const handleSelectUserChat = (user) => {
+        router.get(`/messages/${user.title}`);
     };
-
+    const handleInfoClick = () => {
+        setInfoVisible(true);
+    }
+    const handleBack = (e) => {
+        e.preventDefault();
+        setInfoVisible(false);
+    }
+    const handleSnooze = (e) => {
+        e.preventDefault();
+        setSnoozeUser(!snoozeUser);
+        const formData = new FormData();
+        formData.append('snoozed_user_id', selectedChat.id);
+        axios.post('/user/snooze/', formData);
+    }
     return (
         <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
             <section className="pb-16 border-r relative max-w-[430px] flex-1">
@@ -81,7 +101,7 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
                                     key={index}
                                     avatar={user.avatar}
                                     alt={user.title}
-                                    onClick={handleSelectUserChat}
+                                    onClick={(e) => {handleSelectUserChat(user)}}
                                     title={user.title}
                                     subtitle={user.subtitle}
                                     date={user.dateString}
@@ -102,9 +122,9 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
                 )}
             </section>
             <RightNavbar setPaddingY={false} setPaddingX={false} className='py-0 px-0 gap-0' rightBorder={true} width="600px" minWidth='600px'>
-                {selectedChat ? (
+                {selectedChat && !infoVisible ? (
                     <>
-                        <MessagesRightTopNavbar user={selectedChat} />
+                        <MessagesRightTopNavbar onInfoClick={handleInfoClick} user={selectedChat} />
                         <div className="overflow-y-scroll h-full" ref={messageListReference}>
                             <div className='flex flex-col'>
                                 <div className='pb-8 overflow-y-scroll mt-20'>
@@ -113,7 +133,8 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
                                         lockable={true}
                                         toBottomHeight={'100%'}
                                         dataSource={directMessages.map((message) => {
-                                            if (message.receiver.id !== selectedChat.id) return;
+                                            let uniqueUser = message.receiver.username == user.username ? message.sender : message.receiver;
+                                            if (uniqueUser.id !== selectedChat.id) return;
                                             let type = message.media != null ? 'photo' : 'text';
                                             let uri = message.media != null ? '/storage/' + message.media : 'nofound';
                                             return {
@@ -131,8 +152,47 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
                                 </div>
                             </div>
                         </div>
-                        <MessageForm receiverUser={selectedChat} />
+                        <MessageForm user={user} receiverUser={selectedChat} />
                     </>
+                ) : infoVisible ? (
+                    <div className='h-full'>
+                        <div className='px-5 py-2 flex gap-8 mb-2 items-center'>
+                            <BackButton onClick={handleBack} />
+                            <h2 className='font-bold text-xl'>Conversation info</h2>
+                        </div>
+                        <div className='flex items-center justify-between py-3 px-5 cursor-pointer hover:bg-[var(--hover-light)]'>
+                            <div className='flex items-center gap-2'>
+                                <div>
+                                    <img className='w-12 rounded-full' src={selectedChat.avatar} alt={selectedChat.username} />
+                                </div>
+                                <div className='flex flex-col'>
+                                    <h3 className='text-md font-bold'>{selectedChat.name} {selectedChat.lastname ?? ''}</h3>
+                                    <div className='flex items-center gap-1'>
+                                        <h4 className='text-sm text-[var(--grey)]'>@{selectedChat.username}</h4>
+                                        {isUserFollower(user, selectedChat) && isUserFollowing(user, selectedChat) ? (
+                                            <span className='rounded text-xs text-[var(--grey)] py-[0.15rem] px-1 bg-[var(--hover-light)]'>You follow each other</span>
+                                        ) : isUserFollowing(user, selectedChat) ? (
+                                            <span className='rounded text-xs text-[var(--grey)] py-[0.15rem] px-1 bg-[var(--hover-light)]'>You are follower</span>
+                                        ) : isUserFollower(user, selectedChat) && (
+                                            <span className='rounded text-xs text-[var(--grey)] py-[0.15rem] px-1 bg-[var(--hover-light)]'>Follows you</span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <FollowButton user={selectedChat} />
+                            </div>
+                        </div>
+                        <div className='border-y'>
+                            <div className='p-4'>
+                                <h3 className='font-bold text-xl'>Notifications</h3>
+                                <div className='mt-6 flex items-center justify-between'>
+                                    <span className='text-sm'>Snooze notifications from {selectedChat.name} {selectedChat.lastname ?? ''}</span>
+                                    <InputSwitch checked={snoozeUser} onClick={handleSnooze} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 ) : (
                     <div className='h-full mx-28 flex flex-col gap-2 justify-center text-start items-start'>
                         <h1 className='font-bold text-3xl'>Select a message</h1>

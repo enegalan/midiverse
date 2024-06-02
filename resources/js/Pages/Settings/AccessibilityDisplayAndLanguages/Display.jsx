@@ -24,11 +24,11 @@ export default function Display({ user = null }) {
     const colorOptions = [
         {
             'value': 'var(--main-blue)',
-            'hover': 'var(--hover-blue)',
+            'hover': 'var(--hover-lightblue)',
         },
         {
             'value': 'var(--red)',
-            'hover': 'var(--hover-red)',
+            'hover': 'var(--hover-like-red)',
         },
         {
             'value': 'var(--pink)',

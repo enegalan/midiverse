@@ -495,20 +495,16 @@ const BackgroundOptions = ({ backgrounds = [] }) => {
     );
 };
 // TODO: improve it, in general.
-const RadioButton = ({ name, value, id, checked = null, onClick = () => { } }) => {
+const RadioButton = ({ className = '', ...props }) => {
     const handleRadio = (e) => {
         onClick(e);
     };
     return (
         <div className='flex flex-col'>
             <input
-                value={value}
-                onChange={handleRadio}
-                className='w-5 h-5 border-2 bg-transparent border-[var(--hover-light)] focus:ring-transparent'
-                type="radio"
-                name={name}
-                checked={checked}
-                id={id}
+                className={`w-5 h-5 border-2 bg-transparent border-[var(--hover-light)] focus:ring-transparent ${className}`}
+                type='radio'
+                {...props}
             />
         </div>
     );

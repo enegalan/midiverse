@@ -35,6 +35,12 @@ class SettingsController extends Controller
         return Inertia::render('Settings/Privacity/MuteAndBlock', compact('user'));
     }
 
+    public static function directMessages() {
+        $user = auth()->user();
+        app()->call([UserController::class,'loadUserData'], compact('user'));
+        return Inertia::render('Settings/Privacity/DirectMessages', compact('user'));
+    }
+
     public static function notifications() {
         $user = auth()->user();
         app()->call([UserController::class,'loadUserData'], compact('user'));

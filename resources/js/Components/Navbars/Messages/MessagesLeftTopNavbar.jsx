@@ -4,11 +4,16 @@ import { FiSettings } from "react-icons/fi";
 import { BsSendPlus } from "react-icons/bs";
 import { openModal } from "@/Functions";
 import NewMessageModal from "@/Pages/Modals/NewMessageModal";
+import { router } from "@inertiajs/react";
 
 export default function MessagesLeftTopNavbar({ user }) {
     const handleNewMessage = (e) => {
         e.preventDefault();
         openModal('new-message-modal', <NewMessageModal user={user} users={[...user.followings, ...user.followers]} />);
+    }
+    const handleSettings = (e) => {
+        e.preventDefault();
+        router.get('/settings/privacity/direct_messages');
     }
     return (
         <>
@@ -17,7 +22,7 @@ export default function MessagesLeftTopNavbar({ user }) {
                     <div className='flex items-start w-full justify-between px-3 py-3'>
                         <h2 className='text-lg font-bold'>Messages</h2>
                         <div className='inline-flex'>
-                            <IconButton className='border-none text-lg hover:bg-[var(--light-grey)]'>
+                            <IconButton onClick={handleSettings} className='border-none text-lg hover:bg-[var(--light-grey)]'>
                                 <FiSettings />
                             </IconButton>
                             <IconButton onClick={handleNewMessage} className='border-none text-lg hover:bg-[var(--light-grey)]'>
