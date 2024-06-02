@@ -15,6 +15,7 @@ import MyGroups from "@/Components/Navbars/Components/MyGroups";
 import { openModal, getUserInitials, formatDateAtForProfiles, isUserFollowing } from "@/Functions";
 import EditProfileModal from "./Modals/EditProfileModal";
 import { router } from "@inertiajs/react";
+import { Image } from 'primereact/image';
 
 export default function Profile({ auth_user = null, user = null, roles = null }) {
     var isAuthUserProfile = false;
@@ -75,7 +76,7 @@ export default function Profile({ auth_user = null, user = null, roles = null })
                                 </div>
                                 <div className={`-mt-[50px] lg:-mt-[75px] ml-5`} id="avatar">
                                     <div className='min-h-[6rem] xl:min-h-[9rem] border-4 border-white rounded-full w-fit flex justify-center items-center'>
-                                        <img className='rounded-full h-auto w-24 lg:w-36' src={user.avatar !== null ? user.avatar : userInitials} alt="Avatar" />
+                                        <Image indicatorIcon={'absolute rounded-full inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 bg-transparent text-gray-100 hover:opacity-100 hover:cursor-pointer hover:bg-black hover:bg-opacity-20'} preview imageClassName='rounded-full h-auto w-24 lg:w-36' src={user.avatar !== null ? user.avatar : userInitials} alt="Avatar" />
                                     </div>
                                 </div>
                             </section>

@@ -221,12 +221,12 @@ const Navbar = ({
                         {/* Menu links */}
                         <ul className="justify-center flex flex-col xl:[&>li]:px-4 xl:gap-2">
                             {menuLinks.map((link) => (
-                                <li data-ref={link.ref} className="xl:px-1 transition rounded-full self-center hover:bg-gray-300 w-full" key={link.id}>
+                                <li data-ref={link.ref} className="transition rounded-full self-center hover:bg-[var(--hover-light)] w-full" key={link.id}>
                                     <Link
                                         onClick={onLinkClick}
                                         href={link.href}
                                         data-ref={link.ref}
-                                        className="p-3 xl:p-3 text-lg flex items-center justify-center xl:justify-start xl:items-center gap-3"
+                                        className="px-3 py-3 text-lg flex items-center justify-center xl:justify-start xl:items-center gap-3"
                                     >
                                         <div className='pointer-events-none'>
                                             {webRef === link.ref ? link.activeIcon : link.icon}
@@ -239,7 +239,7 @@ const Navbar = ({
                                 onClick={onLinkClick}
                                 data-ref='playground'
                                 href={route('playground')}
-                                className={`my-3 text-center rounded-full xl:px-16 self-center block xl:p-4 p-4 text-lg border-2 border-[var(--blue)] transition hover:bg-[var(--main-blue)] hover:text-white ${webRef === 'playground' ? 'bg-[var(--blue)] text-white' : 'bg-transparent text-[var(--blue)]'}`}
+                                className={`my-1 text-center rounded-full xl:px-16 self-center block p-4 text-lg border-2 border-[var(--blue)] transition hover:bg-[var(--main-blue)] hover:text-white ${webRef === 'playground' ? 'bg-[var(--blue)] text-white' : 'bg-transparent text-[var(--blue)]'}`}
                             >
                                 <MdOutlinePiano className="text-2xl block xl:hidden" />
                                 <span className="hidden xl:block font-bold">Playground</span>

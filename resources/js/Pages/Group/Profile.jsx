@@ -20,6 +20,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import EditGroup from "../Modals/Group/EditGroup";
 import DeleteGroup from "../Modals/Group/DeleteGroup";
+import { Image } from "primereact/image";
 
 export default function Profile({ auth_user = null, group = null, group_roles = null }) {
     var isAuthUserGroupProfile = false;
@@ -86,7 +87,7 @@ export default function Profile({ auth_user = null, group = null, group_roles = 
                                 </div>
                                 <div className={`-mt-[50px] lg:-mt-[75px] ml-5`} id="avatar">
                                     <div className='min-h-[6rem] xl:min-h-[9rem] border-4 border-white rounded-full w-fit flex justify-center items-center'>
-                                        <img className='rounded-full h-auto w-24 lg:w-36' src={group.logo !== null ? group.logo : groupInitial} alt="Avatar" />
+                                        <Image preview indicatorIcon={'absolute rounded-full inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 bg-transparent text-gray-100 hover:opacity-100 hover:cursor-pointer hover:bg-black hover:bg-opacity-20'} imageClassName='rounded-full h-auto w-24 lg:w-36' src={group.logo !== null ? group.logo : groupInitial} alt="Avatar" />
                                     </div>
                                 </div>
                             </div>
