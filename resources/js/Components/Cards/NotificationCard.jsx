@@ -10,6 +10,7 @@ import { CloseButton } from '../Buttons';
 import axios from 'axios';
 import { Link } from '@inertiajs/react';
 import { AuthButton } from '../Buttons';
+import { router } from '@inertiajs/react';
 
 // 0 => Follow
 // 1 => Like
@@ -34,7 +35,7 @@ const types = {
 export default function NotificationCard({ notification = null }) {
     const handleProfileRedirect = (e) => {
         e.preventDefault();
-        window.location.href = `/u/${notification?.from_user?.username}`;
+        router.get(`/u/${notification?.from_user?.username}`);
     }
 
     const handleDeleteNotification = (e) => {

@@ -1,11 +1,12 @@
 import { Link } from "@inertiajs/react";
 import { AuthButton } from "@/Components/Buttons";
+import { router } from "@inertiajs/react";
 
 export default function MidiCard({ user = null, group = null, midi = {}, }) {
     const handleMidiClicked = () => {
         localStorage.setItem('playing_midi', midi.midi);
         localStorage.setItem('playing_midi_name', midi.name);
-        window.location.href = '/playground';
+        router.get('/playground');
     }
     return (
         <article className='hover:bg-[var(--light-grey)] transition cursor-pointer flex p-3 gap-4 justify-start' id={midi.id} key={midi.id}>

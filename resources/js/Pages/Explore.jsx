@@ -59,7 +59,7 @@ export default function Explore({ auth_user = null, user = null, top_users = [],
         localStorage.setItem('explore_default_section', 'people');
     }
     const handleProfileRedirect = (user) => {
-        window.location.href = `/u/${user.username}`;
+        router.get(`/u/${user.username}`);
     }
     return (
         <>

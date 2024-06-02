@@ -54,7 +54,7 @@ export default function Email({ user = null }) {
         e.preventDefault();
         e.stopPropagation();
         localStorage.setItem('settings_active_link', 'notifications');
-        window.location.href = '/settings/notifications';
+        router.get('/settings/notifications');
     }
     return (
         <>

@@ -5,7 +5,7 @@ export default function PeopleSection({ auth_user = {}, users = [], viewAll = fa
     const maxPeople = 3;
     if (viewAll && users.length > 3) users = users.slice(0, maxPeople);
     const handleProfileRedirect = (user) => {
-        window.location.href = `/u/${user.username}`;
+        router.get(`/u/${user.username}`);
     }
     return (
         <>

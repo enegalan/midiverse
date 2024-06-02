@@ -74,7 +74,7 @@ export default function Display({ user = null }) {
         e.preventDefault();
         e.stopPropagation();
         localStorage.setItem('settings_active_link', 'accessibility_display_and_languages');
-        window.location.href = '/settings/accessibility_display_and_languages';
+        router.get('/settings/accessibility_display_and_languages');
     }
     return (
         <>

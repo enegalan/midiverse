@@ -60,7 +60,7 @@ export default function Password({ user = null }) {
         e.preventDefault();
         e.stopPropagation();
         localStorage.setItem('settings_active_link', 'account');
-        window.location.href = '/settings/account';
+        router.get('/settings/account');
     }
     return (
         <>

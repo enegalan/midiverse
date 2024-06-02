@@ -23,7 +23,7 @@ export default function MuteAndBlock({ user = null }) {
         e.preventDefault();
         e.stopPropagation();
         localStorage.setItem('settings_active_link', 'privacity');
-        window.location.href = '/settings/privacity';
+        router.get('/settings/privacity');
     }
     return (
         <>

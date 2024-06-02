@@ -1,5 +1,6 @@
 import { FollowButton } from "@/Components/Buttons";
 import { Link } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 
 export default function PeopleCard({ auth_user = {}, user = {}, className = '', disableFollowButton = false, redirect = true }) {
     var isAuthUser = false;
@@ -7,7 +8,7 @@ export default function PeopleCard({ auth_user = {}, user = {}, className = '', 
         isAuthUser = true;
     }
     const handleProfileRedirect = () => {
-        window.location.href = `/u/${user.username}`;
+        router.get(`/u/${user.username}`);
     }
     return (
         <article onClick={redirect ? handleProfileRedirect : () => {}} className={`${className} flex p-3 gap-2 justify-start transition duration-300 ${redirect ? 'hover:bg-[var(--hover-light)] cursor-pointer' : ''}`} id={user.id} key={user.id}>

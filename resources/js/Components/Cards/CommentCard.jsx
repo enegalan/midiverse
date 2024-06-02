@@ -20,6 +20,7 @@ import { FaCheck } from 'react-icons/fa6';
 import { IoEarthOutline } from 'react-icons/io5';
 import ConfirmationDialog from '@/Pages/Modals/ConfirmationDialog';
 import EditCommentModal from '@/Pages/Modals/EditCommentModal';
+import { router } from '@inertiajs/react';
 
 export default function CommentCard({ user, comment, post, controls = true, redirect = true }) {
     const [shareDropdownVisible, setShareDropdownVisible] = useState(false);
@@ -32,7 +33,7 @@ export default function CommentCard({ user, comment, post, controls = true, redi
     const isOwner = user && user.comments?.some(user_comment => user_comment.id === comment.id);
     const handleUserProfileRedirect = (e) => {
         e.stopPropagation();
-        window.location.href = `/u/${comment?.user?.username}`;
+        router.get(`/u/${comment?.user?.username}`);
     }
     const handleReply = (e) => {
         e.stopPropagation();
@@ -67,7 +68,7 @@ export default function CommentCard({ user, comment, post, controls = true, redi
     }
     const handleCommentRedirect = (e) => {
         e.stopPropagation();
-        window.location.href = `/comment/${comment.token}`;
+        router.get(`/comment/${comment.token}`);
     }
     const handleCopyLink = (e) => {
         e.preventDefault();
