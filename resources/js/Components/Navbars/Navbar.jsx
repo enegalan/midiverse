@@ -257,7 +257,7 @@ const Navbar = ({
                                 <Avatar image={user.avatar} size="large" shape="circle" />
                                 {/* <img src={'https://lh3.googleusercontent.com/a/ACg8ocLHGmAZcqZaiWkBKYTc5PM7K6kVberb2KrzSLFMfBB_agI=s96-c'} alt="User avatar" /> */}
                                 <div className='hidden xl:flex flex-col'>
-                                    <span className='font-bold'>{user.name} {user.lastname ?? ''}</span>
+                                    <span className='font-bold whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[105px]'>{user.name} {user.lastname ?? ''}</span>
                                     <span className='text-sm text-[var(--grey)]'>@{user.username}</span>
                                 </div>
                                 <div className='hidden xl:flex pr-2'>
