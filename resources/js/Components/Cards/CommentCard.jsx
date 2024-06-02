@@ -192,7 +192,7 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                             </div>
                         )}
                         <div className='inline-flex relative'>
-                            <IconButton onClick={handleMoreOptions} className='border-none hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]'>
+                            <IconButton onClick={handleMoreOptions} className='border-none hover:bg-[var(--hover-lightblue)] hover:text-[var(--blue)]'>
                                 <BsThreeDots />
                             </IconButton>
                             {moreOptionsVisible && (
@@ -293,7 +293,7 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                 <ImagesPreview media={comment.media}/>
                 {controls && (
                     <div className={`flex w-full items-center flex-wrap gap-6 py-1 xl:gap-24 mt-5 justify-center`}>
-                        <div onClick={handleReply} className={`flex py-3 items-center gap-1 xl:gap-2 px-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                        <div onClick={handleReply} className={`flex py-3 items-center gap-1 xl:gap-2 px-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-lightblue)] hover:text-[var(--blue)]`}>
                             <FaRegComment className='text-md' />
                             <span className='absolute -right-4'>{comment?.replies?.length}</span>
                         </div>
@@ -306,7 +306,7 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                             <span className='absolute -right-4'>{comment?.likes?.length}</span>
                         </div>
                         <div className='flex items-center gap-3 xl:gap-6'>
-                            <div onClick={handleBookmark} className={`p-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                            <div onClick={handleBookmark} className={`p-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-lightblue)] hover:text-[var(--blue)]`}>
                                 {isBookmarked ? (
                                     <FaBookmark className='text-md text-[var(--blue)]' />
                                 ) : (
@@ -314,20 +314,16 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                                 )}
                             </div>
                             <div className='relative'>
-                                    <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                                    <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition cursor-pointer rounded-full hover:bg-[var(--hover-lightblue)] hover:text-[var(--blue)]`}>
                                         <IoShareOutline className='text-xl mb-1' />
                                     </div>
                                     {shareDropdownVisible && (
                                         <section className='dropdown absolute top-12 -left-4'>
-                                            <div className='absolute -top-40 left-4 min-w-[270px] bg-white rounded-lg dropdown-shadow py-2'>
+                                            <div className='absolute -top-28 left-4 min-w-[270px] bg-white rounded-lg dropdown-shadow py-2'>
                                                 <div className='flex flex-col gap-2'>
                                                     <Link onClick={handleCopyLink} className='flex items-center gap-3 font-semibold px-4 py-2 hover:bg-[var(--hover-light)]'>
                                                         <span className='pointer-events-none'><FiLink /></span>
                                                         <span className='pointer-events-none'>Copy link</span>
-                                                    </Link>
-                                                    <Link className='flex items-center gap-3 font-semibold px-4 py-2 hover:bg-[var(--hover-light)]'>
-                                                        <span className='pointer-events-none'><MdOutlineEmail /></span>
-                                                        <span className='pointer-events-none'>Send via direct message</span>
                                                     </Link>
                                                 </div>
                                             </div>

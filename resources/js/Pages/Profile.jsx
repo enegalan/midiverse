@@ -14,6 +14,7 @@ import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
 import { openModal, getUserInitials, formatDateAtForProfiles, isUserFollowing } from "@/Functions";
 import EditProfileModal from "./Modals/EditProfileModal";
+import { router } from "@inertiajs/react";
 
 export default function Profile({ auth_user = null, user = null, roles = null }) {
     var isAuthUserProfile = false;
@@ -57,6 +58,10 @@ export default function Profile({ auth_user = null, user = null, roles = null })
         e.preventDefault();
         openModal('edit-profile', <EditProfileModal user={auth_user} />)
     }
+    const handleDirectMessage = (e) => {
+        e.preventDefault();
+        router.get(`/messages/${user.username}`)
+    }
     return (
         <>
             <MainLayout user={auth_user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
@@ -80,7 +85,7 @@ export default function Profile({ auth_user = null, user = null, roles = null })
                                         <AuthButton onClick={handleEditProfile} className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
                                     ) : (
                                         <div className='flex items-center gap-2'>
-                                            <IconButton className='text-2xl hover:bg-[var(--hover-light)]' >
+                                            <IconButton onClick={handleDirectMessage} className='text-2xl hover:bg-[var(--hover-light)]' >
                                                 <AiOutlineMessage />
                                             </IconButton>
                                             <FollowButton onClick={() => { window.location.reload() }} user={user} className='text-md bg-[var(--dark)] hover:bg-[var(--hover-black)] text-white border' />

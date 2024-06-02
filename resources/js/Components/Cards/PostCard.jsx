@@ -17,6 +17,7 @@ import { BiVolumeMute } from "react-icons/bi";
 import { FaCheck } from 'react-icons/fa6';
 import { IoEarthOutline } from 'react-icons/io5';
 import ImagesPreview from '../ImagesPreview';
+import { router } from '@inertiajs/react';
 
 import axios from 'axios';
 import { Link } from '@inertiajs/inertia-react';
@@ -65,11 +66,11 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
     }
     const handleUserProfileRedirect = (e) => {
         e.stopPropagation();
-        window.location.href = `/u/${post?.user?.username}`;
+        router.get(`/u/${post?.user?.username}`);
     }
     const handlePostClick = (e) => {
         e.stopPropagation();
-        window.location.href = `/post/${post?.token}`;
+        router.get(`/post/${post?.token}`);
     }
     const handleCopyLink = (e) => {
         e.preventDefault();
@@ -193,7 +194,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                         </div>
                     )}
                     <div className='inline-flex relative'>
-                        <IconButton onClick={handleMoreOptions} className='border-none hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]'>
+                        <IconButton onClick={handleMoreOptions} className='border-none hover:bg-[var(--hover-lightblue)] hover:text-[var(--blue)]'>
                             <BsThreeDots />
                         </IconButton>
                         {moreOptionsVisible && (
@@ -296,7 +297,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                 {separators && controls && (<div className="border-t mt-5 border-gray-100 flex-grow"></div>)}
                 {controls && (
                     <div className={`flex flex-wrap gap-6 py-1 xl:gap-24 ${!separators && 'mt-5'} justify-center`}>
-                        <div onClick={handleComment} className={`flex items-center gap-1 xl:gap-2 px-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                        <div onClick={handleComment} className={`flex items-center gap-1 xl:gap-2 px-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-lightblue)] hover:text-[var(--blue)]`}>
                             <FaRegComment className='text-md' />
                             <span className='absolute -right-4'>{post?.comments?.length}</span>
                         </div>
@@ -309,7 +310,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                             <span className='absolute -right-4'>{post?.likes?.length}</span>
                         </div>
                         <div className='flex items-center gap-3 xl:gap-6'>
-                            <div onClick={handleBookmark} className={`p-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                            <div onClick={handleBookmark} className={`p-3 relative transition cursor-pointer rounded-full hover:bg-[var(--hover-lightblue)] hover:text-[var(--blue)]`}>
                                 {isBookmarked ? (
                                     <FaBookmark className='text-md text-[var(--blue)]' />
                                 ) : (
@@ -317,20 +318,16 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                                 )}
                             </div>
                             <div className='relative'>
-                                <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition cursor-pointer rounded-full hover:bg-[var(--hover-blue)] hover:text-[var(--blue)]`}>
+                                <div onClick={handleShare} className={`p-2 px-[0.6rem] relative transition cursor-pointer rounded-full hover:bg-[var(--hover-lightblue)] hover:text-[var(--blue)]`}>
                                     <IoShareOutline className='text-xl mb-1' />
                                 </div>
                                 {shareDropdownVisible && (
                                     <section className='dropdown absolute top-12 -left-4'>
-                                        <div className='absolute -top-40 left-4 min-w-[270px] bg-white rounded-lg dropdown-shadow py-2'>
+                                        <div className='absolute -top-28 left-4 min-w-[270px] bg-white rounded-lg dropdown-shadow py-2'>
                                             <div className='flex flex-col gap-2'>
                                                 <Link onClick={handleCopyLink} className='flex items-center gap-3 font-semibold px-4 py-2 hover:bg-[var(--hover-light)]'>
                                                     <span className='pointer-events-none'><FiLink /></span>
                                                     <span className='pointer-events-none'>Copy link</span>
-                                                </Link>
-                                                <Link className='flex items-center gap-3 font-semibold px-4 py-2 hover:bg-[var(--hover-light)]'>
-                                                    <span className='pointer-events-none'><MdOutlineEmail /></span>
-                                                    <span className='pointer-events-none'>Send via direct message</span>
                                                 </Link>
                                             </div>
                                         </div>
