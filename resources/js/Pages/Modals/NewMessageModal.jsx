@@ -58,7 +58,7 @@ export default function NewMessageModal({ user, users = [] }) {
                         <div className='w-full'>
                             {users.map((user2) => {
                                 return (
-                                    <div onClick={(e) => {e.preventDefault(); handleSelectChat(user2)}} className='w-full p-4 flex gap-2 justify-between items-center cursor-pointer transition duration-300 hover:bg-[var(--hover-light)]'>
+                                    <div key={user2.id} onClick={(e) => {e.preventDefault(); handleSelectChat(user2)}} className='w-full p-4 flex gap-2 justify-between items-center cursor-pointer transition duration-300 hover:bg-[var(--hover-light)]'>
                                         <div className='flex items-center gap-2'>
                                             <div>
                                                 <img className='w-10 rounded-full' src={user2.avatar} alt={user2.username} />
