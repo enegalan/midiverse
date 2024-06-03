@@ -374,6 +374,7 @@ const GoogleLoginButton = ({ onAuth = () => { }, onAuthError = (e) => { } }) => 
             onSuccess={onSuccess}
             onError={onError}
             useOneTap={true}
+            width={'305px'}
         />
     );
 }
