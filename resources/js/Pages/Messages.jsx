@@ -85,9 +85,12 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
         formData.append('snoozed_user_id', selectedChat.id);
         axios.post('/user/snooze/', formData);
     }
+    const redirectMessages = () => {
+        router.get('/messages');
+    }
     return (
         <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
-            <section className="pb-16 border-r relative max-w-[430px] flex-1">
+            <section className="pb-16 border-r relative max-w-[430px] flex-1 hidden lg:block">
                 {messagesUsers.length > 0 ? (
                     <div className="w-full h-full absolute">
                         <MessagesLeftTopNavbar user={user} />
@@ -121,10 +124,10 @@ export default function Messages({ user = null, messages = [], selectedUser = nu
                     </div>
                 )}
             </section>
-            <RightNavbar setPaddingY={false} setPaddingX={false} className='py-0 px-0 gap-0' rightBorder={true} width="600px" minWidth='600px'>
+            <RightNavbar hideMobile={false} setPaddingY={false} setPaddingX={false} className='py-0 px-0 gap-0' rightBorder={true} width="600px" minWidth='600px'>
                 {selectedChat && !infoVisible ? (
                     <>
-                        <MessagesRightTopNavbar onInfoClick={handleInfoClick} user={selectedChat} />
+                        <MessagesRightTopNavbar onInfoClick={handleInfoClick} user={selectedChat} onBack={redirectMessages} />
                         <div className="overflow-y-scroll h-full" ref={messageListReference}>
                             <div className='flex flex-col'>
                                 <div className='pb-8 overflow-y-scroll mt-20'>
