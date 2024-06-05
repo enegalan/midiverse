@@ -201,3 +201,6 @@ pre {
 [type='checkbox']:focus, [type='radio']:focus {
   --tw-ring-offset-width: 0 !important;
 }
+.p-visual-disabled {
+  visibility: unset !important;
+}

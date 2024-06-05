@@ -305,7 +305,7 @@ const Dropdown = ({ options = [{}], id = '', onChange = () => { }, placeholder =
     );
 }
 
-const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, autoFocus = false, keyfilter = '', onChange = () => { }, name = '', invalid = false, autoComplete = '' }) => {
+const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disabled = false, visualDisabled = false, autoFocus = false, keyfilter = '', onChange = () => { }, name = '', invalid = false, autoComplete = '' }) => {
     if (type === 'password') {
         return (
             <span className="p-float-label w-full">
@@ -316,7 +316,7 @@ const FloatLabelInput = ({ text, value, id, className = '', type = 'text', disab
     } else {
         return (
             <span className="p-float-label">
-                <InputText invalid={invalid} name={name} type={type} keyfilter={keyfilter} autoFocus={autoFocus} disabled={disabled} id={id} value={value} onChange={onChange} className={`${className} rounded-md`} />
+                <InputText invalid={invalid} name={name} type={type} keyfilter={keyfilter} autoFocus={autoFocus} disabled={disabled || visualDisabled} id={id} value={value} onChange={onChange} className={`${className} ${visualDisabled ? 'p-visual-disabled' : ''} rounded-md`} />
                 <label htmlFor={id}>{text}</label>
             </span>
         );

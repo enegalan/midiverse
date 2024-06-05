@@ -867,7 +867,7 @@ class UserController extends Controller
                     ['email' => $user->email, 'user_id' => $user->id],
                     ['url' => $recoveryLink, 'created_at' => now()]
                 );
-                \Mail::send('emails.recovery', ['link' => $recoveryLink],
+                \Mail::send('emails.recovery', ['link' => $recoveryLink, 'user' => $user],
                     function ($message) use ($user) {
                         $message->to($user->email);
                         $message->subject('MiDiverse Account Recovery');

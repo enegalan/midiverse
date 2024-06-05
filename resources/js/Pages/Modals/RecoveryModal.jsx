@@ -38,7 +38,7 @@ export default function RecoveryModal({ email }) {
                         <p className='text-sm text-[var(--grey)]'>Your account is actually deactivated, but don't worry, you didn't loose it, miDiverse is waiting for you again!</p>
                     </div>
                     <div className='flex flex-col'>
-                        <FloatLabelInput disabled={true} keyfilter='email' className={`w-full`} id='email-recovery' text='Email' value={email} />
+                        <FloatLabelInput visualDisabled={true} keyfilter='email' className={`w-full`} id='email-recovery' text='Email' value={email} />
                         <AuthButton className={`mt-5 text-center w-full bg-[var(--dark)] text-white hover:bg-[var(--hover-black)]`} onClick={handleSendRecoveryLink} text='Send recovery link' />
                     </div>
                 </>
