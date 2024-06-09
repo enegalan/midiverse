@@ -85,6 +85,14 @@
             color: #000000;
         }
 
+        footer {
+            width: 100%;
+            text-align: center;
+            color: #b3afbd;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
         @media (max-width: 480px) {
             #u_content_image_6 .v-src-width {
                 width: auto !important;
@@ -200,7 +208,8 @@
                                                                 <p style="line-height: 2;">Please click the link
                                                                     below to proceed with recovery process:</p>
                                                                 <p style="line-height: 4;">
-                                                                    <a href="{{ $link }}">{{ $link }}</a>
+                                                                    <a
+                                                                        href="{{ $link }}">{{ $link }}</a>
                                                                 </p>
                                                                 <p style="line-height: 2;">If you didn't request it,
                                                                     or if you have any concerns about
@@ -211,7 +220,8 @@
                                                                 <p style="line-height: 2.3;">Thank you for using
                                                                     {{ config('app.name') }}!</p>
                                                                 <p style="line-height: 4;">Best regards,</p>
-                                                                <p style="line-height: 2;">The {{ config('app.name') }} Team</p>
+                                                                <p style="line-height: 2;">The {{ config('app.name') }}
+                                                                    Team</p>
                                                             </div>
 
                                                         </td>
@@ -229,6 +239,9 @@
             </tr>
         </tbody>
     </table>
+    <footer>
+        © 2024 miDiverse. All rights reserved.
+    </footer>
 </body>
 
 </html>
