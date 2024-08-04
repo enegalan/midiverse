@@ -1,11 +1,9 @@
 #!/bin/bash
 
-cd /var/www/html/midiverse
+cd /var/www/html/
 
 composer install --no-scripts
 
-npm install --verbose
+npm install --verbose && npm run build
 
-echo 'finished!!'
-
-exit 1;
+php-fpm

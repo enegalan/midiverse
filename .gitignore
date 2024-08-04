@@ -43,3 +43,5 @@ yarn-error.log
 .fleet
 .idea
 .vscode
+nginx/*.crt
+nginx/*.key

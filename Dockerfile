@@ -15,22 +15,25 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install gd pdo pdo_mysql zip && \
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /var/www/html
 
-#COPY . /var/www/html
-#COPY .env /var/www/html
-
-#RUN composer install --no-scripts
-
-#RUN npm install
+#COPY midiverse.conf /etc/apache2/sites-available/
 
 COPY ./start_container.sh /var/www/html/
 
 # Change permissions for the script
 RUN chmod +x /var/www/html/start_container.sh
 
-#ENTRYPOINT ["sh", "/var/www/html/start_container.sh"]
+ENTRYPOINT ["sh", "/var/www/html/start_container.sh"]
+EXPOSE 9000
+
 # Run the application for dev: localhost:8000 and localhost:5173
-#CMD ["sh", "-c", "npm run midiverse_docker"]
+# CMD ["php-fpm"]
+
