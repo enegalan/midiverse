@@ -12,6 +12,7 @@ import { CloseButton } from './Buttons';
 import axios from 'axios';
 import { useEffect } from 'react';
 import EmojiPicker from "emoji-picker-react";
+import { closeDropdownsOnClickOutside } from '@/Functions';
 const convertOptions = {
     wordwrap: 130,
 };
@@ -42,24 +43,7 @@ export default function PostEditor({
     const maxStrokeDashOffset = 120.24777960769379;
     const [strokeDashOffset, setStrokeDashOffset] = useState(minStrokeDashOffset);
     const strokePerWordValue = 0.2243994753;
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            const dropdownElements = document.querySelectorAll(".dropdown");
-            let outsideClick = true;
-            for (let dropdown of dropdownElements) {
-                if (dropdown.contains(event.target)) {
-                    outsideClick = false;
-                }
-            }
-            if (outsideClick) {
-                setShowPicker(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [showPicker]);
+    closeDropdownsOnClickOutside([showPicker], [setShowPicker])
     const onEditorChange = (e) => {
         const inputValue = e.target.value;
         const convertedValue = convert(e.target.value, convertOptions);

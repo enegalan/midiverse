@@ -28,6 +28,8 @@ import { MdOutlinePiano } from "react-icons/md";
 
 import { BsThreeDots } from "react-icons/bs";
 
+/* Others */
+
 import { useEffect, useState } from "react";
 
 import { Link } from "@inertiajs/react";
@@ -37,6 +39,8 @@ import { Avatar } from "primereact/avatar";
 import { logout, getUserInitials } from "@/Functions";
 
 import { BadgeProvider, NotificationBadge } from "../Badges";
+
+import { closeDropdownsOnClickOutside } from "@/Functions";
 
 const Navbar = ({
     user = null,
@@ -65,24 +69,7 @@ const Navbar = ({
     }
 
     // Close all dropdowns when click on outside a dropdown
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            const dropdownElements = document.querySelectorAll(".dropdown");
-            let outsideClick = true;
-            for (let dropdown of dropdownElements) {
-                if (dropdown.contains(event.target)) {
-                    outsideClick = false;
-                }
-            }
-            if (outsideClick) {
-                setIsLogoutModal(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [isLogoutModal]);
+    closeDropdownsOnClickOutside([isLogoutModal], [setIsLogoutModal])
 
     var notificationLink =
         <BadgeProvider>

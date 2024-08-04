@@ -4,7 +4,7 @@ import { FloatLabelInput } from '@/Components/Inputs';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from '@inertiajs/react';
-import { closeModal, openModal } from '@/Functions';
+import { closeDropdownsOnClickOutside, closeModal, openModal } from '@/Functions';
 import { router } from '@inertiajs/react';
 import { SearchInput } from '@/Components/Inputs';
 import { FaPlus } from 'react-icons/fa6';
@@ -19,24 +19,7 @@ export default function InviteFriends({ auth_user = null, group = {}, group_role
     const [users, setUsers] = useState([]);
     const [inviteDropdownVisible, setInviteDropdownVisible] = useState(false);
     const [sendInvitationButtonDisabled, setSendInvitationButtonDisabled] = useState(true);
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            const dropdownElements = document.querySelectorAll(".dropdown");
-            let outsideClick = true;
-            for (let dropdown of dropdownElements) {
-                if (dropdown.contains(event.target)) {
-                    outsideClick = false;
-                }
-            }
-            if (outsideClick) {
-                setInviteDropdownVisible(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [inviteDropdownVisible]);
+    closeDropdownsOnClickOutside([inviteDropdownVisible], [setInviteDropdownVisible])
     const closeThisModal = () => {
         closeModal('add-group-member-modal')
     }

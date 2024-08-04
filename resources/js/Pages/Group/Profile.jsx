@@ -13,7 +13,7 @@ import ConcertCard from "@/Components/Cards/ConcertCard";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
 import { TiUserAddOutline } from "react-icons/ti";
-import { openModal, formatDateAtForProfiles, userFollowsGroup, userMemberGroup } from "@/Functions";
+import { openModal, formatDateAtForProfiles, userFollowsGroup, userMemberGroup, closeDropdownsOnClickOutside } from "@/Functions";
 import AddGroupMember from "../Modals/Group/AddGroupMember";
 import { BsThreeDots } from "react-icons/bs";
 import { MdOutlineEdit } from "react-icons/md";
@@ -56,24 +56,7 @@ export default function Profile({ auth_user = null, group = null, group_roles = 
     const handleDeleteGroup = () => {
         openModal('delete-group-modal', <DeleteGroup group={group} />)
     }
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            const dropdownElements = document.querySelectorAll(".dropdown");
-            let outsideClick = true;
-            for (let dropdown of dropdownElements) {
-                if (dropdown.contains(event.target)) {
-                    outsideClick = false;
-                }
-            }
-            if (outsideClick) {
-                setMoreOptionsVisible(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [moreOptionsVisible]);
+    closeDropdownsOnClickOutside([moreOptionsVisible], [setMoreOptionsVisible])
     return (
         <>
             <MainLayout user={auth_user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>

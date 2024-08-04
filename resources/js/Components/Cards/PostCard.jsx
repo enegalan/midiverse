@@ -5,7 +5,7 @@ import { FaBookmark } from 'react-icons/fa';
 import { FaRegBookmark } from 'react-icons/fa';
 import { IoShare } from 'react-icons/io5';
 import { IoShareOutline } from 'react-icons/io5';
-import { openModal } from '@/Functions';
+import { closeDropdownsOnClickOutside, openModal } from '@/Functions';
 import CommentDialog from '@/Pages/Modals/CommentDialog';
 import { formatDateForPublic } from '@/Functions';
 import { FiLink } from "react-icons/fi";
@@ -138,27 +138,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
         formData.append('visibility', 2);
         axios.post('/post/comments/visibility', formData).then(window.location.reload())
     }
-    // Close all dropdowns when click on outside a dropdown
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            const dropdownElements = document.querySelectorAll(".dropdown");
-            let outsideClick = true;
-            for (let dropdown of dropdownElements) {
-                if (dropdown.contains(event.target)) {
-                    outsideClick = false;
-                }
-            }
-            if (outsideClick) {
-                setShareDropdownVisible(false);
-                setMoreOptionsVisible(false);
-                setWhoCanReplyVisible(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [shareDropdownVisible]);
+    closeDropdownsOnClickOutside([shareDropdownVisible], [setShareDropdownVisible, setMoreOptionsVisible, setWhoCanReplyVisible])
     return (
         <article onClick={redirect ? handlePostClick : () => { }} className={`${border ? 'border-t' : ''} flex p-3 gap-2 justify-start transition duration-300 ${redirect && 'hover:bg-[var(--hover-light)] cursor-pointer'}`} key={post?.id}>
             <div>

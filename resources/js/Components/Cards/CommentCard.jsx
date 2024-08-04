@@ -11,7 +11,7 @@ import { FiLink } from "react-icons/fi";
 import ImagesPreview from '../ImagesPreview';
 import { IoShareOutline } from 'react-icons/io5';
 import { MdOutlineDelete, MdOutlineEmail, MdOutlineEdit, MdBlock, MdOutlineReport } from "react-icons/md";
-import { formatDateForPublic, openModal } from '@/Functions';
+import { closeDropdownsOnClickOutside, formatDateForPublic, openModal } from '@/Functions';
 import CommentDialog from '@/Pages/Modals/CommentDialog';
 import { IconButton } from '../Buttons';
 import { BsThreeDots } from 'react-icons/bs';
@@ -136,27 +136,7 @@ export default function CommentCard({ user, comment, post, controls = true, redi
         formData.append('visibility', 2);
         axios.post('/comments/visibility', formData).then(window.location.reload())
     }
-    // Close all dropdowns when click on outside a dropdown
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            const dropdownElements = document.querySelectorAll(".dropdown");
-            let outsideClick = true;
-            for (let dropdown of dropdownElements) {
-                if (dropdown.contains(event.target)) {
-                    outsideClick = false;
-                }
-            }
-            if (outsideClick) {
-                setShareDropdownVisible(false);
-                setMoreOptionsVisible(false);
-                setWhoCanReplyVisible(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [shareDropdownVisible]);
+    closeDropdownsOnClickOutside([shareDropdownVisible], [setIsLogoutModal, setMoreOptionsVisible, setWhoCanReplyVisible])
     return (
         <article onClick={redirect ? handleCommentRedirect : () => { }} className={`flex gap-2 p-3 w-full transition duration-300 ${redirect ? 'cursor-pointer hover:bg-[var(--hover-light)]' : ''}`} style={{ marginLeft: comment.parent_id ? '20px' : '0' }}>
             <div>

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import axios from 'axios';
 import { googleLogout } from '@react-oauth/google';
 import { format } from 'date-fns';
+import { useEffect } from 'react';
 
 function openModal(id, modal) {
     const modalContainer = document.createElement('div');
@@ -161,5 +162,28 @@ function isMobile() {
     return window.innerWidth < 1024;
 }
 
+function closeDropdownsOnClickOutside(dependencies = [], onOutsideEvents = []) {
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const dropdownElements = document.querySelectorAll(".dropdown");
+            let outsideClick = true;
+            for (let dropdown of dropdownElements) {
+                if (dropdown.contains(event.target)) {
+                    outsideClick = false;
+                }
+            }
+            if (outsideClick) {
+                for (let onOutside of onOutsideEvents) {
+                    onOutside(false);
+                }
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, dependencies);
+}
 
-export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, isUserFollower, userFollowsGroup, userMemberGroup, getUsernameFromEmail, formatDateForPublic, isMobile };
+
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, isUserFollower, userFollowsGroup, userMemberGroup, getUsernameFromEmail, formatDateForPublic, isMobile, closeDropdownsOnClickOutside };

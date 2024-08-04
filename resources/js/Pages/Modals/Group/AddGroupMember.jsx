@@ -4,7 +4,7 @@ import { FloatLabelInput } from '@/Components/Inputs';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from '@inertiajs/react';
-import { closeModal, openModal } from '@/Functions';
+import { closeDropdownsOnClickOutside, closeModal, openModal } from '@/Functions';
 import { router } from '@inertiajs/react';
 import { SearchInput } from '@/Components/Inputs';
 import { FaPlus } from 'react-icons/fa6';
@@ -19,25 +19,7 @@ import InviteLink from './InviteLink';
 export default function AddGroupMember({ auth_user = null, group = {}, roles = null }) {
     const [inviteDropdownVisible, setInviteDropdownVisible] = useState(false);
     const [memberMoreOptions, setMemberMoreOptions] = useState(null);
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            const dropdownElements = document.querySelectorAll(".dropdown");
-            let outsideClick = true;
-            for (let dropdown of dropdownElements) {
-                if (dropdown.contains(event.target)) {
-                    outsideClick = false;
-                }
-            }
-            if (outsideClick) {
-                setInviteDropdownVisible(false);
-                setMemberMoreOptions(null);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [inviteDropdownVisible]);
+    closeDropdownsOnClickOutside([inviteDropdownVisible], [setInviteDropdownVisible, setMemberMoreOptions])
     const closeThisModal = () => {
         closeModal('add-group-member-modal')
     }
