@@ -32,7 +32,7 @@ COPY ./start_container.sh /var/www/html/
 RUN chmod +x /var/www/html/start_container.sh
 
 ENTRYPOINT ["sh", "/var/www/html/start_container.sh"]
-EXPOSE 9000
+EXPOSE 9000 8000 5173
 
 # Run the application for dev: localhost:8000 and localhost:5173
 # CMD ["php-fpm"]
