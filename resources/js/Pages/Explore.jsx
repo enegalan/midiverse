@@ -8,7 +8,7 @@ import ConcertCard from '@/Components/Cards/ConcertCard';
 import GroupCard from '@/Components/Cards/GroupCard';
 import PeopleSection from '@/Components/Sections/PeopleSection';
 import ExploreNavbar from '@/Components/Navbars/ExploreNavbar';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import RightNavbar from '@/Components/Navbars/RightNavbar';
 import MyGroups from '@/Components/Navbars/Components/MyGroups';
 

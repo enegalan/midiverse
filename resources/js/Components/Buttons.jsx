@@ -325,7 +325,7 @@ const FollowButton = ({
 
 const AuthButton = ({ id = null, text = '', className = '', onClick = (e) => { }, href = '', disabled = false }) => {
     return (
-        <Link disabled={disabled} href={href} onClick={onClick} className={`${className} font-bold py-[0.7rem] px-4 text-sm rounded-full transition duration-300 hover:bg-[var(--hover-black)] ${disabled && 'bg-[var(--hover-light)] hover:bg-[var(--hover-light)]'}`}>
+        <Link id={id} disabled={disabled} href={href} onClick={onClick} className={`${className} font-bold py-[0.7rem] px-4 text-sm rounded-full transition duration-300 hover:bg-[var(--hover-black)] ${disabled ? 'bg-[var(--hover-light)] hover:bg-[var(--hover-light)]' : ''}`}>
             {text}
         </Link>
     )
@@ -495,11 +495,7 @@ const BackgroundOptions = ({ backgrounds = [] }) => {
         </div>
     );
 };
-// TODO: improve it, in general.
 const RadioButton = ({ className = '', ...props }) => {
-    const handleRadio = (e) => {
-        onClick(e);
-    };
     return (
         <div className='flex flex-col'>
             <input

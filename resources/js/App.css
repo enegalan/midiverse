@@ -204,3 +204,11 @@ pre {
 .p-visual-disabled {
   visibility: unset !important;
 }
+.p-progressbar .p-progressbar-value {
+  background-color: var(--main-blue) !important;
+}
+
+.p-progressbar {
+  border-radius: 0 !important;
+  height: 0.25rem !important;
+}

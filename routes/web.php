@@ -131,6 +131,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/user/bookmark/{token}', [UserController::class, 'bookmark'])->name('user.bookmark');
     // Snooze
     Route::post('/user/snooze/', [UserController::class, 'snoozeUser'])->name('user.snooze');
+    // MUTE routes
+    Route::post('/user/mute/', [UserController::class, 'muteUser'])->name('user.mute');
+    // REPORT routes
+    Route::post('/user/report/', [UserController::class, 'reportUser'])->name('user.report');
+    // BLOCK routes
+    Route::post('/user/block/', [UserController::class, 'blockUser'])->name('user.block');
 });
 // Redirect routes
 Route::get('/', [MainController::class, 'rootRedirect']);

@@ -122,4 +122,12 @@ class User extends Authenticatable implements MustVerifyEmail {
     public function invitations() {
         return $this->hasMany(Invitation::class);
     }
+
+    public function mutedUsers() {
+        return $this->hasMany(MutedUser::class, 'user_id');
+    }
+
+    public function blockedUsers() {
+        return $this->hasMany(BlockedUser::class, 'user_id');
+    }
 }

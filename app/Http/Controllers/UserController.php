@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\Group;
 use App\Models\GroupNotification;
 use App\Models\Post;
+use App\Models\Report;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserMidi;
@@ -43,6 +44,8 @@ class UserController extends Controller
         app()->call([self::class, 'getGroups'], compact('user'));
         app()->call([self::class, 'getAuthType'], compact('user'));
         app()->call([self::class, 'getSnoozedUsers'], compact('user'));
+        app()->call([self::class, 'getMutedUsers'], compact('user'));
+        app()->call([self::class, 'getBlockedUsers'], compact('user'));
         app()->call([NotificationController::class, 'getUnreadNotificationsCount'], compact('user'));
         app()->call([NotificationController::class, 'getNotifications'], compact('user'));
     }
@@ -842,6 +845,16 @@ class UserController extends Controller
         return $user_group_ids;
     }
 
+    public static function getMutedUsers(&$user) {
+        $user->muted_users = $user->mutedUsers()->get()->toArray();
+        return $user->mutedUsers()->get()->toArray();
+    }
+
+    public static function getBlockedUsers(&$user) {
+        $user->blocked_users = $user->blockedUsers()->get()->toArray();
+        return $user->blockedUsers()->get()->toArray();
+    }
+
     public static function isUserDeleted(Request $request)
     {
         $email = $request->input('email');
@@ -937,6 +950,50 @@ class UserController extends Controller
                 return response()->json(['message' => 'Comment bookmarked']);
             }
         }
+    }
+
+    public static function muteUser(Request $request) {
+        $user_id = $request->input('user_id');
+        if ($user_id != Auth::id()) {
+            $user = User::findOrFail(Auth::id());
+            $muted_user = User::findOrFail($user_id);
+            $existingMute = $user->mutedUsers()->where('muted_user_id', $muted_user->id)->first();
+            if ($existingMute) {
+                $existingMute->delete();
+            } else {
+                $user->mutedUsers()->create([
+                    'muted_user_id' => $muted_user->id,
+                ]);
+            }
+        }
+    }
+
+    public static function blockUser(Request $request) {
+        $user_id = $request->input('user_id');
+        if ($user_id != Auth::id()) {
+            $user = User::findOrFail(Auth::id());
+            $blocked_user = User::findOrFail($user_id);
+            $existingBlock = $user->blockedUsers()->where('blocked_user_id', $blocked_user->id)->first();
+            if ($existingBlock) {
+                $existingBlock->delete();
+            } else {
+                $user->blockedUsers()->create([
+                    'blocked_user_id' => $blocked_user->id,
+                ]);
+            }
+        }
+    }
+
+    public static function reportUser(Request $request) {
+        $reported_user_id = $request->input('user_id');
+        $reason = $request->input('reason');
+        $detailed_reason = $request->input('detailed_reason');
+        $report = new Report();
+        $report->user_id = Auth::id();
+        $report->reported_user_id = $reported_user_id;
+        $report->reason = $reason;
+        $report->detailed_reason = $detailed_reason;
+        $report->save();
     }
 
 }

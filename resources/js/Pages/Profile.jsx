@@ -8,14 +8,19 @@ import { IoCalendarOutline } from "react-icons/io5";
 import PostCard from "@/Components/Cards/PostCard";
 import { IconButton } from "@/Components/Buttons";
 import { AiOutlineMessage } from "react-icons/ai";
+import { MdBlock, MdMoreHoriz, MdOutlineReport } from "react-icons/md";
 import { Link } from "@inertiajs/react";
 import MidiCard from "@/Components/Cards/MidiCard";
 import RightNavbar from "@/Components/Navbars/RightNavbar";
 import MyGroups from "@/Components/Navbars/Components/MyGroups";
-import { openModal, getUserInitials, formatDateAtForProfiles, isUserFollowing } from "@/Functions";
+import { openModal, getUserInitials, formatDateAtForProfiles, isUserFollowing, closeDropdownsOnClickOutside, isUserMuted, isUserBlocked } from "@/Functions";
 import EditProfileModal from "./Modals/EditProfileModal";
 import { router } from "@inertiajs/react";
 import { Image } from 'primereact/image';
+import { FiLink } from "react-icons/fi";
+import { BiVolumeMute } from "react-icons/bi";
+import axios from "axios";
+import ReportUserModal from "./Modals/ReportUserModal";
 
 export default function Profile({ auth_user = null, user = null, roles = null }) {
     var isAuthUserProfile = false;
@@ -33,11 +38,9 @@ export default function Profile({ auth_user = null, user = null, roles = null })
     }
     const renderUserPosts = () => {
         if (user.posts.length === 0) return;
-
         const sortedPosts = user.posts.sort((a, b) => {
             return new Date(b.created_at) - new Date(a.created_at);
         });
-
         return sortedPosts.map((post) => <PostCard auth_user={auth_user} key={post.id} post={post} />);
     };
     const renderUserMidis = () => {
@@ -63,6 +66,43 @@ export default function Profile({ auth_user = null, user = null, roles = null })
         e.preventDefault();
         router.get(`/messages/${user.username}`)
     }
+    const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
+    const handleMoreOptions = (e) => {
+        e.preventDefault();
+        setMoreOptionsVisible(!moreOptionsVisible);
+    }
+    closeDropdownsOnClickOutside([moreOptionsVisible], [setMoreOptionsVisible])
+    const handleCopyLink = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const profileUrl = window.location.origin + '/u/' + user?.username;
+        navigator.clipboard.writeText(profileUrl);
+        setMoreOptionsVisible(false);
+    }
+    // Check if user is muted 
+    const [isMuted, setIsMuted] = useState(isUserMuted(user, auth_user));
+    const handleMute = (e) => {
+        e.preventDefault();
+        var formData = new FormData();
+        formData.append('user_id', user.id);
+        axios.post('/user/mute', formData);
+        setMoreOptionsVisible(false);
+        setIsMuted(!isMuted);
+    }
+    const [isBlocked, setIsBlocked] = useState(isUserBlocked(user, auth_user));
+    const handleBlock = (e) => {
+        e.preventDefault();
+        var formData = new FormData();
+        formData.append('user_id', user.id);
+        axios.post('/user/block', formData);
+        setMoreOptionsVisible(false);
+        setIsBlocked(!isBlocked);
+    }
+    const handleReport = (e) => {
+        e.preventDefault();
+        openModal('report-user', <ReportUserModal auth_user={auth_user} user={user} />);
+        setMoreOptionsVisible(false);
+    }
     return (
         <>
             <MainLayout user={auth_user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
@@ -86,6 +126,35 @@ export default function Profile({ auth_user = null, user = null, roles = null })
                                         <AuthButton onClick={handleEditProfile} className='bg-[var(--white)] hover:bg-[var(--hover-light)] text-black border' text="Edit profile" />
                                     ) : (
                                         <div className='flex items-center gap-2'>
+                                            <IconButton onClick={handleMoreOptions} className='text-2xl hover:bg-[var(--hover-light)]' >
+                                                <MdMoreHoriz />
+                                            </IconButton>
+                                            {moreOptionsVisible ? (
+                                                <section className='dropdown absolute -top-36 -left-5'>
+                                                    <div className='absolute top-36 -left-56 min-w-[300px] bg-white rounded-lg dropdown-shadow'>
+                                                        <div className='flex flex-col'>
+                                                            <>
+                                                                <Link onClick={handleCopyLink} className='flex items-center gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                                    <span className='pointer-events-none'><FiLink /></span>
+                                                                    <span className='pointer-events-none'>Copy link to profile</span>
+                                                                </Link>
+                                                                <Link onClick={handleMute} className='flex items-center gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                                    <span className='pointer-events-none'><BiVolumeMute /></span>
+                                                                    <span className='pointer-events-none'>{isMuted ? 'Unmute' : 'Mute'} @{user.username}</span>
+                                                                </Link>
+                                                                    <Link onClick={handleBlock} className='flex items-center rounded-b-lg gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                                    <span className='pointer-events-none'><MdBlock /></span>
+                                                                    <span className='pointer-events-none'>{isBlocked ? 'Unblock' : 'Block'} @{user.username}</span>
+                                                                </Link>
+                                                                <Link onClick={handleReport} className='flex items-center rounded-b-lg gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                                    <span className='pointer-events-none text-lg'><MdOutlineReport /></span>
+                                                                    <span className='pointer-events-none'>Report @{user.username}</span>
+                                                                </Link>
+                                                            </>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            ) : (<></>)}
                                             <IconButton onClick={handleDirectMessage} className='text-2xl hover:bg-[var(--hover-light)]' >
                                                 <AiOutlineMessage />
                                             </IconButton>

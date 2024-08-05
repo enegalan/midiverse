@@ -4,6 +4,7 @@ import axios from 'axios';
 import { googleLogout } from '@react-oauth/google';
 import { format } from 'date-fns';
 import { useEffect } from 'react';
+import { func } from 'prop-types';
 
 function openModal(id, modal) {
     const modalContainer = document.createElement('div');
@@ -185,5 +186,19 @@ function closeDropdownsOnClickOutside(dependencies = [], onOutsideEvents = []) {
     }, dependencies);
 }
 
+function isUserMuted(user_needle, user_haystack) {
+    for (let muted_user of user_haystack.muted_users) {
+        if (muted_user.muted_user_id == user_needle.id) return true; break;
+    }
+    return false;
+}
 
-export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, isUserFollower, userFollowsGroup, userMemberGroup, getUsernameFromEmail, formatDateForPublic, isMobile, closeDropdownsOnClickOutside };
+function isUserBlocked(user_needle, user_haystack) {
+    for (let blocked_user of user_haystack.blocked_users) {
+        if (blocked_user.blocked_user_id == user_needle.id) return true; break;
+    }
+    return false;
+}
+
+
+export { openModal, closeModal, validateEmail, logout, getUserInitials, formatDate, getAllMonths, getMonthDays, getYearsFromYearsAgo, formatDateAtForProfiles, isUserFollowing, isUserFollower, userFollowsGroup, userMemberGroup, getUsernameFromEmail, formatDateForPublic, isMobile, closeDropdownsOnClickOutside, isUserMuted, isUserBlocked };
