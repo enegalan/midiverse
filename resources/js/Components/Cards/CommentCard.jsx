@@ -34,14 +34,17 @@ export default function CommentCard({ auth_user, user, comment, post, controls =
     const isOwner = (auth_user && auth_user.comments?.some(user_comment => user_comment.id === comment.id && user_comment.user_id === comment.user_id && user_comment.post_id === post.id)) ?? false;
     const handleUserProfileRedirect = (e) => {
         e.stopPropagation();
+        e.preventDefault();
         router.get(`/u/${comment?.user?.username}`);
     }
     const handleReply = (e) => {
         e.stopPropagation();
+        e.preventDefault();
         openModal('comment-dialog', <CommentDialog auth_user={auth_user} reply={true} post={post} comment={comment} user={user} />)
     }
     const handleLike = async (e) => {
         e.stopPropagation();
+        e.preventDefault();
         try {
             // Send a POST request to like/unlike the post
             await axios.post(`/comment/like/${comment.token}`);
@@ -53,6 +56,7 @@ export default function CommentCard({ auth_user, user, comment, post, controls =
     }
     const handleBookmark = (e) => {
         e.stopPropagation();
+        e.preventDefault();
         try {
             const formData = new FormData();
             formData.append('type', 'comment');
@@ -65,10 +69,10 @@ export default function CommentCard({ auth_user, user, comment, post, controls =
     }
     const handleShare = (e) => {
         e.stopPropagation();
+        e.preventDefault();
         setShareDropdownVisible(!shareDropdownVisible);
     }
     const handleCommentRedirect = (e) => {
-        e.stopPropagation();
         router.get(`/comment/${comment.token}`);
     }
     const handleCopyLink = (e) => {
