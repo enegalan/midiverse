@@ -5,7 +5,7 @@ import { FaBookmark } from 'react-icons/fa';
 import { FaRegBookmark } from 'react-icons/fa';
 import { IoShare } from 'react-icons/io5';
 import { IoShareOutline } from 'react-icons/io5';
-import { closeDropdownsOnClickOutside, openModal } from '@/Functions';
+import { closeDropdownsOnClickOutside, isUserBlocked, isUserMuted, openModal } from '@/Functions';
 import CommentDialog from '@/Pages/Modals/CommentDialog';
 import { formatDateForPublic } from '@/Functions';
 import { FiLink } from "react-icons/fi";
@@ -23,6 +23,7 @@ import axios from 'axios';
 import { Link } from '@inertiajs/inertia-react';
 import ConfirmationDialog from '@/Pages/Modals/ConfirmationDialog';
 import EditPostModal from '@/Pages/Modals/EditPostModal';
+import ReportModal from '@/Pages/Modals/ReportModal';
 
 export default function PostCard({ post = null, auth_user = null, redirect = true, separators = false, border = true, controls = true }) {
     const [shareDropdownVisible, setShareDropdownVisible] = useState(false);
@@ -35,7 +36,7 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
     const isOwner = auth_user && auth_user.posts?.some(user_post => user_post.id === post.id);
     const handleComment = (e) => {
         e.stopPropagation();
-        openModal('comment-dialog', <CommentDialog reply={false} post={post} user={auth_user} />)
+        openModal('comment-dialog', <CommentDialog auth_user={auth_user} reply={false} post={post} user={auth_user} />)
     }
     const handleLike = async (e) => {
         e.stopPropagation();
@@ -138,6 +139,33 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
         formData.append('visibility', 2);
         axios.post('/post/comments/visibility', formData).then(window.location.reload())
     }
+    // Check if user is muted 
+    const [isMuted, setIsMuted] = useState(isUserMuted(post.user, auth_user));
+    const handleMute = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        var formData = new FormData();
+        formData.append('user_id', post.user.id);
+        axios.post('/user/mute', formData);
+        setMoreOptionsVisible(false);
+        setIsMuted(!isMuted);
+    }
+    const [isBlocked, setIsBlocked] = useState(isUserBlocked(post.user, auth_user));
+    const handleBlock = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        var formData = new FormData();
+        formData.append('user_id', post.user.id);
+        axios.post('/user/block', formData);
+        setMoreOptionsVisible(false);
+        setIsBlocked(!isBlocked);
+    }
+    const handleReport = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openModal('report-post', <ReportModal post={post} auth_user={auth_user} user={post.user} />);
+        setMoreOptionsVisible(false);
+    }
     closeDropdownsOnClickOutside([shareDropdownVisible], [setShareDropdownVisible, setMoreOptionsVisible, setWhoCanReplyVisible])
     return (
         <article onClick={redirect ? handlePostClick : () => { }} className={`${border ? 'border-t' : ''} flex p-3 gap-2 justify-start transition duration-300 ${redirect && 'hover:bg-[var(--hover-light)] cursor-pointer'}`} key={post?.id}>
@@ -205,15 +233,15 @@ export default function PostCard({ post = null, auth_user = null, redirect = tru
                                         )}
                                         {!isOwner && (
                                             <>
-                                                <Link className='flex items-center gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                <Link onClick={handleMute} className='flex items-center gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
                                                     <span className='pointer-events-none'><BiVolumeMute /></span>
-                                                    <span className='pointer-events-none'>Mute @{post.user.username}</span>
+                                                    <span className='pointer-events-none'>{isMuted ? 'Unmute' : 'Mute'} @{post.user.username}</span>
                                                 </Link>
-                                                <Link className='flex items-center gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                <Link onClick={handleBlock} className='flex items-center gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
                                                     <span className='pointer-events-none'><MdBlock /></span>
-                                                    <span className='pointer-events-none'>Block @{post.user.username}</span>
+                                                    <span className='pointer-events-none'>{isBlocked ? 'Unblock' : 'Block'} @{post.user.username}</span>
                                                 </Link>
-                                                <Link className='flex items-center rounded-b-lg gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                <Link onClick={handleReport} className='flex items-center rounded-b-lg gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
                                                     <span className='pointer-events-none text-lg'><MdOutlineReport /></span>
                                                     <span className='pointer-events-none'>Report post</span>
                                                 </Link>

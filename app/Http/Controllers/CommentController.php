@@ -14,9 +14,10 @@ class CommentController extends Controller {
     public function show($token) {
         $comment = Comment::where('token', $token)->firstOrFail();
         $post = Post::findOrFail($comment->post_id);
+        $post = UserController::getPostData($post);
         $user = User::findOrFail($comment->user_id);
         UserController::loadUserData($user);
-        $auth_user = \Auth::user();
+        $auth_user = User::findOrFail(\Auth::id());
         UserController::loadUserData($auth_user);
         if ($comment) {
             $replies = Comment::where('parent_id', $comment->id)->get();

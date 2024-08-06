@@ -318,7 +318,7 @@ const reportReasons = [
     },
 ];
 
-export default function ReportUserModal({ auth_user = {}, user = {} }) {
+export default function ReportModal({ comment = null, post = null, auth_user = {}, user = {} }) {
     const [nextStepButtonDisabled, setNextStepButtonDisabled] = useState(true)
     const [nextStepButtonDisabled2, setNextStepButtonDisabled2] = useState(true)
     const [step, setStep] = useState('step1') // step1 or step2 or step3
@@ -352,7 +352,17 @@ export default function ReportUserModal({ auth_user = {}, user = {} }) {
         if (reportDetailedReason) {
             formData.append('detailed_reason', reportDetailedReason.value);
         } else {
-            formData.append('detailed_reason', '');
+            formData.append('detailed_reason', null);
+        }
+        if (post) {
+            formData.append('post_id', post.id);
+        } else {
+            formData.append('post_id', null);
+        }
+        if (comment) {
+            formData.append('comment_id', comment.id);
+        } else {
+            formData.append('comment_id', null);
         }
         formData.append('user_id', user.id);
         try {

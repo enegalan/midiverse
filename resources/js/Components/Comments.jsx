@@ -3,7 +3,7 @@ import CommentCard from './Cards/CommentCard';
 import axios from 'axios';
 import PostEditor from './PostEditor';
 
-const Comments = ({ user, post, parent_id = null, comments }) => {
+const Comments = ({ auth_user, user, post, parent_id = null, comments }) => {
     const handleSubmit = (value, visibility, media) => {
         const formData = new FormData();
         if (!value) value = '';
@@ -29,7 +29,7 @@ const Comments = ({ user, post, parent_id = null, comments }) => {
             <PostEditor onSubmit={handleSubmit} action={`/post/${post?.token}/comment`} buttonText='Reply' placeholder='Post your reply' user={user} />
             <ul>
                 {comments && comments.length > 0 && comments.map((comment) => (
-                    <CommentCard post={post} user={comment.user} key={comment.id} comment={comment} />
+                    <CommentCard auth_user={auth_user} post={post} user={comment.user} key={comment.id} comment={comment} />
                 ))}
             </ul>
         </div>

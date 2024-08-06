@@ -24,15 +24,15 @@ const nestComments = (comments) => {
     return nestedComments;
 };
 
-export default function PostShow({ user, post, comments }) {
+export default function PostShow({ auth_user, user, post, comments }) {
     const nestedComments = nestComments(comments);
     return (
-        <MainLayout user={user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
+        <MainLayout user={auth_user} headerClassName="backdrop-blur-lg border-b bg-white-900/50 border-blue-950/50" defaultBackgroundColor="transparent" defaultTextColor="var(--main-blue)" dynamicBackground={false}>
             <section className="pb-16 border-r relative max-w-[800px] flex-1">
                 <PostTopNavbar />
                 <div className="w-full h-full">
-                    <PostCard separators={true} redirect={false} auth_user={user} post={post} />
-                    <Comments user={user} post={post} comments={nestedComments} />
+                    <PostCard separators={true} redirect={false} auth_user={auth_user} post={post} />
+                    <Comments auth_user={auth_user} user={user} post={post} comments={nestedComments} />
                 </div>
             </section>
             <RightNavbar >

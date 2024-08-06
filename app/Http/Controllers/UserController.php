@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\UserMidi;
 use App\Models\UserNotification;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -988,11 +989,17 @@ class UserController extends Controller
         $reported_user_id = $request->input('user_id');
         $reason = $request->input('reason');
         $detailed_reason = $request->input('detailed_reason');
+        $post_id = $request->input('post_id');
+        $comment_id = $request->input('comment_id');
         $report = new Report();
         $report->user_id = Auth::id();
         $report->reported_user_id = $reported_user_id;
         $report->reason = $reason;
         $report->detailed_reason = $detailed_reason;
+        $report->post_id = $post_id;
+        $report->comment_id = $comment_id;
+        $report->updated_at = Carbon::now();
+        $report->created_at = Carbon::now();
         $report->save();
     }
 

@@ -16,13 +16,16 @@ class PostController extends Controller {
         foreach ($post_comments as $comment) {
             $comments[] = CommentController::getCommentData($comment);
         }
+        $user = User::findOrFail($post->user_id);
         $post = UserController::getPostData($post);
-        $user = Auth::user();
+        $auth_user = Auth::user();
         UserController::getProfileData($user);
+        UserController::getProfileData($auth_user);
         return Inertia::render('PostShow', [
             'post' => $post,
             'comments' => $comments,
             'user' => $user,
+            'auth_user' => $auth_user,
         ]);
     }
     

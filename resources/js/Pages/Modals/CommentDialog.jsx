@@ -7,7 +7,7 @@ import CommentCard from '@/Components/Cards/CommentCard';
 import PostCard from '@/Components/Cards/PostCard';
 import PostEditor from '@/Components/PostEditor';
 
-export default function CommentDialog({ user, post, comment = null, reply = false }) {
+export default function CommentDialog({ auth_user, user, post, comment = null, reply = false }) {
     const handleSubmit = (value, visibility, media) => {
         const formData = new FormData();
         if (!value) value = '';
@@ -33,7 +33,7 @@ export default function CommentDialog({ user, post, comment = null, reply = fals
         <BaseDialog miniDialog={true} closeButton={true} width='650px' id={'comment-dialog'}>
             <div className='flex flex-col gap-3 justify-between pb-2 rounded-t w-full'>
                 {comment ? (
-                    <CommentCard user={user} post={post} controls={false} comment={comment} />
+                    <CommentCard auth_user={auth_user} user={user} post={post} controls={false} comment={comment} />
                 ) : (
                     <PostCard controls={false} auth_user={user} post={post} border={false} redirect={false} />
                 )}

@@ -11,7 +11,7 @@ import { FiLink } from "react-icons/fi";
 import ImagesPreview from '../ImagesPreview';
 import { IoShareOutline } from 'react-icons/io5';
 import { MdOutlineDelete, MdOutlineEmail, MdOutlineEdit, MdBlock, MdOutlineReport } from "react-icons/md";
-import { closeDropdownsOnClickOutside, formatDateForPublic, openModal } from '@/Functions';
+import { closeDropdownsOnClickOutside, formatDateForPublic, isUserBlocked, isUserMuted, openModal } from '@/Functions';
 import CommentDialog from '@/Pages/Modals/CommentDialog';
 import { IconButton } from '../Buttons';
 import { BsThreeDots } from 'react-icons/bs';
@@ -21,23 +21,24 @@ import { IoEarthOutline } from 'react-icons/io5';
 import ConfirmationDialog from '@/Pages/Modals/ConfirmationDialog';
 import EditCommentModal from '@/Pages/Modals/EditCommentModal';
 import { router } from '@inertiajs/react';
+import ReportModal from '@/Pages/Modals/ReportModal';
 
-export default function CommentCard({ user, comment, post, controls = true, redirect = true }) {
+export default function CommentCard({ auth_user, user, comment, post, controls = true, redirect = true }) {
     const [shareDropdownVisible, setShareDropdownVisible] = useState(false);
     const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
     const [whoCanReplyVisible, setWhoCanReplyVisible] = useState(false);
     // Check if the comment is liked by the authenticated user
-    const isLiked = user && user.comment_given_likes.some(like => like.comment_id === comment.id);
-    const isBookmarked = user && user.comment_bookmarks?.some(bookmark => bookmark.id === comment.id);
-    const isFollower = user && user.followings?.some(follower => follower.id === comment.user.id);
-    const isOwner = user && user.comments?.some(user_comment => user_comment.id === comment.id);
+    const isLiked = (auth_user && auth_user.comment_given_likes?.some(like => like.comment_id === comment.id)) ?? false;
+    const isBookmarked = (auth_user && auth_user.comment_bookmarks?.some(bookmark => bookmark.id === comment.id)) ?? false;
+    const isFollower = (auth_user && auth_user.followings?.some(follower => follower.id === comment.user.id)) ?? false;
+    const isOwner = (auth_user && auth_user.comments?.some(user_comment => user_comment.id === comment.id && user_comment.user_id === comment.user_id && user_comment.post_id === post.id)) ?? false;
     const handleUserProfileRedirect = (e) => {
         e.stopPropagation();
         router.get(`/u/${comment?.user?.username}`);
     }
     const handleReply = (e) => {
         e.stopPropagation();
-        openModal('comment-dialog', <CommentDialog reply={true} post={post} comment={comment} user={user} />)
+        openModal('comment-dialog', <CommentDialog auth_user={auth_user} reply={true} post={post} comment={comment} user={user} />)
     }
     const handleLike = async (e) => {
         e.stopPropagation();
@@ -136,9 +137,36 @@ export default function CommentCard({ user, comment, post, controls = true, redi
         formData.append('visibility', 2);
         axios.post('/comments/visibility', formData).then(window.location.reload())
     }
-    closeDropdownsOnClickOutside([shareDropdownVisible], [setIsLogoutModal, setMoreOptionsVisible, setWhoCanReplyVisible])
+    // Check if user is muted
+    const [isMuted, setIsMuted] = useState(isUserMuted(user, auth_user));
+    const handleMute = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        var formData = new FormData();
+        formData.append('user_id', user.id);
+        axios.post('/user/mute', formData);
+        setMoreOptionsVisible(false);
+        setIsMuted(!isMuted);
+    }
+    const [isBlocked, setIsBlocked] = useState(isUserBlocked(user, auth_user));
+    const handleBlock = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        var formData = new FormData();
+        formData.append('user_id', user.id);
+        axios.post('/user/block', formData);
+        setMoreOptionsVisible(false);
+        setIsBlocked(!isBlocked);
+    }
+    const handleReport = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openModal('report-comment', <ReportModal comment={comment} post={post} auth_user={auth_user} user={user} />);
+        setMoreOptionsVisible(false);
+    }
+    closeDropdownsOnClickOutside([shareDropdownVisible], [setShareDropdownVisible, setMoreOptionsVisible, setWhoCanReplyVisible])
     return (
-        <article onClick={redirect ? handleCommentRedirect : () => { }} className={`flex gap-2 p-3 w-full transition duration-300 ${redirect ? 'cursor-pointer hover:bg-[var(--hover-light)]' : ''}`} style={{ marginLeft: comment.parent_id ? '20px' : '0' }}>
+        <article onClick={redirect ? handleCommentRedirect : () => { }} className={`flex gap-2 p-3 w-full transition duration-300 ${redirect ? 'cursor-pointer hover:bg-[var(--hover-light)]' : ''}`} style={{ paddinLeft: comment.parent_id ? '20px' : '0' }}>
             <div>
                 {redirect ? (
                     <Link onClick={handleUserProfileRedirect} >
@@ -204,17 +232,17 @@ export default function CommentCard({ user, comment, post, controls = true, redi
                                             )}
                                             {!isOwner && (
                                                 <>
-                                                    <Link className='flex items-center gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                    <Link onClick={handleMute} className='flex items-center gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
                                                         <span className='pointer-events-none'><BiVolumeMute /></span>
-                                                        <span className='pointer-events-none'>Mute @{post.user.username}</span>
+                                                        <span className='pointer-events-none'>{isMuted ? 'Unmute' : 'Mute'} @{comment.user.username}</span>
                                                     </Link>
-                                                    <Link className='flex items-center gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                    <Link onClick={handleBlock} className='flex items-center gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
                                                         <span className='pointer-events-none'><MdBlock /></span>
-                                                        <span className='pointer-events-none'>Block @{post.user.username}</span>
+                                                        <span className='pointer-events-none'>{isBlocked ? 'Unblock' : 'Block'} @{comment.user.username}</span>
                                                     </Link>
-                                                    <Link className='flex items-center rounded-b-lg gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
+                                                    <Link onClick={handleReport} className='flex items-center rounded-b-lg gap-3 font-semibold px-4 py-3 hover:bg-[var(--hover-light)]'>
                                                         <span className='pointer-events-none text-lg'><MdOutlineReport /></span>
-                                                        <span className='pointer-events-none'>Report post</span>
+                                                        <span className='pointer-events-none'>Report comment</span>
                                                     </Link>
                                                 </>
                                             )}

@@ -187,6 +187,8 @@ function closeDropdownsOnClickOutside(dependencies = [], onOutsideEvents = []) {
 }
 
 function isUserMuted(user_needle, user_haystack) {
+    if (!user_haystack) return false;
+    if (!Object.hasOwn(user_haystack, 'muted_users')) return false;
     for (let muted_user of user_haystack.muted_users) {
         if (muted_user.muted_user_id == user_needle.id) return true; break;
     }
@@ -194,6 +196,8 @@ function isUserMuted(user_needle, user_haystack) {
 }
 
 function isUserBlocked(user_needle, user_haystack) {
+    if (!user_haystack) return false;
+    if (!Object.hasOwn(user_haystack, 'blocked_users')) return false;
     for (let blocked_user of user_haystack.blocked_users) {
         if (blocked_user.blocked_user_id == user_needle.id) return true; break;
     }

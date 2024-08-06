@@ -20,7 +20,7 @@ import { Image } from 'primereact/image';
 import { FiLink } from "react-icons/fi";
 import { BiVolumeMute } from "react-icons/bi";
 import axios from "axios";
-import ReportUserModal from "./Modals/ReportUserModal";
+import ReportModal from "./Modals/ReportModal";
 
 export default function Profile({ auth_user = null, user = null, roles = null }) {
     var isAuthUserProfile = false;
@@ -100,7 +100,7 @@ export default function Profile({ auth_user = null, user = null, roles = null })
     }
     const handleReport = (e) => {
         e.preventDefault();
-        openModal('report-user', <ReportUserModal auth_user={auth_user} user={user} />);
+        openModal('report-user', <ReportModal auth_user={auth_user} user={user} />);
         setMoreOptionsVisible(false);
     }
     return (

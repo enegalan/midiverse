@@ -114,6 +114,7 @@ export default function PostEditor({
         e.stopPropagation();
         fileInputRef.current.click();
     }
+    
     const handleImageChange = async (e) => {
         const files = Array.from(e.target.files);
         if (files) {
