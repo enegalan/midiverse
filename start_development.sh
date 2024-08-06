@@ -1,2 +1,2 @@
 cd /var/www/html
-npm run docker &
+npm run midiverse_docker &
